@@ -5,39 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/CSS/search.css">
     <title>Página inicial</title>
+    <link rel="stylesheet" href="/CSS/base.css">
+    <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet">
+    <script src="/JS/search.js"></script>
+
  </head>
  <body>
 
-    <header>
-        <img src="/src/image-removebg-preview.png" alt="Foto logo">
-        <img src="/src/ICONS.png" alt="Brigadeiro">
+    <!--CABEÇALHO-->
+    <header class="main-header">
+        <img src="/src/image-removebg-preview.png" alt="Foto logo" class="fotologo">
+        <img src="/src/ICONS.png" alt="Brigadeiro" class="brigadeiro">
+
         <!--BARRA DE PESQUISA-->
         <div class="search" id="search">
             <label for="">
-                <span class="icon-search">search</span>
+                <span class="material-symbols-outlined">search</span>
             </label>
             <input type="search" id="searchInput" placeholder="pesquisar">
         </div>
         <div class="card-container">
              <div class="card">
-                <h3>Título</h3>
-                <p>descrição</p>
+                
              </div>
         </div>
-        <img src="/src/image-removebg-preview.png" alt="Foto logo">
+        <!--NAVEGAÇÃO-->
+        <nav class="menu-opcoes">
+            <ul>
+                <li><a href="/HTML/index.html">PÁGINA INICIAL</a></li>
+                <li><a href="/HTML/cardapio.html">CARDÁPIO</a></li>
+                <li><a href="/HTML/perfil.html">PERFIL</a></li>
+                <li><a href="/HTML/carrinho.html">CARRINHO</a></li>
+                <li><a href="#sobrenos_slide" class="scroll-link">SOBRE NÓS</a></li>
+            </ul>
+        </nav>
+        
+    </header>
+
+    <!--CARROSSEL-->
+    <main>
+        <div class="carrossel" id="carrossel"></div>
+        
+    </main>
+
+    <!--RODAPÉ-->
+    <footer class="main-footer">
+        <img src="/src/image-removebg-preview.png" alt="Foto logo" class="fotologo">
         <a href="mailto:sayurimo@gmail.com?subject=Contato&body=Olá, gostaria de mais informações.">
-            <img src="/src/e-mail.png" alt="email">
+            <img src="/src/e-mail.png" alt="email" class="email">
         </a>
         <a href="tel:+5515981453091">
-            <img src="/src/chamada-telefonica.png" alt="telefone">
+            <img src="/src/chamada-telefonica.png" alt="telefone" class="fotologo">
         </a>
         <a href="https://www.google.com/maps/search/?api=1&query=Rua+Alice+Garcia+da+Silva,+380+B14+-+19" target="_blank">
-            <img src="/src/localizacao.png" alt="endereço"> 
+            <img src="/src/localizacao.png" alt="endereço" class="localizacao"> 
         </a>
+
         <a href="https://www.instagram.com/seu_usuario/" target="_blank">
-            <img src="/src/instagram.png" alt="Instagram">
+            <img src="/src/instagram.png" alt="Instagram" class="instagram">
         </a>
-    </header>
+    </footer>
     
+    <script src="/JS/carrossel.js"></script>
  </body>
  </html>
