@@ -12,6 +12,7 @@
   <!-- CSS -->
   <link rel="stylesheet" href="/CSS/base.css">
   <link rel="stylesheet" href="/CSS/search.css">
+  <link rel="stylesheet" href="/CSS/perfil.css">
 </head>
 <body>
 
@@ -46,11 +47,11 @@
     <!-- LOGIN -->
     <section class="box-login" style="margin-bottom: 24px;">
       <div id="login" class="form-content-ativo">
-        <h5>Login</h5>
+        <h5 class="escrita-login">Login</h5>
         <img src="/src/perfilicon.png" alt="Profile" class="icon-profile">
         <form>
-          <input type="email" placeholder="E-mail" required>
-          <input type="password" placeholder="Senha" required>
+          <input type="email" placeholder="E-mail" required class="botao-email">
+          <input type="password" placeholder="Senha" required class="botao-senha">
           <button id="enviar-btn1" type="submit">Entrar</button>
           <p>Não tem conta? <a href="#register">Cadastre-se</a></p>
         </form>
@@ -61,7 +62,7 @@
     <section class="box-register" id="register">
       <div class="form-content">
         <h5>Cadastre-se</h5>
-        <img src="/src/perfilicon.png" alt="Profile" class="icon-profile">
+        <img src="/src/perfilicon.png" alt="Profile" class="icon-profile1">
         <form>
           <input type="text" placeholder="Nome completo" required>
           <input type="email" placeholder="E-mail" required>

@@ -1,0 +1,51 @@
+.box-login{
+    margin: 16px auto 0;
+    position: relative;
+    width: 700px;
+    height: 650px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center; /* centraliza horizontalmente */
+    align-items: center;
+}
+
+.icon-profile {
+    display: block;
+    margin: 0 auto; /* centraliza horizontalmente */
+    width: 200px;
+    height: auto;
+    margin-top: -150px;
+}
+
+.botao-email{
+    width: 400px;
+    height: 45px;
+    display: flex;
+    background-color: #D9D9D9;
+    border: #D9D9D9;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.botao-senha{
+    width: 400px;
+    height: 45px;
+    display: flex;
+    background-color: #D9D9D9;
+    border: #D9D9D9;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+#enviar-btn1{
+    width: 120px;
+    height: 45px;
+    display: flex;
+    background-color: #FEECD6;
+    border: #FEECD6;
+    border-radius: 20px;
+    margin-top: 20px;
+    justify-self: center;
+}
