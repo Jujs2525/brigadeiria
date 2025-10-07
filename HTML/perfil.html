@@ -1,41 +1,103 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PERFIL | Sayuri's Brigaderia</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PERFIL | Sayuri's Brigaderia</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/CSS/base.css">
+  <link rel="stylesheet" href="/CSS/search.css">
 </head>
 <body>
-    <header>
-        <img src="/src/image-removebg-preview.png" alt="Sayuri's Brigadeiros" class="Foto Logo">
 
-    </header>
+  <!-- CABEÇALHO -->
+  <header class="main-header">
+    <div class="container header-grid">
+      <a href="/HTML/index.html" class="brand">
+        <img src="/src/TCC.png" alt="Foto logo" class="fotologo">
+      </a>
 
+      <div class="search" id="search" role="search">
+        <span class="material-symbols-outlined" aria-hidden="true">search</span>
+        <input class="searchInput" type="search" id="searchInput" placeholder="pesquisar" aria-label="Pesquisar">
+      </div>
+
+      <img src="/src/ICONS.png" alt="Brigadeiro" class="brigadeiro">
+    </div>
+
+    <nav class="menu-opcoes">
+      <ul class="container nav-list">
+        <li><a href="/HTML/index.html">PÁGINA INICIAL</a></li>
+        <li><a href="/HTML/cardapio.html">CARDÁPIO</a></li>
+        <li><a href="/HTML/perfil.html">PERFIL</a></li>
+        <li><a href="/HTML/carrinho.html">CARRINHO</a></li>
+        <li><a href="#sobrenos_slide" class="scroll-link">SOBRE NÓS</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- CONTEÚDO -->
+  <main class="container" style="padding: 24px 0;">
     <!-- LOGIN -->
-    <main>
-        <section class="box-login">
-            <div id="login" class="form-content-ativo">
-                <h5> Login </h5>
-                <img src="/src/perfilicon.png" alt="Profile" class="icon-profile">
-                <form>
-                    <input type="email" placeholder="E-mail">
-                    <input type="password" placeholder="Senha">
-                    <button id="enviar-btn1" type="submit">Enviar</button>
-                    <p> Não tem conta? <a href="#" onclick="paginaCadastro()">Login</a></p>
-                </form>
-            </div>
-        </section>
-    </main>
+    <section class="box-login" style="margin-bottom: 24px;">
+      <div id="login" class="form-content-ativo">
+        <h5>Login</h5>
+        <img src="/src/perfilicon.png" alt="Profile" class="icon-profile">
+        <form>
+          <input type="email" placeholder="E-mail" required>
+          <input type="password" placeholder="Senha" required>
+          <button id="enviar-btn1" type="submit">Entrar</button>
+          <p>Não tem conta? <a href="#register">Cadastre-se</a></p>
+        </form>
+      </div>
+    </section>
 
     <!-- CADASTRO -->
-    <main>
-        <section class="box-register">
-            <div id="register" class="form-content">
-                <h5> Cadastre-se </h5>
-                <img src="/src/perfilicon.png" alt="Profile" class="icon-profile">
-                <form>
-                    <input type="text" placeholder="Nome completo">
-                    <input type="email" placeholder="E-mail">
-                    <
+    <section class="box-register" id="register">
+      <div class="form-content">
+        <h5>Cadastre-se</h5>
+        <img src="/src/perfilicon.png" alt="Profile" class="icon-profile">
+        <form>
+          <input type="text" placeholder="Nome completo" required>
+          <input type="email" placeholder="E-mail" required>
+          <input type="password" placeholder="Senha" required>
+          <button id="enviar-btn2" type="submit">Criar conta</button>
+          <p>Já tem conta? <a href="#login">Fazer login</a></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- RODAPÉ (opcional: pode reutilizar o do index) -->
+  <footer class="main-footer">
+    <div class="container footer-grid">
+      <div class="footer-logo-esquerda">
+        <img src="/src/TCC.png" alt="Foto logo">
+      </div>
+      <div class="redesSociais">
+        <a href="mailto:sayurimo@gmail.com?subject=Contato&body=Olá, gostaria de informações">
+          <img src="/src/e-mail.png" alt="email" class="icones">
+        </a>
+        <a href="tel:+5515981453091">
+          <img src="/src/chamada-telefonica.png" alt="telefone" class="icones">
+        </a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Rua+Alice+Garcia+da+Silva,+380+B14+-+19" target="_blank" rel="noopener">
+          <img src="/src/localizacao.png" alt="endereço" class="icones">
+        </a>
+        <a href="https://www.instagram.com/sayuri_brigadeiros?igsh=MWh4Zjc0Ynp6NTA2eg==" target="_blank" rel="noopener">
+          <img src="/src/instagram.png" alt="Instagram" class="icones">
+        </a>
+      </div>
+      <div class="footer-logo-direita">
+        <img src="/src/Logo Principal.png" alt="Logo Studio" class="logo-direita">
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>

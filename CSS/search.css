@@ -1,57 +1,84 @@
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search");
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-size: 'Roboto', sans-serif;
+/* A fonte de ícone é importada no <head>. Mantemos só ajustes visuais */
+.material-symbols-outlined{
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  line-height: 1;
 }
 
-.material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
-}
-
+/* Barra de pesquisa */
 .search{
-    border: 1px solid #cccc;
-    border-radius: 20px;
-    padding: 5px 10px;
-    width: 400px;
-    display: flex;
-    align-items: center;
-    margin: 10px auto;
-    margin-top: -100px;
-    background-color: #00000006;
-    color: #4b4b4b;
+  --bg: #70482A;     /* marrom */
+  --fg: #FDEBBB;     /* texto/ícone */
+  --ring: #B97949;   /* foco */
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  width:100%;
+  max-width:420px;
+
+  padding:8px 12px;
+  border-radius:22px;
+
+  background-color:var(--bg);
+  color:var(--fg);
+
+  border:1px solid transparent;           /* (antes faltava #) */
+  margin: 0 auto;                          /* sem margin-top negativo */
+
+  transition: box-shadow .2s ease, border-color .2s ease;
 }
 
+/* Foco acessível ao digitar */
+.search:focus-within{
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px rgba(185,121,73,.25);
+}
+
+/* Ícone */
+.search .material-symbols-outlined{
+  color:var(--fg);
+  font-size:22px;
+}
+
+/* Input */
 .searchInput{
-    padding: 3px 8px;
-    border: none;
-    background-color: transparent;
-    width: 100%;
-    outline: none;
+  flex:1;
+  border:none;
+  outline:none;
+  background:transparent;
+  color:var(--fg);
+  font: 500 0.95rem 'Voces', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; /* corrige font-size: 'Roboto' */
+  padding:4px 0;
+}
+.searchInput::placeholder{
+  color: rgba(253,235,187,.85);
 }
 
-.search label{
-    height: 20px;
-}
-
+/* Cards (se usar resultados) */
 .card-container{
-    display: flex;
-    justify-content: center; /*horizontal*/
-    flex-wrap: nowrap;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-top:14px;
+}
+.card{
+  width: min(350px, 92vw);
+  background-color:#fff5da;
+  border:1px solid #FDEBBB;
+  border-radius:10px;
+  padding:15px 20px;
+  box-shadow:0 0 8px rgba(0,0,0,.08);
 }
 
-.card{
-    width: 350px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    margin: 10px;
-    padding: 15px 20px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+/* Responsivo */
+@media (max-width:560px){
+  .search{
+    max-width:100%;
+    padding:6px 10px;
+    border-radius:18px;
+  }
+  .search .material-symbols-outlined{ font-size:20px; }
+  .searchInput{ font-size:.95rem; }
 }
