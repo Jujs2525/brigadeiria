@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Página inicial</title>
+  <title> INÍCIO | Sayuri's Brigadeiros </title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet" />
@@ -24,13 +24,21 @@
       </a>
 
       <!-- BARRA DE PESQUISA -->
-      <div class="search" id="search" role="search">
-        <span class="material-symbols-outlined" aria-hidden="true">search</span>
-        <input class="searchInput" type="search" id="searchInput" placeholder="pesquisar" aria-label="Pesquisar">
+          <div class="search-wrapper">
+        <div class="search" id="search">
+          <label for="searchInput">
+            <span class="material-symbols-outlined">search</span>
+          </label>
+          <input class="searchInput" type="search" id="searchInput" placeholder="Pesquisar...">
+        </div>
+
+        <!-- Resultados -->
+        <div class="results-box" id="resultsBox"></div>
       </div>
 
       <img src="/src/ICONS.png" alt="Brigadeiro" class="brigadeiro">
     </div>
+
 
     <!-- NAVEGAÇÃO -->
     <nav class="menu-opcoes">

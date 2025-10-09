@@ -1,84 +1,114 @@
-/* A fonte de ícone é importada no <head>. Mantemos só ajustes visuais */
-.material-symbols-outlined{
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  line-height: 1;
+/* Container geral */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  font-family: 'Voces', sans-serif;
 }
 
 /* Barra de pesquisa */
-.search{
-  --bg: #70482A;     /* marrom */
-  --fg: #FDEBBB;     /* texto/ícone */
-  --ring: #B97949;   /* foco */
-
-  display:flex;
-  align-items:center;
-  gap:8px;
-
-  width:100%;
-  max-width:420px;
-
-  padding:8px 12px;
-  border-radius:22px;
-
-  background-color:var(--bg);
-  color:var(--fg);
-
-  border:1px solid transparent;           /* (antes faltava #) */
-  margin: 0 auto;                          /* sem margin-top negativo */
-
-  transition: box-shadow .2s ease, border-color .2s ease;
+.search {
+  display: flex;
+  align-items: center;
+  background: var(--brown);
+  border: 1px solid #ffedbd;
+  border-radius: 12px;
+  padding: 8px 12px;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
 
-/* Foco acessível ao digitar */
-.search:focus-within{
-  border-color: var(--ring);
-  box-shadow: 0 0 0 3px rgba(185,121,73,.25);
+.search .material-symbols-outlined {
+  color: #ffedbd;
+  font-size: 20px;
+  margin-right: 6px;
 }
 
-/* Ícone */
-.search .material-symbols-outlined{
-  color:var(--fg);
-  font-size:22px;
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  color: #ffedbd;
+  background: transparent;
 }
 
-/* Input */
-.searchInput{
-  flex:1;
-  border:none;
-  outline:none;
-  background:transparent;
-  color:var(--fg);
-  font: 500 0.95rem 'Voces', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; /* corrige font-size: 'Roboto' */
-  padding:4px 0;
-}
-.searchInput::placeholder{
-  color: rgba(253,235,187,.85);
+.searchInput::placeholder {
+  color: #ffedbd;
 }
 
-/* Cards (se usar resultados) */
-.card-container{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:16px;
-  margin-top:14px;
-}
-.card{
-  width: min(350px, 92vw);
-  background-color:#fff5da;
-  border:1px solid #FDEBBB;
-  border-radius:10px;
-  padding:15px 20px;
-  box-shadow:0 0 8px rgba(0,0,0,.08);
+/* muda a cor de seleção de texto no input */
+.searchInput::selection {
+  background: #ffedbd; /* cor de fundo ao selecionar o texto */
+  color: #70482A;      /* cor da letra selecionada */
 }
 
-/* Responsivo */
-@media (max-width:560px){
-  .search{
-    max-width:100%;
-    padding:6px 10px;
-    border-radius:18px;
-  }
-  .search .material-symbols-outlined{ font-size:20px; }
-  .searchInput{ font-size:.95rem; }
+
+/* Caixa de resultados */
+.results-box {
+  position: absolute;
+  top: 46px; /* logo abaixo da barra */
+  width: 100%;
+  background: var(--brown);
+  border: 1px solid #ffedbd;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  padding: 10px 14px;
+  display: none; /* começa escondido */
+  z-index: 100;
+}
+
+.results-box p{
+  color: #ffedbd;
+}
+
+/* Deixa o botão “X” da barra de busca com cor personalizada */
+.searchInput::-webkit-search-cancel-button {
+  -webkit-appearance: none;   /* remove o botão padrão azul */
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+
+  /* cria o mesmo “X” porém com a cor do tema */
+  background-color: #ffedbd; /* define a cor do “X” */
+  mask: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2370482A" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>') center/contain no-repeat;
+}
+
+
+/* Cada item */
+.result-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #ffedbd;
+  cursor: pointer;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-item h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #ffedbd;
+}
+
+.result-item p {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  color: #fff5da;
+}
+
+/* Hover */
+.result-item:hover {
+  background: #ffedbd;
+  border-radius: 8px;
+}
+
+.result-item:hover h3,
+.result-item:hover p {
+  color: #70482A; 
 }

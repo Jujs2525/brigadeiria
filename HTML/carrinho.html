@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Página inicial</title>
+  <title> CARRINHO | Sayuri's Brigadeiros </title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet" />
@@ -11,7 +11,7 @@
 
 
   <link rel="stylesheet" href="/CSS/base.css" />
-  <link rel="stylesheet" href="/CSS/carrossel.css" />
+  <link rel="stylesheet" href="/CSS/carrinho.css" />
   <link rel="stylesheet" href="/CSS/search.css" />
 </head>
 <body>
@@ -24,14 +24,20 @@
       </a>
 
       <!-- BARRA DE PESQUISA -->
-      <div class="search" id="search" role="search">
-        <span class="material-symbols-outlined" aria-hidden="true">search</span>
-        <input class="searchInput" type="search" id="searchInput" placeholder="pesquisar" aria-label="Pesquisar">
+      <div class="search-wrapper">
+        <div class="search" id="search">
+          <label for="searchInput">
+            <span class="material-symbols-outlined">search</span>
+          </label>
+          <input class="searchInput" type="search" id="searchInput" placeholder="Pesquisar...">
+        </div>
+
+        <!-- Resultados -->
+        <div class="results-box" id="resultsBox"></div>
       </div>
 
       <img src="/src/ICONS.png" alt="Brigadeiro" class="brigadeiro">
     </div>
-
     <!-- NAVEGAÇÃO -->
     <nav class="menu-opcoes">
       <ul class="container nav-list">
@@ -44,9 +50,19 @@
     </nav>
   </header>
 
-  <!-- CARROSSEL -->
+
   <main>
-   
+    <section class="card-section">
+      <h2>Meu Pedido</h2>
+      <div id="card-itens-container">
+        <p>Seu Carrinho está Vazio</p>
+      </div>
+      <div class="card-total">
+        <h3>Total: <span id="card-total-value">R$0,00</span></h3>
+      </div>
+      <button id="limpar-pedido" class="btn">Limpar Pedido</button>
+      <button id="checkout-btn" class="btn">Finalizar Pedido via WhatsApp</button>
+    </section>
   </main>
 
   <!-- RODAPÉ -->
@@ -79,6 +95,6 @@
 
   <!-- JS -->
   <script src="/JS/search.js"></script>
-  <script src="/JS/carrossel.js"></script>
+  <script src="/JS/script.js"></script>
 </body>
 </html>

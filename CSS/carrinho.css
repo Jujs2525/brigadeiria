@@ -1,0 +1,28 @@
+.card-section #card-itens-container{
+    border: 1px dashed rgb(255, 255, 255);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    min-height: 100px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.card-total{
+    text-align: right;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+#checkout-btn{
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    color: white;
+    background-color: green;
+}

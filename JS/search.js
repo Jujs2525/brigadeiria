@@ -1,54 +1,50 @@
-const data = [
-    {
-        title: "brigadeiro",
-        description: "brigadeiro de chocolate",
-    },
-    {
-        title: "beijinho",
-        description: "doce de coco",
-    },
-    {
-        title: "cajuzinho",
-        description: "doce de amendoim",
-    },
-];
+document.addEventListener("DOMContentLoaded", () => {
+  const data = [
+    { title: "Brigadeiro", description: "Doce de chocolate tradicional" },
+    { title: "Beijinho", description: "Doce de coco com leite condensado" },
+    { title: "Cajuzinho", description: "Doce de amendoim com chocolate" },
+    { title: "Brownie", description: "Sobremesa de chocolate deliciosa" },
+  ];
 
-const searchInput = document.querySelector("#searchInput");
-const cardContainer = document.querySelector(".card-container");
+  const input = document.querySelector("#searchInput");
+  const resultsBox = document.querySelector("#resultsBox");
 
-// Função que exibe os cards na tela
-const displayData = (data) => {
-    cardContainer.innerHTML = "";
+  if (!input || !resultsBox) {
+    console.error("Elementos da busca não encontrados.");
+    return;
+  }
 
-    if (data.length === 0) {
-        cardContainer.innerHTML = "<p>Nenhum resultado encontrado.</p>";
-        return;
+  input.addEventListener("input", () => {
+    const term = input.value.toLowerCase().trim();
+
+    if (term === "") {
+      resultsBox.style.display = "none";
+      resultsBox.innerHTML = "";
+      return;
     }
 
-    data.forEach(e => {
-        cardContainer.innerHTML += `
-            <div class="card">
-                <h3>${e.title}</h3>
-                <p>${e.description}</p>
-            </div>
-        `;
-    });
-};
+    const results = data.filter(item =>
+      item.title.toLowerCase().includes(term) ||
+      item.description.toLowerCase().includes(term)
+    );
 
-// Evento para buscar enquanto digita
-searchInput.addEventListener("keyup", (e) => {
-    const pesquisa = e.target.value.trim().toLowerCase();
-
-    if (pesquisa.length > 0) {
-        const search = data.filter(i =>
-            i.title.toLowerCase().includes(pesquisa)
-        );
-        displayData(search);
+    if (results.length === 0) {
+      resultsBox.innerHTML = "<p>Nenhum resultado encontrado.</p>";
     } else {
-        // Campo vazio: limpa tudo
-        cardContainer.innerHTML = "";
+      resultsBox.innerHTML = results.map(item => `
+        <div class="result-item">
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+        </div>
+      `).join("");
     }
-});
 
-// Quando a página carrega, você pode exibir todos os dados (opcional)
-// window.addEventListener("load", () => displayData(data));
+    resultsBox.style.display = "block";
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".search-wrapper")) {
+      resultsBox.style.display = "none";
+    }
+  });
+});

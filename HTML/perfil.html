@@ -23,13 +23,22 @@
         <img src="/src/TCC.png" alt="Foto logo" class="fotologo">
       </a>
 
-      <div class="search" id="search" role="search">
-        <span class="material-symbols-outlined" aria-hidden="true">search</span>
-        <input class="searchInput" type="search" id="searchInput" placeholder="pesquisar" aria-label="Pesquisar">
+      <!-- BARRA DE PESQUISA -->
+          <div class="search-wrapper">
+        <div class="search" id="search">
+          <label for="searchInput">
+            <span class="material-symbols-outlined">search</span>
+          </label>
+          <input class="searchInput" type="search" id="searchInput" placeholder="Pesquisar...">
+        </div>
+
+        <!-- Resultados -->
+        <div class="results-box" id="resultsBox"></div>
       </div>
 
       <img src="/src/ICONS.png" alt="Brigadeiro" class="brigadeiro">
     </div>
+
 
     <nav class="menu-opcoes">
       <ul class="container nav-list">
@@ -47,13 +56,26 @@
     <!-- LOGIN -->
     <section class="box-login" style="margin-bottom: 24px;">
       <div id="login" class="form-content-ativo">
-        <h5 class="escrita-login">Login</h5>
+        <h3 class="escrita-login"> Login </h3>
         <img src="/src/perfilicon.png" alt="Profile" class="icon-profile">
         <form>
-          <input type="email" placeholder="E-mail" required class="botao-email">
-          <input type="password" placeholder="Senha" required class="botao-senha">
-          <button id="enviar-btn1" type="submit">Entrar</button>
-          <p>Não tem conta? <a href="#register">Cadastre-se</a></p>
+          <input type="email" placeholder="E-mail" class="email-btn" required>
+          <input type="password" placeholder="Senha" class="password-btn" required>
+          <!-- LINK DENTRO DO LOGIN -->
+          <p><a href="#" onclick="abrirRecuperar()" class="forgot-password"> Recuperar a senha </a></p>
+
+          <!-- MODAL ESCONDIDO -->
+          <div id="recuperarSenha" class="modal">
+            <div class="modal-content">
+              <h3> Recuperar senha </h3>
+              <input type="email" placeholder="Digite seu e-mail">
+              <button> Enviar link </button>
+              <p><a href="#" onclick="fecharRecuperar()"> Voltar </a></p>
+            </div>
+          </div>
+
+          <button id="enviar-btn1" type="submit"> Entrar </button>
+          <p> Não tem conta? <a href="#register"> Cadastre-se </a></p>
         </form>
       </div>
     </section>
@@ -61,12 +83,21 @@
     <!-- CADASTRO -->
     <section class="box-register" id="register">
       <div class="form-content">
-        <h5>Cadastre-se</h5>
+        <h3> Cadastre-se </h3>
         <img src="/src/perfilicon.png" alt="Profile" class="icon-profile1">
         <form>
+          <p class="escrita-perfil"> Perfil </p>
           <input type="text" placeholder="Nome completo" required>
+          <input type="tel" placeholder="Telefone" required>
           <input type="email" placeholder="E-mail" required>
           <input type="password" placeholder="Senha" required>
+          <input type="password" placeholder="Confirmar senha" required>
+
+          <p class="escrita-endereco"> Endereço </p>
+          <input type="text" placeholder="Endereço" required>
+          <input type="text" placeholder="CEP" required>
+          <input type="text" placeholder="Complemento" required>
+
           <button id="enviar-btn2" type="submit">Criar conta</button>
           <p>Já tem conta? <a href="#login">Fazer login</a></p>
         </form>
@@ -99,6 +130,9 @@
       </div>
     </div>
   </footer>
+
+  <!-- JS -->
+  <script src="/JS/perfil.js"></script>
 
 </body>
 </html>

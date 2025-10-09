@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Página inicial</title>
+  <title> CARDÁPIO | Sayuri's Brigadeiros </title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet" />
@@ -11,8 +11,8 @@
 
 
   <link rel="stylesheet" href="/CSS/base.css" />
-  <link rel="stylesheet" href="/CSS/carrossel.css" />
   <link rel="stylesheet" href="/CSS/search.css" />
+  <link rel="stylesheet" href="/CSS/cardapio.css" />
 </head>
 <body>
 
@@ -24,9 +24,16 @@
       </a>
 
       <!-- BARRA DE PESQUISA -->
-      <div class="search" id="search" role="search">
-        <span class="material-symbols-outlined" aria-hidden="true">search</span>
-        <input class="searchInput" type="search" id="searchInput" placeholder="pesquisar" aria-label="Pesquisar">
+      <div class="search-wrapper">
+        <div class="search" id="search">
+          <label for="searchInput">
+            <span class="material-symbols-outlined">search</span>
+          </label>
+          <input class="searchInput" type="search" id="searchInput" placeholder="Pesquisar...">
+        </div>
+
+        <!-- Resultados -->
+        <div class="results-box" id="resultsBox"></div>
       </div>
 
       <img src="/src/ICONS.png" alt="Brigadeiro" class="brigadeiro">
@@ -44,9 +51,13 @@
     </nav>
   </header>
 
-  <!-- CARROSSEL -->
+
   <main>
-    
+    <section class="produto-grid">
+      <h2>Cardápio</h2>
+      <!-- As categorias e produtos serão inseridos automaticamente pelo JavaScript -->
+    </section>
+
   </main>
 
   <!-- RODAPÉ -->
@@ -79,6 +90,6 @@
 
   <!-- JS -->
   <script src="/JS/search.js"></script>
-  <script src="/JS/carrossel.js"></script>
+  <script src="/JS/script.js"></script>
 </body>
 </html>
