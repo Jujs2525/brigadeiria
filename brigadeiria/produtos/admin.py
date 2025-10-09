@@ -1,7 +1,11 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import Categoria, Produto
+from .models import Banner, FotoGaleria
 
+
+admin.site.register(Banner)
+admin.site.register(FotoGaleria)
 
 @admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
@@ -21,3 +25,4 @@ class ProdutoAdmin(admin.ModelAdmin):
         return "Sem imagem"
 
     mostrar_imagem.short_description = 'Preview'
+

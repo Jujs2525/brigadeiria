@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from .models import Banner, FotoGaleria
+
 
 from rest_framework import generics
 from .models import Categoria, Produto
@@ -19,3 +21,9 @@ class ProdutoList(generics.ListCreateAPIView):
 class ProdutoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
+
+
+def index(request):
+    banners = Banner.objects.all()[:3]  # 3 imagens do carrossel
+    fotos = FotoGaleria.objects.all()   # todas as imagens da galeria
+    return render(request, 'index.html', {'banners': banners, 'fotos': fotos})
