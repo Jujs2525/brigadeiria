@@ -42,9 +42,9 @@
     <nav class="menu-opcoes">
       <ul class="container nav-list">
         <li><a href="{% url 'index' %}">PÁGINA INICIAL</a></li>
-        <li><a href="{% static 'HTML/cardapio.html' %}">CARDÁPIO</a></li>
-        <li><a href="{% static 'HTML/perfil.html' %}">PERFIL</a></li>
-        <li><a href="{% static 'HTML/carrinho.html' %}">CARRINHO</a></li>
+        <li><a href="{% url 'cardapio' %}">CARDÁPIO</a></li>
+        <li><a href="{% url 'perfil' %}">PERFIL</a></li>
+        <li><a href="{% url 'carrinho' %}">CARRINHO</a></li>
         <li><a href="#sobrenos_slide" class="scroll-link">SOBRE NÓS</a></li>
       </ul>
     </nav>

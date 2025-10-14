@@ -27,3 +27,13 @@ def index(request):
     banners = Banner.objects.all()[:3]  # 3 imagens do carrossel
     fotos = FotoGaleria.objects.all()   # todas as imagens da galeria
     return render(request, 'index.html', {'banners': banners, 'fotos': fotos})
+
+def cardapio(request):
+    produtos = Produto.objects.all()
+    return render(request, 'cardapio.html', {'produtos': produtos})
+
+def perfil(request):
+    return render(request, 'perfil.html')
+
+def carrinho(request):
+    return render(request, 'carrinho.html')
