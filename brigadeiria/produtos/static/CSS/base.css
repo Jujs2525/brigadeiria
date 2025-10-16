@@ -1,5 +1,5 @@
 :root{
-  --bg: #F9EEE0;
+  --bg: #f9eee0;
   --pink: #F4CDCC;
   --brown: #70482A;
   --brown-2: #B97949;
@@ -18,7 +18,7 @@ html{
 
 body{
   min-height:100vh;
-  background-color:var(--bg);
+  background-color: #f9eee0;
   font-family:'Voces', sans-serif;
   display:flex;
   flex-direction:column;

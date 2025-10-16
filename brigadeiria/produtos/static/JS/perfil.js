@@ -11,7 +11,7 @@ function fecharRecuperar(){
 /* PÁGINAS PERFIL */
 // Aguarda DOM pronto
 document.addEventListener('DOMContentLoaded', function () {
-  const cadastro = document.getElementById('cadastro');
+  const register = document.getElementById('register');
   const login = document.getElementById('login');
 
   // pega todos os botões/links que alternam tela
@@ -25,11 +25,11 @@ document.addEventListener('DOMContentLoaded', function () {
       const target = btn.getAttribute('data-show');
 
       if (target === 'login') {
-        cadastro.classList.remove('ativo');
+        register.classList.remove('ativo');
         login.classList.add('ativo');
-      } else if (target === 'cadastro') {
+      } else if (target === 'register') {
         login.classList.remove('ativo');
-        cadastro.classList.add('ativo');
+        register.classList.add('ativo');
       }
     });
   });
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'Escape') {
       // volta para cadastro como padrão
       login.classList.remove('ativo');
-      cadastro.classList.add('ativo');
+      register.classList.add('ativo');
     }
   });
 });

@@ -26,7 +26,6 @@ button {
     display: none; /* esconde a outra página */
 }
 
-
 /* MODAL */
 
 .modal{
@@ -47,4 +46,77 @@ button {
     border-radius: 20px;
     width: 300px;
     text-align: center;
+}
+
+/* GERAL */
+
+button:hover {
+  background: #e58e8e;
+}
+
+a {
+  color: #f08080;
+  text-decoration: none;
+  font-weight: bold;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+.box-login{
+    margin-bottom: 24px;
+    margin: 16px auto 0;
+    position: relative;
+    width: 700px;
+    height: 650px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center; /* centraliza horizontalmente */
+    align-items: center;
+}
+
+.escrita-login{
+    justify-content: center;
+
+}
+
+.icon-profile {
+    display: block;
+    margin: 0 auto; /* centraliza horizontalmente */
+    height: 100px;
+    margin-top: -150px;
+}
+
+.email-btn{
+    width: 400px;
+    height: 45px;
+    display: flex;
+    background-color: #D9D9D9;
+    border: #D9D9D9;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.password_btn{
+    width: 400px;
+    height: 45px;
+    display: flex;
+    background-color: #D9D9D9;
+    border: #D9D9D9;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+#enviar-btn1{
+    width: 120px;
+    height: 45px;
+    display: flex;
+    background-color: #FEECD6;
+    border: #FEECD6;
+    border-radius: 20px;
+    margin-top: 20px;
+    justify-self: center;
+    align-items: center;
 }
