@@ -11,7 +11,11 @@
     box-sizing:border-box; 
 }
 
-html{ scroll-behavior:smooth; height:100%; }
+html{ 
+  scroll-behavior:smooth; 
+  height:100%; 
+}
+
 body{
   min-height:100vh;
   background-color:var(--bg);
@@ -45,7 +49,10 @@ body{
 .brigadeiro{ width:80px; height:auto; }
 
 /* NAV */
-.menu-opcoes{ background:transparent; }
+.menu-opcoes{ 
+  background:transparent; 
+}
+
 .nav-list{
   list-style:none;
   display:flex;
@@ -53,6 +60,7 @@ body{
   justify-content:center;
   padding:8px 0 4px;
 }
+
 .nav-list a{
   text-decoration:none;
   color:var(--brown);
@@ -61,6 +69,7 @@ body{
   transition:color .25s, border-color .25s;
   border-bottom:2px solid transparent;
 }
+
 .nav-list a:hover{
   transition: color 0.3s ease; 
   color: #9b6f4e; /* cor ao passar por cima */
@@ -72,23 +81,27 @@ body{
   background-color:var(--pink);
   padding:26px 0;
 }
+
 .footer-grid{
   display:grid;
   grid-template-columns: auto 1fr auto;
   align-items:center;
   gap:18px;
 }
+
 .footer-logo-esquerda img,
 .footer-logo-direita img{
   width:150px;
   height:auto;
 }
+
 .redesSociais{
   display:flex;
   justify-content:center;
   align-items:center;
   gap:50px;
 }
+
 .icones{
   background-color:#f6bcbc;
   border-radius:10px;
@@ -97,6 +110,7 @@ body{
   height:45px;
   transition:transform .2s ease, background-color .2s ease;
 }
+
 .icones:hover{
   background-color:#f1a8a8;
   transform:scale(1.1);
@@ -109,6 +123,7 @@ body{
   .brigadeiro{ justify-self:center; }
   .nav-list{ flex-wrap:wrap; row-gap:6px; }
 }
+
 @media (max-width: 560px){
   .fotologo{ width:120px; }
   .brigadeiro{ width:64px; }

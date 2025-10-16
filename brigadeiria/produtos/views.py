@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Banner, FotoGaleria
 
+from django.http import JsonResponse
+from .models import FotoGaleria
 
 from rest_framework import generics
 from .models import Categoria, Produto
@@ -37,3 +39,19 @@ def perfil(request):
 
 def carrinho(request):
     return render(request, 'carrinho.html')
+
+def buscar(request):
+    termo = request.GET.get('q', '')
+    resultados = []
+
+    if termo:
+        fotos = FotoGaleria.objects.filter(descricao__icontains=termo)[:10]  # 🔹 busca por descrição
+        resultados = [
+            {
+                'title': foto.descricao or f"Imagem {foto.id}",
+                'image': foto.imagem.url
+            }
+            for foto in fotos
+        ]
+
+    return JsonResponse({'results': resultados})
