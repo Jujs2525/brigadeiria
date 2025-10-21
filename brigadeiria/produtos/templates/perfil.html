@@ -45,7 +45,7 @@
         <li><a href="{% url 'cardapio' %}">CARDÁPIO</a></li>
         <li><a href="{% url 'perfil' %}">PERFIL</a></li>
         <li><a href="{% url 'carrinho' %}">CARRINHO</a></li>
-        <li><a href="#sobrenos_slide" class="scroll-link">SOBRE NÓS</a></li>
+        <li><a href="{% url 'index' %}#sobrenos_slide" class="scroll-link">SOBRE NÓS</a></li>
       </ul>
     </nav>
   </header>
@@ -53,7 +53,7 @@
   <!-- CONTEÚDO -->
   <main class="container" style="padding: 24px 0;">
     <!-- LOGIN -->
-    <section class="box-login" id="login">
+    <section class="box-login" id="loginSection">
       <div class="form-content-ativo">
         <h3 class="escrita-login"> Login </h3>
         <img src="{% static 'src/perfilicon.png' %}" alt="Profile" class="icon-profile">
@@ -79,7 +79,7 @@
     </section>
 
     <!-- CADASTRO -->
-    <section class="box-register" id="register">
+    <section class="box-register" id="registerSection">
       <div class="form-content">
         <h3>Cadastre-se</h3>
         <img src="{% static 'src/perfilicon.png' %}" alt="Profile" class="icon-profile1">

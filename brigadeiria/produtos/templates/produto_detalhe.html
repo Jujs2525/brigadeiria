@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ produto.nome }} | Sayuri's Brigadeiros</title>
+  <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
+  <link rel="stylesheet" href="{% static 'CSS/produto_detalhe.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Cabeçalho simples -->
+  <header class="produto-header">
+    <a href="{% url 'cardapio' %}" class="voltar">← Voltar ao cardápio</a>
+    <img src="{% static 'src/TCC.png' %}" alt="Logo Sayuri's Brigadeiros" class="logo-header">
+  </header>
+
+  <!-- Conteúdo principal -->
+  <main class="produto-container">
+  <div class="produto-card">
+    {% if produto.imagem %}
+      <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" class="produto-imagem">
+    {% endif %}
+
+    <div class="produto-info">
+      <h1 class="produto-nome">{{ produto.nome }}</h1>
+      <p class="produto-descricao">{{ produto.descricao }}</p>
+      <p class="produto-preco">R$ 6,00 / unidade</p>
+
+      <div class="quantidade-wrapper">
+        <button class="btn-quantidade menos">−</button>
+        <span class="quantidade" id="quantidade">25</span>
+        <button class="btn-quantidade mais">+</button>
+      </div>
+
+      <div class="add-wrapper">
+        <button class="btn-add" id="btnAdicionar">Adicionar</button>
+        <span class="total" id="total">R$ 150,00</span>
+      </div>
+    </div>
+  </div>
+</main>
+
+  <!-- Rodapé -->
+  <footer class="produto-footer">
+    <p>© 2025 Sayuri’s Brigadeiros — Feito com 💕 e muito chocolate.</p>
+  </footer>
+
+</body>
+</html>

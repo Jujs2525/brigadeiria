@@ -39,3 +39,23 @@
     font-size: 17px;
     color: #70482A;
 }
+
+@media (max-width: 600px) {
+  .sobrenos_slide {
+    padding: 2rem 1rem;
+  }
+
+  .foto_sandra img {
+    width: 100%;
+    height: auto;
+  }
+
+  .escrita {
+    font-size: 22px;
+  }
+
+  .sobrenos {
+    font-size: 15px;
+    text-align: center;
+  }
+}

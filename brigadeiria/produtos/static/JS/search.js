@@ -20,12 +20,16 @@ document.addEventListener("DOMContentLoaded", function () {
         resultsBox.innerHTML = "<p style='padding:8px;'>Nenhum resultado encontrado.</p>";
       } else {
         resultsBox.innerHTML = results.map(item => `
-          <div class="result-item" style="display:flex;align-items:center;gap:10px;padding:8px;">
+          <a href="${item.url}" class="result-item" style="display:flex;align-items:center;gap:10px;padding:8px;text-decoration:none;">
             <img src="${item.image}" alt="${item.title}" 
-                 style="width:60px;height:60px;border-radius:8px;object-fit:cover;">
-            <div><h3 style="font-size:14px;margin:0;">${item.title}</h3></div>
-          </div>
+                style="width:60px;height:60px;border-radius:8px;object-fit:cover;">
+            <div>
+              <h3 style="font-size:14px;margin:0;color:#ffedbd;">${item.title}</h3>
+              <p style="margin:2px 0 0;color:#fff5da;">${item.price}</p>
+            </div>
+          </a>
         `).join("");
+
       }
 
       resultsBox.style.display = "block";
