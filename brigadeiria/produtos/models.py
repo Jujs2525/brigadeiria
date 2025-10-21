@@ -31,3 +31,4 @@ class FotoGaleria(models.Model):
 
     def __str__(self):
         return self.descricao or f"Foto {self.id}"
+

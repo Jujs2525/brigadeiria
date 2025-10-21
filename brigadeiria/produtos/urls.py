@@ -3,6 +3,7 @@ from . import views
 from django.conf import settings
 
 urlpatterns = [
+     path('', views.index, name='index'),
     path('categorias/', views.CategoriaList.as_view(), name='categoria-list'),
     path('categorias/<int:pk>/', views.CategoriaDetail.as_view(), name='categoria-detail'),
     path('produtos/', views.ProdutoList.as_view(), name='produto-list'),

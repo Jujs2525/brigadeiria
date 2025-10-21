@@ -1,6 +1,5 @@
 /* === CARROSSEL === */
 .carrossel {
-  background-color: #fdf1e8; /* fundo bege atrás do carrossel */
   padding: 2rem 0;
   text-align: center;
 }
@@ -43,7 +42,6 @@
 .dot.active {
   background-color: #70482A;
 }
-
 
 /* ===== GALERIA ===== */
 .galeria {
