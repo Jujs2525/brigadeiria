@@ -73,7 +73,7 @@
           </div>
 
           <button id="enviar-btn1" type="submit">Entrar</button>
-          <p>Não tem conta? <a href="#register">Cadastre-se</a></p>
+          <p>Não tem conta? <a href="#registerSection">Cadastre-se</a></p>
         </form>
       </div>
     </section>
@@ -97,7 +97,7 @@
           <input type="text" placeholder="Complemento" required>
 
           <button id="enviar-btn2" type="submit">Criar conta</button>
-          <p>Já tem conta? <a href="#login">Login</a></p>
+          <p>Já tem conta? <a href="#loginSection">Login</a></p>
         </form>
       </div>
     </section>
@@ -129,8 +129,14 @@
     </div>
   </footer>
 
+  <script>
+    window.BUSCAR_URL = "{% url 'buscar' %}";
+  </script>
+
   <!-- JS -->
   <script src="{% static 'JS/perfil.js' %}"></script>
+  <script src="{% static 'JS/search.js' %}" defer></script>
+
 
 </body>
 </html>

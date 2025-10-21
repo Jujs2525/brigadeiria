@@ -1,74 +1,80 @@
-// perfil.js - versão corrigida e segura
-
+// perfil.js - versão final tolerante e com logs
 console.log('perfil.js: carregado');
 
-/* RECUPERAR SENHA */
 function abrirRecuperar(){
   const modal = document.getElementById("recuperarSenha");
   if (!modal) return console.warn('perfil.js: modal recuperarSenha não encontrado');
   modal.style.display = "flex";
 }
-
 function fecharRecuperar(){
   const modal = document.getElementById("recuperarSenha");
   if (!modal) return console.warn('perfil.js: modal recuperarSenha não encontrado');
   modal.style.display = "none";
 }
 
-/* PÁGINAS PERFIL */
 document.addEventListener('DOMContentLoaded', function () {
   console.log('perfil.js: DOM pronto');
 
-  const loginSection = document.getElementById('loginSection');
-  const registerSection = document.getElementById('registerSection');
+  // tenta localizar sections por id; se não, usa classes como fallback
+  let loginSection = document.getElementById('loginSection') || document.getElementById('login');
+  let registerSection = document.getElementById('registerSection') || document.getElementById('register');
 
-  if (!loginSection) console.error('perfil.js: #login não encontrado no DOM');
-  if (!registerSection) console.error('perfil.js: #register não encontrado no DOM');
-  if (!loginSection || !registerSection) return;
+  if (!loginSection) loginSection = document.querySelector('.box-login');
+  if (!registerSection) registerSection = document.querySelector('.box-register');
 
-  // procura os wrappers de conteúdo dentro das sections (aceita .form-content-ativo OU .form-content)
+  if (!loginSection || !registerSection) {
+    console.warn('perfil.js: Sections de login/register não encontradas. Procurados: #loginSection, #login, .box-login e #registerSection, #register, .box-register');
+    return;
+  }
+
+  // procura os wrappers internos (se existirem)
   const loginContent = loginSection.querySelector('.form-content-ativo, .form-content') || loginSection;
   const registerContent = registerSection.querySelector('.form-content-ativo, .form-content') || registerSection;
 
-  // Função genérica que mostra um elemento e esconde outro usando as classes que seu CSS já espera
-  function setVisible(elementToShow, elementToHide) {
-    if (!elementToShow || !elementToHide) return;
-
-    elementToShow.classList.add('form-content-ativo');
-    elementToShow.classList.remove('form-content');
-
-    elementToHide.classList.add('form-content');
-    elementToHide.classList.remove('form-content-ativo');
+  function setVisible(showEl, hideEl) {
+    if (!showEl || !hideEl) return;
+    showEl.classList.add('form-content-ativo');
+    showEl.classList.remove('form-content');
+    hideEl.classList.add('form-content');
+    hideEl.classList.remove('form-content-ativo');
   }
 
   function showLogin() {
     console.log('perfil.js: mostrar Login');
     setVisible(loginContent, registerContent);
-    history.replaceState(null, '', '#loginSection');
+    // atualiza hash para refletir estado (mantém compatibilidade)
+    history.replaceState(null, '', '#login');
   }
 
   function showRegister() {
     console.log('perfil.js: mostrar Register');
     setVisible(registerContent, loginContent);
-    history.replaceState(null, '', '#registerSection');
+    history.replaceState(null, '', '#register');
   }
 
-  // conecta links <a href="#register"> e <a href="#login">
-  document.querySelectorAll('a[href="#registerSection"]').forEach(a => {
-    a.addEventListener('click', function(e) {
-      e.preventDefault();
-      showRegister();
+  // conecta links que apontem para qualquer variação de hash
+  const hrefsForRegister = ['#register', '#registerSection'];
+  const hrefsForLogin = ['#login', '#loginSection'];
+
+  hrefsForRegister.forEach(href => {
+    document.querySelectorAll(`a[href="${href}"]`).forEach(a => {
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        showRegister();
+      });
     });
   });
 
-  document.querySelectorAll('a[href="#loginSection"]').forEach(a => {
-    a.addEventListener('click', function(e) {
-      e.preventDefault();
-      showLogin();
+  hrefsForLogin.forEach(href => {
+    document.querySelectorAll(`a[href="${href}"]`).forEach(a => {
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        showLogin();
+      });
     });
   });
 
-  // fallback: aceita data-action caso você queira trocar depois
+  // suporta também data-action caso queira usar no futuro
   document.querySelectorAll('[data-action="show-register"]').forEach(el => {
     el.addEventListener('click', e => { e.preventDefault(); showRegister(); });
   });
@@ -76,15 +82,18 @@ document.addEventListener('DOMContentLoaded', function () {
     el.addEventListener('click', e => { e.preventDefault(); showLogin(); });
   });
 
-  // respeita hash inicial
-  if (location.hash === '#registerSection') {
+  // se a URL vier com hash já definido, respeita
+  const h = location.hash.toLowerCase();
+  if (h === '#register' || h === '#registersection') {
     showRegister();
   } else {
-    showLogin();
+    showLogin(); // default
   }
 
-  // tecla Esc volta pro login
+  // tecla Esc volta pra login
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') showLogin();
   });
+
+  console.log('perfil.js: inicializado com sucesso. Elements:', { loginSection, registerSection, loginContent, registerContent });
 });

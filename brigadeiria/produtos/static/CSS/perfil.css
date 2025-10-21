@@ -1,3 +1,5 @@
+/* ESCONDER PÁGINAS */
+
 input {
   display: block;
   width: 90%;
@@ -50,7 +52,7 @@ button {
 
 /* GERAL */
 
-button:hover {
+#enviar-btn2:hover {
   background: #e58e8e;
 }
 
@@ -59,7 +61,6 @@ a {
   text-decoration: none;
   font-weight: bold;
 }
-
 
 .box-login{
     margin-bottom: 24px;
@@ -77,7 +78,6 @@ a {
 
 .escrita-login{
     justify-content: center;
-
 }
 
 .icon-profile {
@@ -116,5 +116,21 @@ a {
     border-radius: 20px;
     margin-top: 20px;
     justify-self: center;
+    align-items: center;
+}
+
+/* CADASTRE-SE */
+
+.box-register{
+    margin-bottom: 24px;
+    margin: 16px auto 0;
+    position: relative;
+    width: 700px;
+    height: 650px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.12);
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center; /* centraliza horizontalmente */
     align-items: center;
 }
