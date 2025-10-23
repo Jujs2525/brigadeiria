@@ -4,25 +4,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CARRINHO | Sayuri's Brigadeiros</title>
+  <title>INÍCIO | Sayuri's Brigadeiros</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />
 
+
   <!-- CSS -->
   <link rel="stylesheet" href="{% static 'CSS/base.css' %}" />
   <link rel="stylesheet" href="{% static 'CSS/carrinho.css' %}" />
   <link rel="stylesheet" href="{% static 'CSS/search.css' %}" />
+
 </head>
 <body>
 
+  <!-- CABEÇALHO -->
   <header class="main-header">
     <div class="container header-grid">
       <a href="{% url 'index' %}" class="brand">
-        <img src="{% static 'src/TCC.png' %}" alt="Logo Sayuri" class="fotologo">
+        <img src="{% static 'src/TCC.png' %}" alt="Logo Sayuri's Brigadeiros" class="fotologo">
       </a>
 
+      <!-- BARRA DE PESQUISA -->
       <div class="search-wrapper">
         <div class="search" id="search">
           <label for="searchInput">
@@ -36,6 +40,7 @@
       <img src="{% static 'src/ICONS.png' %}" alt="Brigadeiro" class="brigadeiro">
     </div>
 
+    <!-- NAVEGAÇÃO -->
     <nav class="menu-opcoes">
       <ul class="container nav-list">
         <li><a href="{% url 'index' %}">PÁGINA INICIAL</a></li>
@@ -50,7 +55,6 @@
   <!-- CONTEÚDO -->
   <main>
     <section class="cart-section">
-      <h2 class="cart-title">CARRINHO</h2>
 
       <div class="cart-header">
         <span>PRODUTO</span>

@@ -3,11 +3,12 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
   max-width: 420px;
   margin: 0 auto;
   font-family: 'Voces', sans-serif;
+  transform: translateX(-10%); /* desloca a barra de pesquisa para a esquerda */
+  z-index: 10000;
 }
 
 /* Barra de pesquisa */
@@ -47,7 +48,6 @@
   color: #70482A;      /* cor da letra selecionada */
 }
 
-
 /* Caixa de resultados */
 .results-box {
   position: absolute;
@@ -59,11 +59,11 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   padding: 10px 14px;
   display: none; /* começa escondido */
-  z-index: 100;
+  z-index: 9999;
 }
 
-.results-box p{
-  color: #ffedbd;
+.results-box p {
+  color: #70482A;
 }
 
 /* Deixa o botão “X” da barra de busca com cor personalizada */
@@ -77,7 +77,6 @@
   background-color: #ffedbd; /* define a cor do “X” */
   mask: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2370482A" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>') center/contain no-repeat;
 }
-
 
 /* Cada item */
 .result-item {
@@ -110,5 +109,5 @@
 
 .result-item:hover h3,
 .result-item:hover p {
-  color: #70482A; 
+  color: #70482A;
 }

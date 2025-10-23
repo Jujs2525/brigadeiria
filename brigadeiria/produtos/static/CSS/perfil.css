@@ -1,31 +1,40 @@
 /* ESCONDER PÁGINAS */
 
 input {
-  display: block;
-  width: 90%;
-  margin: 10px auto;
-  padding: 10px;
-  border: 1px solid #aaa;
-  border-radius: 8px;
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
 }
 
 button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  background: #f5a6a6;
-  color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #f5a6a6;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-.form-content-ativo{
-    display: block; /* mostra só o ativo */
+/* esconde as boxes por padrão e mostra só a que tiver .ativo */
+.box-login,
+.box-register{
+    display: none;
 }
 
+/* mostra  a box ativa (ajuste display conforme layout, aqui usa flex para manter seu alinhamaneto */
+.box-login.ativo,
+.box-register-ativo{
+    display: flex;
+}
+
+/* opcional: garante que o wrapper interno (form-content) continue controlando só o conteúdo */
 .form-content{
-    display: none; /* esconde a outra página */
+    display: block;
 }
 
 /* MODAL */
@@ -50,17 +59,7 @@ button {
     text-align: center;
 }
 
-/* GERAL */
-
-#enviar-btn2:hover {
-  background: #e58e8e;
-}
-
-a {
-  color: #f08080;
-  text-decoration: none;
-  font-weight: bold;
-}
+/* PÁGINA DE LOGIN */
 
 .box-login{
     margin-bottom: 24px;
@@ -70,14 +69,10 @@ a {
     height: 650px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,.12);
-    background: #FFFFFF;
+    background: #ffffff;
     display: flex;
     justify-content: center; /* centraliza horizontalmente */
     align-items: center;
-}
-
-.escrita-login{
-    justify-content: center;
 }
 
 .icon-profile {
@@ -107,16 +102,27 @@ a {
     margin-top: 20px;
 }
 
-#enviar-btn1{
-    width: 120px;
-    height: 45px;
-    display: flex;
-    background-color: #FEECD6;
-    border: #FEECD6;
-    border-radius: 20px;
-    margin-top: 20px;
-    justify-self: center;
-    align-items: center;
+.forgot-password {
+    color: #B3B3B3;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#enviar-btn1 {
+    background: #FEECD6;
+    color: #202020;
+    width: 200px;
+    justify-content: right;
+}
+
+#enviar-btn1:hover {
+    background: #f7ddbf;
+}
+
+.register-btn {
+    color: #B3B3B3;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 /* CADASTRE-SE */
@@ -133,4 +139,13 @@ a {
     display: flex;
     justify-content: center; /* centraliza horizontalmente */
     align-items: center;
+}
+
+#enviar-btn2 {
+    background: #FEECD6;
+    text-decoration-color: #303030;
+}
+
+#enviar-btn2:hover {
+    background: #f7ddbf;
 }
