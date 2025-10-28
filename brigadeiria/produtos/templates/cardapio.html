@@ -64,29 +64,43 @@
               <div class="card-info">
                 <h3>{{ produto.nome }}</h3>
                 <p class="preco">R$ {{ produto.preco|floatformat:2 }}</p>
-                <button class="ver-descricao" onclick="mostrarDescricao('{{ produto.nome|escapejs }}', '{{ produto.descricao|escapejs }}')">Ver descrição</button>
+                <button 
+                  class="ver-descricao"
+                  data-nome="{{ produto.nome }}"
+                  data-descricao="{{ produto.descricao }}">
+                  Ver descrição
+                </button>
+              </div>
+            </div>
 
-                <!-- Descrição do produto escondida -->
-                <div class="descricao_produto hidden" id="{{ produto.nome }}-descricao">
-                  <div class="descricao-overlay" onclick="fecharDescricao('{{ produto.nome }}')"></div> <!-- Overlay -->
-                  <div class="descricao-content">
-                    <h4>{{ produto.nome }}</h4>
-                    <p>{{ produto.descricao }}</p>
+            
+            <div class="descricao_produto hidden" id="{{ produto.nome }}-descricao">
+              <div class="descricao-overlay"></div>
+              
+              <div class="descricao-content">
+                <div class="descricao-esquerda">
+                  <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+                </div>
 
-                    <div class="contador">
-                      <button class="menos">-</button>
-                      <input type="number" min="25" value="25">
-                      <button class="mais">+</button>
-                    </div>
+                <div class="descricao-direita">
+                  <h2 class="produto-titulo">{{ produto.nome }}</h2>
+                  <p class="subtitulo">DESCRIÇÃO:</p>
+                  <p class="produto-descricao">{{ produto.descricao }}</p>
+                  <p class="produto-preco">R$ {{ produto.preco|floatformat:2 }}</p>
 
-                    <button 
-                      class="adicionar-carrinho"
-                      data-name="{{ produto.nome }}"
-                      data-category="{{ produto.categoria.nome }}"
-                      data-price="{{ produto.preco|floatformat:2 }}">
-                      Adicionar ao Carrinho
-                    </button>
+                  <div class="contador">
+                    <button class="menos">-</button>
+                    <input type="number" min="25" value="25">
+                    <button class="mais">+</button>
                   </div>
+
+                  <button 
+                    class="adicionar-carrinho"
+                    data-name="{{ produto.nome }}"
+                    data-category="{{ produto.categoria.nome }}"
+                    data-price="{{ produto.preco|floatformat:2 }}">
+                    Adicionar ao Carrinho
+                  </button>
                 </div>
               </div>
             </div>
