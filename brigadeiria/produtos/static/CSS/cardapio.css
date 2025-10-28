@@ -8,9 +8,10 @@ main {
 /* ===== CATEGORIAS ===== */
 .categoria-section {
   max-width: 1200px;
-  margin: 0 auto 80px auto;
   padding: 0 20px;
   border-bottom: 2px dashed rgba(112, 72, 42, 0.15);
+  width: min(1200px, 92%);
+  margin: 3rem auto 4rem auto;
 }
 
 .categoria-nome {
@@ -23,8 +24,17 @@ main {
   margin: 0 auto 30px;
   text-align: center;
   font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 8px #F7C6C6;
+  margin-bottom: 2rem;
+  letter-spacing: 0.5px;
 }
+
+/* Espaçamento entre grupos */
+.categoria-section:not(:last-child) {
+  border-bottom: 2px dashed rgba(112, 72, 42, 0.1);
+  padding-bottom: 3rem;
+}
+
 
 /* ===== GRID DE PRODUTOS ===== */
 .produto-grid {
@@ -145,28 +155,3 @@ main {
   }
 }
 
-/* ---------- CATEGORIAS ---------- */
-.categoria-section {
-  width: min(1200px, 92%);
-  margin: 3rem auto 4rem auto;
-}
-
-.categoria-nome {
-  text-align: center;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: var(--brown);
-  background-color: var(--pink);
-  padding: 0.6rem 1rem;
-  border-radius: 14px;
-  display: inline-block;
-  margin-bottom: 2rem;
-  box-shadow: 0 3px 8px rgba(112, 72, 42, 0.1);
-  letter-spacing: 0.5px;
-}
-
-/* Espaçamento entre grupos */
-.categoria-section:not(:last-child) {
-  border-bottom: 2px dashed rgba(112, 72, 42, 0.1);
-  padding-bottom: 2rem;
-}
