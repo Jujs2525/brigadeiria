@@ -32,11 +32,6 @@ button {
     display: flex;
 }
 
-/* opcional: garante que o wrapper interno (form-content) continue controlando só o conteúdo */
-.form-content{
-    display: block;
-}
-
 /* MODAL */
 
 .modal{
