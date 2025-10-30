@@ -20,16 +20,71 @@ button {
     font-size: 16px;
 }
 
-/* esconde as boxes por padrão e mostra só a que tiver .ativo */
+/* === VISIBILIDADE DAS BOXES (login / cadastro) === */
+
+/* Esconde as boxes por padrão */
 .box-login,
-.box-register{
-    display: none;
+.box-register {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  margin: 16px auto 0;
+  width: 700px;
+  height: 650px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.12);
+  background: #FFFFFF;
 }
 
-/* mostra  a box ativa (ajuste display conforme layout, aqui usa flex para manter seu alinhamaneto */
+/* Mostra apenas a que tiver .ativo */
 .box-login.ativo,
-.box-register-ativo{
-    display: flex;
+.box-register.ativo {
+  display: flex; /* mantém o layout que você já usa */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* NAO DEU CERTOOOOOOO */
+
+/* Garante que os wrappers internos se mantenham compatíveis */
+.form-content { display: block; }
+.form-content-ativo { display: block; }
+
+/* Pequenos ajustes visuais (opcionais — mantém o estilo que você já tinha) */
+.box-login .icon-profile,
+.box-register .icon-profile1 {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Modal (recuperar senha) — mantém o comportamento */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 20px;
+  width: 320px;
+  text-align: center;
+}
+
+/* Links */
+.register-btn, a[href="#registerSection"], a[href="#loginSection"] {
+  color: #B3B3B3;
+  text-decoration: none;
+  font-weight: bold;
+}
+.register-btn:hover, a[href="#registerSection"]:hover, a[href="#loginSection"]:hover {
+  text-decoration: underline;
 }
 
 /* MODAL */
