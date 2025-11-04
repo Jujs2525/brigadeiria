@@ -1,21 +1,26 @@
 function mostrarDescricao(nome, descricao) {
-  const descricaoDiv = document.getElementById(`${nome}-descricao`);
+  const safeName = nome.toLowerCase()
+  .replace(/\s+/g, '-')
+  .normalize("NFD")
+  .replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-z0-9\-]/g, "");
+
+  const descricaoDiv = document.getElementById(`${safeName}-descricao`);
+  
   if (!descricaoDiv) {
-    console.error(`Elemento ${nome}-descricao não encontrado`);
+    console.error(`Elemento ${safeName}-descricao não encontrado`);
     return;
   }
 
   const p = descricaoDiv.querySelector('p');
   if (p) p.textContent = descricao;
 
-  // Exibe o modal
   descricaoDiv.classList.add('show');
   descricaoDiv.style.display = 'flex';
 
-  // Fecha ao clicar fora do card
   descricaoDiv.addEventListener('click', (e) => {
     const dentroDoCard = e.target.closest('.descricao-content');
-    if (!dentroDoCard) fecharDescricao(nome);
+    if (!dentroDoCard) fecharDescricao(safeName);
   });
 }
 

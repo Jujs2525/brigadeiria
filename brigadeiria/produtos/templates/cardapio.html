@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -66,15 +67,14 @@
                 <p class="preco">R$ {{ produto.preco|floatformat:2 }}</p>
                 <button 
                   class="ver-descricao"
-                  data-nome="{{ produto.nome }}"
+                  data-nome="{{ produto.nome|slugify }}"
                   data-descricao="{{ produto.descricao }}">
                   Ver descrição
                 </button>
               </div>
             </div>
 
-            
-            <div class="descricao_produto hidden" id="{{ produto.nome }}-descricao">
+            <div class="descricao_produto hidden" id="{{ produto.nome|slugify }}-descricao">
               <div class="descricao-overlay"></div>
               
               <div class="descricao-content">
@@ -84,7 +84,6 @@
 
                 <div class="descricao-direita">
                   <h2 class="produto-titulo">{{ produto.nome }}</h2>
-                  <p class="subtitulo">DESCRIÇÃO:</p>
                   <p class="produto-descricao">{{ produto.descricao }}</p>
                   <p class="produto-preco">R$ {{ produto.preco|floatformat:2 }}</p>
 

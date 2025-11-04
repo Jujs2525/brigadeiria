@@ -36,12 +36,14 @@ def index(request):
     return render(request, 'index.html', {'banners': banners, 'fotos': fotos})
 
 def cardapio(request):
-    produtos = Produto.objects.select_related('categoria').all().order_by('categoria__nome')
-
+    produtos = Produto.objects.all().order_by('categoria__nome')
     produtos_por_categoria = {}
+
     for produto in produtos:
-        categoria = produto.categoria.nome if produto.categoria else 'Outros'
-        produtos_por_categoria.setdefault(categoria, []).append(produto)
+        categoria_nome = produto.categoria.nome
+        if categoria_nome not in produtos_por_categoria:
+            produtos_por_categoria[categoria_nome] = []
+        produtos_por_categoria[categoria_nome].append(produto)
 
     return render(request, 'cardapio.html', {'produtos_por_categoria': produtos_por_categoria})
 
