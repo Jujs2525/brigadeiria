@@ -157,9 +157,21 @@ function carregarCarrinho(container, totalEl, checkoutBtn) {
     totalEl.textContent = `R$ ${novoTotal.toFixed(2)}`;
   }
 
-  // Finalizar via WhatsApp
-  if (checkoutBtn) {
-    checkoutBtn.onclick = () => {
+  // Finalizar via WhatsApp (verifica login)
+if (checkoutBtn) {
+  checkoutBtn.onclick = async () => {
+    try {
+      // Faz uma requisição para verificar se o usuário está logado
+      const response = await fetch('/perfil/', { method: 'GET' });
+
+      // Se for redirecionado (não autenticado), manda pro login
+      if (response.redirected || response.url.includes('perfil')) {
+        alert('⚠️ Você precisa estar logado para finalizar o pedido.');
+        window.location.href = '/perfil/';
+        return;
+      }
+
+      // Se chegou até aqui, o usuário está logado — segue com o pedido
       const numeroWhatsApp = '5515981453091';
       let mensagem = 'Olá! Segue meu pedido:\n\n';
       cart.forEach(prod => {
@@ -171,6 +183,10 @@ function carregarCarrinho(container, totalEl, checkoutBtn) {
       const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
       window.open(url, '_blank');
       localStorage.removeItem('cart');
-    };
-  }
+    } catch (err) {
+      console.error('Erro ao verificar login:', err);
+      alert('Ocorreu um erro. Tente novamente.');
+    }
+  };
 }
+

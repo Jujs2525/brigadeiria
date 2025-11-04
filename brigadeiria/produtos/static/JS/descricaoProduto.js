@@ -19,6 +19,21 @@ function mostrarDescricao(nome, descricao) {
   descricaoDiv.classList.add('show');
   descricaoDiv.style.display = 'flex';
 
+  // === MOSTRA O VALOR INICIAL COM 25 UNIDADES ===
+  const precoEl = descricaoDiv.querySelector('.produto-preco');
+  const categoria = (descricaoDiv.querySelector('.adicionar-carrinho')?.dataset.category || '').toLowerCase().trim();
+
+  const tabelaPrecos = {
+    "brigadeiro gourmet": 1.50,
+    "brigadeiro gourmet premium": 1.80,
+    "brigadeiro especial": 2.00
+  };
+
+const precoBase = tabelaPrecos[categoria] || 1.50;
+const minimo = 25;
+const totalInicial = minimo * precoBase;
+precoEl.textContent = `R$ ${totalInicial.toFixed(2).replace('.', ',')}`;
+
   /// === BLOQUEIA SCROLL DO FUNDO ===
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
