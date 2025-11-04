@@ -161,16 +161,6 @@
   }
 }
 
-.main-header {
-  position: relative;
-  z-index: 10000;
-}
-
-.main-footer {
-  position: relative;
-  z-index: 10000;
-}
-
 .ver-descricao{
   width: 100px;
   height: 40px;
@@ -178,4 +168,10 @@
   border-radius: 20px;
   border: 2px #f5a6a6;
   color: #70482A;
+}
+
+.search-wrapper.inativo {
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
 }

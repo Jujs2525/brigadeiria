@@ -15,8 +15,8 @@
 .search {
   display: flex;
   align-items: center;
-  background: var(--brown);
-  border: 1px solid #ffedbd;
+  background: #70482A;
+  border: 1px solid rgb(128, 105, 63);
   border-radius: 12px;
   padding: 8px 12px;
   width: 100%;
@@ -103,7 +103,7 @@
 
 /* Hover */
 .result-item:hover {
-  background: #ffedbd;
+  background: #70482A;
   border-radius: 8px;
 }
 

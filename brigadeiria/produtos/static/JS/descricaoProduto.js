@@ -19,6 +19,14 @@ function mostrarDescricao(nome, descricao) {
   descricaoDiv.classList.add('show');
   descricaoDiv.style.display = 'flex';
 
+  /// === BLOQUEIA SCROLL DO FUNDO ===
+  document.body.style.overflow = 'hidden';
+  document.documentElement.style.overflow = 'hidden';
+
+  // === DESATIVA A BARRA DE PESQUISA ===
+  const search = document.querySelector('.search-wrapper');
+  if (search) search.classList.add('inativo');
+
   descricaoDiv.addEventListener('click', (e) => {
     const dentroDoCard = e.target.closest('.descricao-content');
     if (!dentroDoCard) fecharDescricao(safeName);
@@ -32,6 +40,14 @@ function fecharDescricao(nome) {
     setTimeout(() => {
       descricaoDiv.style.display = 'none';
     }, 250);
+
+    // === REATIVA A BARRA DE PESQUISA ===
+    const search = document.querySelector('.search-wrapper');
+    if (search) search.classList.remove('inativo');
+
+    // === LIBERA SCROLL DO FUNDO ===
+  document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
   }
 }
 
