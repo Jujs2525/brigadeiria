@@ -116,6 +116,41 @@
   border-top: 2px solid var(--brown);
 }
 
+.input-quantidade {
+  width: 80px;
+  text-align: center;
+  font-size: 1rem;
+  border: 1px solid #cfa98f;
+  border-radius: 6px;
+  padding: 6px;
+  outline: none;
+  color: #5c3b2e;
+  font-family: 'Voces', sans-serif;
+  transition: all 0.2s ease;
+}
+.input-quantidade:focus {
+  border-color: #a96f55;
+  box-shadow: 0 0 4px rgba(169,111,85,0.4);
+}
+
+/* Aviso visual */
+.aviso-minimo {
+  font-size: 0.9rem;
+  color: #b34124;
+  background-color: #ffe3df;
+  padding: 4px 8px;
+  margin-top: 6px;
+  border-radius: 6px;
+  display: inline-block;
+  animation: fadeAviso 0.3s ease;
+}
+
+@keyframes fadeAviso {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
 /* ======== RESPONSIVO ======== */
 @media (max-width: 900px) {
   .produto-card {
