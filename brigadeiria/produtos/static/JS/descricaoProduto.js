@@ -1,12 +1,13 @@
 function mostrarDescricao(nome, descricao) {
-  const safeName = nome.toLowerCase()
-  .replace(/\s+/g, '-')
-  .normalize("NFD")
-  .replace(/[\u0300-\u036f]/g, "")
-  .replace(/[^a-z0-9\-]/g, "");
+  const safeName = nome
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\-]/g, "");
 
   const descricaoDiv = document.getElementById(`${safeName}-descricao`);
-  
+
   if (!descricaoDiv) {
     console.error(`Elemento ${safeName}-descricao não encontrado`);
     return;
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "brigadeiro especial": 2.00
   };
 
-  // Limpa listeners antigos
+  // Limpa event listeners antigos
   document.querySelectorAll('.ver-descricao, .adicionar-carrinho').forEach(btn => {
     btn.replaceWith(btn.cloneNode(true));
   });
@@ -49,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const botoesDescricao = document.querySelectorAll('.ver-descricao');
   const botoesCarrinho = document.querySelectorAll('.adicionar-carrinho');
 
-  // Mostrar descrição
+  // === Mostrar descrição ===
   botoesDescricao.forEach(btn => {
     btn.addEventListener('click', () => {
       const nomeProduto = btn.dataset.nome;
@@ -58,7 +59,69 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Adicionar ao carrinho
+  // === Incremento / Decremento ===
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('mais') || e.target.classList.contains('menos')) {
+      e.stopPropagation();
+
+      const input = e.target.parentElement.querySelector('input');
+      const precoEl = e.target.closest('.descricao-content').querySelector('.produto-preco');
+      const categoria = (e.target.closest('.descricao-content').querySelector('.adicionar-carrinho').dataset.category || '').toLowerCase().trim();
+
+      const precoBase = tabelaPrecos[categoria] || 1.50;
+      let valorAtual = parseInt(input.value) || 25;
+
+      // === Aviso de pedido mínimo ===
+      const avisoExistente = e.target.parentElement.querySelector('.aviso-minimo');
+      let aviso = avisoExistente;
+      if (!aviso) {
+        aviso = document.createElement("div");
+        aviso.className = "aviso-minimo";
+        aviso.style.display = "none";
+        aviso.textContent = `O pedido mínimo é de 25 unidades.`;
+        e.target.parentElement.appendChild(aviso);
+      }
+
+      function mostrarAviso(msg) {
+        aviso.textContent = msg;
+        aviso.style.display = "block";
+        setTimeout(() => (aviso.style.display = "none"), 2500);
+      }
+
+      if (e.target.classList.contains('mais')) {
+        valorAtual += 1;
+      } else if (e.target.classList.contains('menos')) {
+        if (valorAtual > 25) {
+          valorAtual -= 1;
+        } else {
+          mostrarAviso(`O pedido mínimo é de 25 unidades.`);
+        }
+      }
+
+      input.value = valorAtual;
+      const total = valorAtual * precoBase;
+      precoEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+  });
+
+
+  // === Atualiza preço quando digita manualmente ===
+  document.addEventListener('input', (e) => {
+    if (e.target.closest('.contador') && e.target.tagName === 'INPUT') {
+      const card = e.target.closest('.descricao-content');
+      const precoEl = card.querySelector('.produto-preco');
+      const categoria = (card.querySelector('.adicionar-carrinho').dataset.category || '').toLowerCase().trim();
+      const precoBase = tabelaPrecos[categoria] || 1.50;
+
+      let qtd = parseInt(e.target.value) || 25;
+      if (qtd < 25) qtd = 25;
+
+      const total = qtd * precoBase;
+      precoEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+  });
+
+  // === Adicionar ao carrinho ===
   botoesCarrinho.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -75,40 +138,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const normalizedCategory = category.toLowerCase().trim();
 
       let item = cart.find(
-        p => p.name.toLowerCase().trim() === normalizedName &&
-             p.category.toLowerCase().trim() === normalizedCategory
+        p =>
+          p.name.toLowerCase().trim() === normalizedName &&
+          p.category.toLowerCase().trim() === normalizedCategory
       );
 
       if (item) {
         item.quantity = qtd;
+        item.subtotal = subtotal;
         alert(`${name} atualizado! Quantidade: ${qtd}`);
       } else {
-        item = { name, category, priceUnit: precoBase, quantity: qtd };
+        item = { name, category, priceUnit: precoBase, quantity: qtd, subtotal };
         cart.push(item);
-        alert(`${qtd} unidades de ${name} (${category}) adicionadas — Total R$ ${subtotal.toFixed(2)}`);
+        alert(`${qtd} unidades de ${name} adicionadas — Total R$ ${subtotal.toFixed(2)}`);
       }
 
       localStorage.setItem('cart', JSON.stringify(cart));
     });
   });
-
-  // === Incremento e decremento ===
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('mais') || e.target.classList.contains('menos')) {
-      e.stopPropagation(); // evita fechar o modal
-
-      const input = e.target.parentElement.querySelector('input');
-      let valorAtual = parseInt(input.value) || 25;
-
-      if (e.target.classList.contains('mais')) {
-        valorAtual += 1; 
-      } else if (e.target.classList.contains('menos')) {
-        valorAtual = Math.max(25, valorAtual - 1); // mínimo 25
-      }
-
-      input.value = valorAtual;
-    }
-  });
 });
 
-console.log('JS de descrição carregado com incremento/decremento funcionando');
+console.log('JS descrição com preço dinâmico carregado 🚀');

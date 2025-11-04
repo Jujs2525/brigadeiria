@@ -9,7 +9,6 @@ main {
 .categoria-section {
   max-width: 1200px;
   padding: 0 20px;
-  border-bottom: 2px dashed rgba(112, 72, 42, 0.15);
   width: min(1200px, 92%);
   margin: 3rem auto 4rem auto;
 }

@@ -34,11 +34,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const spanContainer = document.getElementById("quantidade");
   const inputQtd = document.createElement("input");
   inputQtd.type = "number";
-  inputQtd.placeholder = minimo;
+  inputQtd.min = minimo;
   inputQtd.step = passo;
   inputQtd.value = quantidade;
   inputQtd.classList.add("input-quantidade");
-  spanContainer.replaceWith(inputQtd);
+
+  spanContainer.parentNode.insertBefore(inputQtd, spanContainer);
+  spanContainer.remove();
 
   const spanTotal = document.getElementById("total");
   const btnMais = document.querySelector(".mais");
@@ -60,10 +62,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function atualizarTotal() {
     const valor = parseInt(inputQtd.value) || 0;
-    quantidade = valor < minimo && valor > 0 ? valor : Math.max(valor, minimo);
-    const total = quantidade * precoUnitario;
+    const total = valor * precoUnitario;
     spanTotal.textContent = `R$ ${total.toFixed(2).replace(".", ",")}`;
   }
+
+  // Atualiza sem travar o campo
+  inputQtd.addEventListener("input", () => {
+    if (inputQtd.value === "") {
+      spanTotal.textContent = "R$ 0,00";
+      return;
+    }
+    atualizarTotal();
+  });
+
+  // Corrige se valor menor que o mínimo
+  inputQtd.addEventListener("blur", () => {
+    let valor = parseInt(inputQtd.value);
+    if (isNaN(valor) || valor < minimo) {
+      valor = minimo;
+      mostrarAviso(`O pedido mínimo é de ${minimo} unidades.`);
+    }
+    inputQtd.value = valor;
+    atualizarTotal();
+  });
+
+  inputQtd.addEventListener("keypress", e => {
+    if (e.key === "Enter") inputQtd.blur();
+  });
 
   btnMais.addEventListener("click", () => {
     const valor = parseInt(inputQtd.value) || minimo;
@@ -81,39 +106,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Permite digitar livremente, só valida ao sair do campo
-  inputQtd.addEventListener("input", () => {
-    // Apenas recalcula se o campo não estiver vazio
-    if (inputQtd.value !== "") atualizarTotal();
-  });
-
-  inputQtd.addEventListener("blur", () => {
-    let valor = parseInt(inputQtd.value);
-    if (isNaN(valor) || valor < minimo) {
-      valor = minimo;
-      mostrarAviso(`O pedido mínimo é de ${minimo} unidades.`);
-    }
-    inputQtd.value = valor;
-    atualizarTotal();
-  });
-
-  inputQtd.addEventListener("keypress", e => {
-    if (e.key === "Enter") inputQtd.blur();
-  });
-
   btnAdd.addEventListener("click", () => {
-    const subtotal = quantidade * precoUnitario;
+    const valor = parseInt(inputQtd.value);
+    const subtotal = valor * precoUnitario;
     const produto = {
       name: P.nome,
       category: categoria,
       unit_price: precoUnitario,
-      quantity: quantidade,
+      quantity: valor,
       subtotal
     };
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     cart.push(produto);
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert(`${quantidade} unidades de "${produto.name}" foram adicionadas ao carrinho!`);
+    alert(`${valor} unidades de "${produto.name}" foram adicionadas ao carrinho!`);
   });
 
   atualizarTotal();

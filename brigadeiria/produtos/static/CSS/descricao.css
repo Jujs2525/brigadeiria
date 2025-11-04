@@ -88,6 +88,7 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .contador button {
@@ -123,6 +124,19 @@
 .adicionar-carrinho:hover {
   background: #8c5530;
 }
+
+.aviso-minimo {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #b34124;
+  background-color: #ffe3df;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-top: 6px;
+  animation: fadeAviso 0.3s ease;
+}
+
 
 /* === ANIMAÇÃO === */
 @keyframes zoomIn {
