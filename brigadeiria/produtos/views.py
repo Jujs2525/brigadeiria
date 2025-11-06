@@ -7,8 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 
-from .models import Banner, FotoGaleria, Categoria, Carrinho, Produto, CarrinhoTemporario
+from .models import Banner, FotoGaleria, Categoria, Carrinho, Produto, CarrinhoTemporario, EmailVerification
 from .serializers import CategoriaSerializer, ProdutoSerializer
+from .utils import send_verification_email
 
 from rest_framework import generics
 
@@ -176,3 +177,5 @@ def buscar(request):
         ]
 
     return JsonResponse({'results': resultados})
+
+

@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificar e-mail | Sayuri’s Brigadeiros</title>
+  <link rel="stylesheet" href="{% static 'CSS/verificar.css' %}">
+</head>
+<body>
+  <main class="verificar-container">
+    <h2>Verifique seu e-mail 🍫</h2>
+    <p>Enviamos um código de 6 dígitos para o seu e-mail. Digite-o abaixo:</p>
+
+    <form method="POST">
+      {% csrf_token %}
+      <input type="email" name="email" placeholder="Seu e-mail" required>
+      <input type="text" name="codigo" placeholder="Código de verificação" maxlength="6" required>
+      <button type="submit">Confirmar</button>
+    </form>
+
+    {% if messages %}
+      <ul class="msg-list">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </main>
+</body>
+</html>

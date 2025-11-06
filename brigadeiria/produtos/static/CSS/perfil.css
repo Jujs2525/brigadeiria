@@ -2,7 +2,7 @@
 .container {
   position: relative;
   width: 100%;
-  max-width: 420px;
+  max-width: 500px;
   height: auto;
   min-height: 550px;
   background: #fff;
@@ -17,11 +17,9 @@
 /* === BOXES === */
 .box-login,
 .box-register {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  justify-self: center;
+  width: 500px;
+  height: 2000px;
   padding: 45px 35px;
   display: none;
   flex-direction: column;

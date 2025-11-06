@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import random, string
 
 
 # ==========================
@@ -91,3 +92,15 @@ class CarrinhoTemporario(models.Model):
 
     def __str__(self):
         return f"Carrinho de {self.usuario.username}"
+
+class EmailVerification(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6)
+    is_verified = models.BooleanField(default=False)
+
+    def generate_code(self):
+        self.code = ''.join(random.choices(string.digits, k=6))
+        self.save()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.code}"
