@@ -21,45 +21,62 @@
       </div>
     {% endif %}
 
-    <!-- LOGIN -->
-    <section class="box-login ativo" id="loginSection">
-      <div class="form-content">
-        <h3 class="titulo">Login</h3>
-        <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile">
+    {% if user.is_authenticated %}
+      <!-- 🔹 Se o usuário estiver logado -->
+      <section class="box-logged">
+        <h3 class="titulo">Olá, {{ user.first_name|default:user.username }} 👋</h3>
+        <p>Você já está conectado à sua conta.</p>
+        <button id="logoutBtn" class="logout-btn">Sair</button>
+      </section>
 
-        <form action="{% url 'logar' %}" method="POST">
-          {% csrf_token %}
-          <input type="email" name="email" placeholder="E-mail" required>
-          <input type="password" name="senha" placeholder="Senha" required>
-          <button type="submit">Entrar</button>
-
-          <p class="texto-mudar">Não tem conta?
-            <a href="#" id="btnToRegister">Cadastre-se</a>
-          </p>
-        </form>
+      <!-- Modal de confirmação -->
+      <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
+          <h3>Deseja realmente sair?</h3>
+          <div class="logout-buttons">
+            <a href="{% url 'sair' %}" class="btn-confirm">Sim, sair</a>
+            <button id="cancelLogout" class="btn-cancel">Cancelar</button>
+          </div>
+        </div>
       </div>
-    </section>
 
-    <!-- CADASTRO -->
-    <section class="box-register" id="registerSection">
-      <div class="form-content">
-        <h3 class="titulo">Cadastre-se</h3>
-        <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile">
+    {% else %}
+      <!-- LOGIN -->
+      <section class="box-login ativo" id="loginSection">
+        <div class="form-content">
+          <h3 class="titulo">Login</h3>
+          <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile">
 
-        <form action="{% url 'registrar' %}" method="POST">
-          {% csrf_token %}
-          <input type="text" name="nome" placeholder="Nome completo" required>
-          <input type="email" name="email" placeholder="E-mail" required>
-          <input type="password" name="senha" placeholder="Senha" required>
-          <input type="password" name="confirmar" placeholder="Confirmar senha" required>
-          <button type="submit">Criar conta</button>
+          <form action="{% url 'logar' %}" method="POST">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="E-mail" required>
+            <input type="password" name="senha" placeholder="Senha" required>
+            <button type="submit"> Entrar </button>
 
-          <p class="texto-mudar">Já tem conta?
-            <a href="#" id="btnToLogin">Login</a>
-          </p>
-        </form>
-      </div>
-    </section>
+            <p class="texto-mudar"> Não tem conta? <a href="#" id="btnToRegister"> Cadastre-se </a></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- CADASTRO -->
+      <section class="box-register" id="registerSection">
+        <div class="form-content">
+          <h3 class="titulo">Cadastre-se</h3>
+          <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile">
+
+          <form action="{% url 'registrar' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="nome" placeholder="Nome completo" required>
+            <input type="email" name="email" placeholder="E-mail" required>
+            <input type="password" name="senha" placeholder="Senha" required>
+            <input type="password" name="confirmar" placeholder="Confirmar senha" required>
+            <button type="submit"> Cadastrar-se </button>
+
+            <p class="texto-mudar"> Já tem conta? <a href="#" id="btnToLogin"> Login </a></p>
+          </form>
+        </div>
+      </section>
+    {% endif %}
   </main>
 
   <script src="{% static 'JS/perfil.js' %}"></script>

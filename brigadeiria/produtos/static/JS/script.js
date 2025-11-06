@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
   const itensEl = document.getElementById('card-itens-container');
   if (itensEl) {
     const totalEl = document.getElementById('card-total-value');
@@ -73,7 +72,6 @@ function renderCardapio(produtos) {
     });
   });
 }
-
 
 /* ---------- CARRINHO ---------- */
 function carregarCarrinho(container, totalEl, checkoutBtn) {
@@ -155,38 +153,53 @@ function carregarCarrinho(container, totalEl, checkoutBtn) {
       novoTotal += preco * (prod.quantity || 25);
     });
     totalEl.textContent = `R$ ${novoTotal.toFixed(2)}`;
+    total = novoTotal;
   }
 
-  // Finalizar via WhatsApp (verifica login)
-if (checkoutBtn) {
-  checkoutBtn.onclick = async () => {
-    try {
-      // Faz uma requisição para verificar se o usuário está logado
-      const response = await fetch('/perfil/', { method: 'GET' });
+  // Finalizar via WhatsApp (verifica login de verdade)
+  if (checkoutBtn) {
+    checkoutBtn.onclick = async () => {
+      try {
+        const resp = await fetch('/verificar-login/');
+        const data = await resp.json();
 
-      // Se for redirecionado (não autenticado), manda pro login
-      if (response.redirected || response.url.includes('perfil')) {
-        alert('⚠️ Você precisa estar logado para finalizar o pedido.');
-        window.location.href = '/perfil/';
-        return;
+        // Se não estiver logado → bloqueia e redireciona
+        if (!data.autenticado) {
+          const modal = document.getElementById("loginModal");
+          if (modal) modal.classList.add("show");
+
+          const closeBtn = document.getElementById("closeModal");
+          if (closeBtn) {
+            closeBtn.addEventListener("click", () => {
+              modal.classList.remove("show");
+            });
+          }
+          return;
+        }
+
+
+        // --- Se estiver logado ---
+        const numeroWhatsApp = '5515981453091';
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let total = 0;
+        let mensagem = 'Olá! Segue meu pedido:\n\n';
+
+        cart.forEach(prod => {
+          const preco = precoPorCategoria(prod.category);
+          const subtotal = preco * (prod.quantity || 25);
+          total += subtotal;
+          mensagem += `- ${prod.name} (${prod.category}): ${prod.quantity || 25} unid. = R$ ${subtotal.toFixed(2)}\n`;
+        });
+
+        mensagem += `\n*Total: R$ ${total.toFixed(2)}*`;
+
+        const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+        window.open(url, '_blank');
+        localStorage.removeItem('cart');
+      } catch (err) {
+        console.error('Erro ao verificar login:', err);
+        alert('Ocorreu um erro ao finalizar. Tente novamente.');
       }
-
-      // Se chegou até aqui, o usuário está logado — segue com o pedido
-      const numeroWhatsApp = '5515981453091';
-      let mensagem = 'Olá! Segue meu pedido:\n\n';
-      cart.forEach(prod => {
-        const preco = precoPorCategoria(prod.category);
-        mensagem += `- ${prod.name} (${prod.category}): ${prod.quantity || 25} unid. = R$ ${(preco * (prod.quantity || 25)).toFixed(2)}\n`;
-      });
-      mensagem += `\n*Total: R$ ${total.toFixed(2)}*`;
-
-      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, '_blank');
-      localStorage.removeItem('cart');
-    } catch (err) {
-      console.error('Erro ao verificar login:', err);
-      alert('Ocorreu um erro. Tente novamente.');
-    }
-  };
+    };
+  }
 }
-

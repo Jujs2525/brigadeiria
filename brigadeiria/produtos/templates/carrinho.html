@@ -4,21 +4,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INÍCIO | Sayuri's Brigadeiros</title>
+  <title>CARRINHO | Sayuri's Brigadeiros</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />
 
-
   <!-- CSS -->
   <link rel="stylesheet" href="{% static 'CSS/base.css' %}" />
   <link rel="stylesheet" href="{% static 'CSS/carrinho.css' %}" />
   <link rel="stylesheet" href="{% static 'CSS/search.css' %}" />
-
 </head>
-<body>
 
+<body>
   <!-- CABEÇALHO -->
   <header class="main-header">
     <div class="container header-grid">
@@ -77,8 +75,7 @@
     </section>
   </main>
 
-
-
+  <!-- RODAPÉ -->
   <footer class="main-footer">
     <div class="container footer-grid">
       <div class="footer-logo-esquerda">
@@ -86,18 +83,10 @@
       </div>
 
       <div class="redesSociais">
-        <a href="mailto:sayurimo@gmail.com">
-          <img src="{% static 'src/e-mail.png' %}" alt="email" class="icones">
-        </a>
-        <a href="tel:+5515981453091">
-          <img src="{% static 'src/chamada-telefonica.png' %}" alt="telefone" class="icones">
-        </a>
-        <a href="https://www.google.com/maps/search/?api=1&query=Rua+Alice+Garcia+da+Silva,+380+B14+-+19" target="_blank">
-          <img src="{% static 'src/localizacao.png' %}" alt="endereço" class="icones">
-        </a>
-        <a href="https://www.instagram.com/sayuri_brigadeiros?igsh=MWh4Zjc0Ynp6NTA2eg==" target="_blank">
-          <img src="{% static 'src/instagram.png' %}" alt="Instagram" class="icones">
-        </a>
+        <a href="mailto:sayurimo@gmail.com"><img src="{% static 'src/e-mail.png' %}" alt="email" class="icones"></a>
+        <a href="tel:+5515981453091"><img src="{% static 'src/chamada-telefonica.png' %}" alt="telefone" class="icones"></a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Rua+Alice+Garcia+da+Silva,+380+B14+-+19" target="_blank"><img src="{% static 'src/localizacao.png' %}" alt="endereço" class="icones"></a>
+        <a href="https://www.instagram.com/sayuri_brigadeiros?igsh=MWh4Zjc0Ynp6NTA2eg==" target="_blank"><img src="{% static 'src/instagram.png' %}" alt="Instagram" class="icones"></a>
       </div>
 
       <div class="footer-logo-direita">
@@ -106,14 +95,24 @@
     </div>
   </footer>
 
-<!-- 🔹 Necessário para a busca funcionar -->
-<script>
-  window.BUSCAR_URL = "{% url 'buscar' %}";
-</script>
+  <!-- 🔹 Modal de Login Necessário -->
+  <div id="loginModal" class="login-modal">
+    <div class="login-modal-content">
+      <h2>🍫 Você precisa estar logado</h2>
+      <p>Para finalizar seu pedido, faça login ou crie sua conta rapidinho!</p>
+      <div class="login-modal-buttons">
+        <a href="/perfil/" class="btn-login">Fazer Login</a>
+        <button id="closeModal" class="btn-cancel">Agora não</button>
+      </div>
+    </div>
+  </div>
 
-<!-- 🔹 Ordem correta: primeiro search.js (busca), depois script.js (restante do site) -->
-<script src="{% static 'JS/search.js' %}"></script>
-<script src="{% static 'JS/script.js' %}"></script>
+  <!-- JS -->
+  <script>
+    window.BUSCAR_URL = "{% url 'buscar' %}";
+  </script>
 
+  <script src="{% static 'JS/search.js' %}"></script>
+  <script src="{% static 'JS/script.js' %}"></script>
 </body>
 </html>
