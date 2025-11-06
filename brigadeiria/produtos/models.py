@@ -80,3 +80,14 @@ class Carrinho(models.Model):
 
     def __str__(self):
         return f"{self.quantidade}x {self.produto.nome} ({self.usuario.username})"
+
+# ==========================
+#   CARRINHO TEMPORÁRIO (JSON)
+# ==========================
+class CarrinhoTemporario(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='carrinho_temporario')
+    dados = models.JSONField(default=list)  # Aqui salvamos o conteúdo do carrinho (JSON)
+    atualizado_em = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Carrinho de {self.usuario.username}"

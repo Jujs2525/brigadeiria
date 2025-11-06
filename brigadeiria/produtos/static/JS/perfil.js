@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // padrão: mostrar login
     showLogin();
   }
 
@@ -38,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logoutBtn");
   const logoutModal = document.getElementById("logoutModal");
   const cancelLogout = document.getElementById("cancelLogout");
+  const confirmLogout = document.getElementById("confirmLogout");
 
   if (logoutBtn && logoutModal) {
     logoutBtn.addEventListener("click", () => {
@@ -48,6 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cancelLogout && logoutModal) {
     cancelLogout.addEventListener("click", () => {
       logoutModal.classList.remove("show");
+    });
+  }
+
+  // 🔹 Confirmar Logout
+  if (confirmLogout) {
+    confirmLogout.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("cart");
+      window.location.href = "/sair/";
     });
   }
 });

@@ -324,3 +324,28 @@ main {
   from {opacity: 0;}
   to {opacity: 1;}
 }
+
+/* === AVISO DE PEDIDO MÍNIMO === */
+.aviso-minimo {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #b34124;
+  background-color: #ffe3df;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-top: 6px;
+  animation: fadeAviso 0.3s ease;
+  width: fit-content;
+  margin-left: 50px;
+}
+
+@keyframes fadeAviso {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

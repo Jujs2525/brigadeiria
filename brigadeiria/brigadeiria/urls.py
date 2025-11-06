@@ -25,7 +25,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('produtos.urls')),  # 🔹 inclui todas as rotas principais
-    path('api/', include('produtos.urls')), 
 ]
 
 # Permite o acesso a arquivos de mídia (uploads) durante o desenvolvimento

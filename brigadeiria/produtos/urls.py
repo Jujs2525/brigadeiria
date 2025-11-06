@@ -19,5 +19,5 @@ urlpatterns = [
     path('api/produtos/<int:pk>/', views.ProdutoDetail.as_view(), name='produto-detail'),
     path('carrinho/adicionar/<int:produto_id>/', views.adicionar_ao_carrinho, name='adicionar_ao_carrinho'),
     path('verificar-login/', views.verificar_login, name='verificar-login'),
-
+    path('api/carrinho/', views.api_carrinho, name='api-carrinho')
 ]

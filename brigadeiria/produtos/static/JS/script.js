@@ -1,4 +1,48 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+
+  async function verificarLogin() {
+    try {
+      const resp = await fetch('/verificar-login/');
+      const data = await resp.json();
+      return data.autenticado;
+    } catch {
+      return false;
+    }
+  }
+
+  /* ---------- SALVAR CARRINHO NO SERVIDOR ---------- */
+  async function salvarCarrinhoNoServidor() {
+    try {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (cart.length === 0) return;
+
+      await fetch('/api/carrinho/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cart)
+      });
+    } catch (err) {
+      console.error('Erro ao salvar carrinho no servidor:', err);
+    }
+  }
+
+  // CARREGAR CARRINHO DO SERVIDOR SE ESTIVER LOGADO
+  const logado = await verificarLogin();
+
+  if (logado) {
+    // 🔹 Usuário logado
+    if (!localStorage.getItem('cart') || JSON.parse(localStorage.getItem('cart')).length === 0) {
+      await carregarCarrinhoDoServidor(); // carrega do servidor se local estiver vazio
+    } else {
+      await salvarCarrinhoNoServidor(); // sincroniza o carrinho local com o servidor
+    }
+  } else {
+    // 🔹 Visitante (não logado)
+    console.log("Usuário não logado — mantendo carrinho apenas no localStorage");
+  }
+
+
+  // CARREGAR CARRINHO SE EXISTIR
   const itensEl = document.getElementById('card-itens-container');
   if (itensEl) {
     const totalEl = document.getElementById('card-total-value');
@@ -6,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarCarrinho(itensEl, totalEl, checkoutBtn);
   }
 
-  // Limpar carrinho
+  // BOTÃO DE LIMPAR MANUALMENTE
   const limparBtn = document.getElementById('limpar-pedido');
   if (limparBtn) {
     limparBtn.addEventListener('click', () => {
@@ -15,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
 
 /* ---------- PREÇOS POR CATEGORIA ---------- */
 function precoPorCategoria(nomeCategoria = '') {
@@ -73,6 +118,20 @@ function renderCardapio(produtos) {
   });
 }
 
+/* ---------- SINCRONIZAR CARRINHO DO SERVIDOR ---------- */
+async function carregarCarrinhoDoServidor() {
+  try {
+    const resp = await fetch('/api/carrinho/');
+    if (resp.ok) {
+      const data = await resp.json();
+      localStorage.setItem('cart', JSON.stringify(data));
+    }
+  } catch (err) {
+    console.error('Erro ao carregar carrinho do servidor:', err);
+  }
+}
+
+
 /* ---------- CARRINHO ---------- */
 function carregarCarrinho(container, totalEl, checkoutBtn) {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -110,6 +169,7 @@ function carregarCarrinho(container, totalEl, checkoutBtn) {
       const precoEl = cartItem.querySelector('.preco');
       const removeBtn = cartItem.querySelector('.remove-item');
 
+      // === Função para atualizar preço e salvar ===
       const atualizarPreco = () => {
         const qtd = Math.max(25, parseInt(input.value) || 25);
         product.quantity = qtd;
@@ -117,28 +177,63 @@ function carregarCarrinho(container, totalEl, checkoutBtn) {
         precoEl.textContent = `R$ ${novoSubtotal.toFixed(2)}`;
         localStorage.setItem('cart', JSON.stringify(cart));
         atualizarTotal();
+        salvarCarrinhoNoServidor();
       };
 
+      // === Função de aviso de pedido mínimo ===
+      function mostrarAviso(msg, botaoOuInput) {
+        const card = botaoOuInput.closest(".cart-item") || document.body;
+        const quantidadeBox = card.querySelector(".quantidade-controle");
+
+        let aviso = card.querySelector(".aviso-minimo");
+        if (!aviso) {
+          aviso = document.createElement("div");
+          aviso.className = "aviso-minimo";
+          
+          card.appendChild(aviso);
+        }
+
+        aviso.textContent = msg;
+        aviso.style.display = "block";
+
+        clearTimeout(aviso.timeout);
+        aviso.timeout = setTimeout(() => {
+          aviso.style.display = "none";
+        }, 2500);
+      }
+
+
+
+
+      // === Botão de diminuir quantidade ===
       menos.addEventListener('click', () => {
-        if (input.value > 25) {
-          input.value--;
+        const qtdAtual = parseInt(input.value) || 25;
+        if (qtdAtual > 25) {
+          input.value = qtdAtual - 1;
           atualizarPreco();
+        } else {
+          mostrarAviso("O pedido mínimo é de 25 unidades.", menos);
         }
       });
 
-      mais.addEventListener('click', () => {
-        input.value++;
+      input.addEventListener('change', () => {
+        if (parseInt(input.value) < 25) {
+          input.value = 25;
+          mostrarAviso("O pedido mínimo é de 25 unidades.", input);
+        }
         atualizarPreco();
       });
 
-      input.addEventListener('change', atualizarPreco);
 
+      // === Remover item do carrinho ===
       removeBtn.addEventListener('click', () => {
         cart.splice(index, 1);
         localStorage.setItem('cart', JSON.stringify(cart));
         carregarCarrinho(container, totalEl, checkoutBtn);
+        salvarCarrinhoNoServidor();
       });
     });
+
   } else {
     container.innerHTML = '<p>Seu carrinho está vazio.</p>';
   }

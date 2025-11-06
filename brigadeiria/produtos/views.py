@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
+
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+import json
 
-from .models import Banner, FotoGaleria, Categoria, Carrinho, Produto
+from .models import Banner, FotoGaleria, Categoria, Carrinho, Produto, CarrinhoTemporario
 from .serializers import CategoriaSerializer, ProdutoSerializer
 
 from rest_framework import generics
@@ -70,6 +73,31 @@ def adicionar_ao_carrinho(request, produto_id):
 
         messages.success(request, f'{produto.nome} adicionado ao carrinho!')
         return redirect('carrinho')
+    
+@csrf_exempt
+@login_required
+def api_carrinho(request):
+    user = request.user
+    from .models import CarrinhoTemporario  # importa o novo modelo
+
+    # ======== GET → Carregar carrinho salvo ========
+    if request.method == "GET":
+        carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
+        return JsonResponse(carrinho.dados, safe=False)
+
+    # ======== POST → Salvar carrinho recebido do JS ========
+    elif request.method == "POST":
+        try:
+            body = json.loads(request.body)
+            carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
+            carrinho.dados = body
+            carrinho.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    return JsonResponse({'error': 'Método não permitido'}, status=405)
+
 
 
 # ===================== LOGIN CHECK (para JS) =====================
@@ -127,7 +155,7 @@ def logar(request):
 
 def sair(request):
     auth.logout(request)
-    return redirect('perfil')
+    return redirect('/')  # Vai pra home 
 
 
 # ===================== BUSCA =====================

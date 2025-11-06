@@ -34,7 +34,7 @@
         <div class="logout-modal-content">
           <h3>Deseja realmente sair?</h3>
           <div class="logout-buttons">
-            <a href="{% url 'sair' %}" class="btn-confirm">Sim, sair</a>
+            <a href="{% url 'sair' %}" id="confirmLogout" class="btn-confirm">Sim, sair</a>
             <button id="cancelLogout" class="btn-cancel">Cancelar</button>
           </div>
         </div>
@@ -68,11 +68,15 @@
             {% csrf_token %}
             <input type="text" name="nome" placeholder="Nome completo" required>
             <input type="email" name="email" placeholder="E-mail" required>
+            <input type="tel" name="telefone" placeholder="Telefone" required>
             <input type="password" name="senha" placeholder="Senha" required>
             <input type="password" name="confirmar" placeholder="Confirmar senha" required>
+            <input type="text" name="endereco" placeholder="Endereço">
+            <input type="number" name="cep" placeholder="CEP">
+            <input type="text" name="complemento" placeholder="Complemento">
             <button type="submit"> Cadastrar-se </button>
 
-            <p class="texto-mudar"> Já tem conta? <a href="#" id="btnToLogin"> Login </a></p>
+            <p class="texto-mudar"> Já tem conta? <a href="#" id="btn-login"> Login </a></p>
           </form>
         </div>
       </section>
