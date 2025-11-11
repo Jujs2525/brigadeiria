@@ -52,18 +52,38 @@ INSTALLED_APPS = [
     'rest_framework',
     'produtos',
     'corsheaders',
+    'admin_sessions', 
 ]
 
 MIDDLEWARE = [
+    'produtos.middlewares.SplitSessionMiddleware', 
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+# Sessões do painel admin (isoladas)
+ADMIN_SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
+
+# Sessões do site
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_NAME = 'sessao_site'
+
+# Configuração do CSRF para site e admin
+CSRF_COOKIE_NAME = 'csrf_site'  # Pode ter um nome separado para o CSRF do admin também
+
+SESSION_COOKIE_PATH = '/'
+
+# Definir o cookie CSRF de forma que seja separado para cada seção
+CSRF_COOKIE_PATH = '/'
+
 
 ROOT_URLCONF = 'brigadeiria.urls'
 
