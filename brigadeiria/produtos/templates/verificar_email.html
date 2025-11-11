@@ -9,13 +9,33 @@
 <body>
   <main class="verificar-container">
     <h2>Verifique seu e-mail 🍫</h2>
-    <p>Enviamos um código de 6 dígitos para o seu e-mail. Digite-o abaixo:</p>
+    <p>Enviamos um código de 6 dígitos para o seu e-mail. Digite-o abaixo para confirmar seu cadastro:</p>
 
-    <form method="POST">
+    <form method="POST" class="verificar-form">
       {% csrf_token %}
-      <input type="email" name="email" placeholder="Seu e-mail" required>
-      <input type="text" name="codigo" placeholder="Código de verificação" maxlength="6" required>
-      <button type="submit">Confirmar</button>
+      <div class="input-group">
+        <input 
+          type="email" 
+          name="email" 
+          value="{{ email|default:request.GET.email }}" 
+          readonly 
+          required
+        >
+      </div>
+
+      <div class="input-group">
+        <input 
+          type="text" 
+          name="codigo" 
+          placeholder="Código de verificação" 
+          maxlength="6" 
+          pattern="[0-9]{6}" 
+          title="Digite os 6 dígitos numéricos" 
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn-confirmar">Confirmar código</button>
     </form>
 
     {% if messages %}
@@ -25,6 +45,10 @@
         {% endfor %}
       </ul>
     {% endif %}
+
+    <p class="reenvio">
+      Não recebeu o código? <a href="{% url 'reenviar_codigo' %}?email={{ email }}">Reenviar e-mail</a>
+    </p>
   </main>
 </body>
 </html>

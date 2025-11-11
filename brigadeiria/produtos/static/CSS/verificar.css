@@ -1,31 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Voces&display=swap');
+
 .verificar-container {
   max-width: 400px;
-  margin: 80px auto;
-  padding: 25px;
+  width: 90%;
   background: #fff5f2;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   text-align: center;
-  font-family: 'Voces', sans-serif;
+  padding: 30px 25px;
+  margin: 40px auto;
+}
+
+.verificar-container h2 {
+  color: #b34124;
+  margin-bottom: 10px;
+  font-size: 1.6rem;
+}
+
+.verificar-container p {
+  color: #444;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  line-height: 1.4;
 }
 
 .verificar-container input {
   width: 90%;
-  margin: 10px 0;
   padding: 10px;
+  margin: 8px 0 15px;
   border: 1px solid #e0a193;
   border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.verificar-container input:focus {
+  border-color: #b34124;
 }
 
 .verificar-container button {
   background-color: #b34124;
-  color: white;
+  color: #fff;
+  font-weight: bold;
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  transition: background 0.3s;
+  width: 90%;
 }
 
 .verificar-container button:hover {
   background-color: #d3563c;
+}
+
+/* 🔸 Lista de mensagens */
+.msg-list {
+  list-style: none;
+  margin: 15px 0 0;
+  padding: 0;
+}
+
+.msg-list li {
+  background: #ffe3df;
+  color: #b34124;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  animation: fadeAviso 0.3s ease;
+}
+
+/* 🔸 Reenvio */
+.reenvio {
+  margin-top: 18px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.reenvio a {
+  color: #b34124;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.reenvio a:hover {
+  text-decoration: underline;
+}
+
+/* 🔸 Animação suave */
+@keyframes fadeAviso {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

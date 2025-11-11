@@ -33,7 +33,7 @@ SECRET_KEY = 'django-insecure-90t7i)$p_0vu9rw)5f0(s^11^)e$+pt2+y1)%kx@mti-v-^_7s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'produtos',
     'corsheaders',
-    'contas',
 ]
 
 MIDDLEWARE = [
@@ -119,9 +118,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'pt-br'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -142,7 +140,12 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = 'sayurimo@gmail.com' 
-EMAIL_HOST_PASSWORD = 'qzyczwgadiygxaye'  # a senha de app que você gerou
+EMAIL_HOST_USER = os.getenv('EMAIL_USER', 'sayurimo@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS', 'qzyczwgadiygxaye')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]

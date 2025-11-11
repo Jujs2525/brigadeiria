@@ -19,7 +19,7 @@
 .box-register {
   justify-self: center;
   width: 500px;
-  height: 2000px;
+  height: 800px;
   padding: 45px 35px;
   display: none;
   flex-direction: column;
@@ -305,3 +305,4 @@ button:hover {
   background-color: #a56b3c;
   color: #fff;
 }
+

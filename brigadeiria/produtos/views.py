@@ -119,44 +119,94 @@ def perfil(request):
 
 def registrar(request):
     if request.method == "POST":
-        nome = request.POST['nome']
-        email = request.POST['email']
-        senha = request.POST['senha']
-        confirmar = request.POST['confirmar']
+        nome = request.POST.get("nome")
+        email = request.POST.get("email")
+        senha = request.POST.get("senha")
+        confirmar = request.POST.get("confirmar")
 
         if senha != confirmar:
             messages.error(request, "As senhas não coincidem.")
-            return redirect('perfil')
+            return redirect("perfil")
 
-        if User.objects.filter(username=email).exists():
-            messages.error(request, "E-mail já cadastrado.")
-            return redirect('perfil')
+        if User.objects.filter(email=email).exists():
+            messages.warning(request, "E-mail já cadastrado.")
+            return redirect("perfil")
 
+        # Cria o usuário como inativo até verificar o e-mail
         user = User.objects.create_user(username=email, email=email, password=senha, first_name=nome)
+        user.is_active = False
         user.save()
-        messages.success(request, "Cadastro realizado com sucesso! Faça login.")
-        return redirect('perfil')
 
-    return redirect('perfil')
+        # Cria código de verificação e envia por e-mail
+        verif = EmailVerification.objects.create(user=user)
+        verif.generate_code()
+
+        send_verification_email(user, verif.code)
+
+        messages.success(request, "Cadastro realizado! Verifique seu e-mail para confirmar.")
+        return redirect(f"/verificar_email/?email={email}")
+
+    return render(request, "perfil.html")
+
+@csrf_exempt
+def verificar_email(request):
+    email = request.GET.get("email", "")  # ← pega o e-mail da URL
+    if request.method == "POST":
+        email = request.POST.get("email")
+        codigo = request.POST.get("codigo")
+
+        try:
+            user = User.objects.get(email=email)
+            verif = EmailVerification.objects.get(user=user)
+
+            if verif.code == codigo:
+                verif.is_verified = True
+                verif.save()
+                user.is_active = True
+                user.save()
+                messages.success(request, "E-mail verificado com sucesso! Agora você pode entrar.")
+                return redirect("perfil")
+            else:
+                messages.error(request, "Código incorreto.")
+        except:
+            messages.error(request, "Usuário não encontrado.")
+
+    return render(request, "verificar_email.html", {"email": email})
+
+def reenviar_codigo(request):
+    email = request.GET.get("email")
+    try:
+        user = User.objects.get(email=email)
+        verif, _ = EmailVerification.objects.get_or_create(user=user)
+        verif.generate_code()
+        send_verification_email(user, verif.code)
+        messages.success(request, "Um novo código foi enviado para seu e-mail.")
+    except:
+        messages.error(request, "Usuário não encontrado.")
+    return redirect(f"/verificar_email/?email={email}")
 
 
 def logar(request):
     if request.method == "POST":
-        email = request.POST['email']
-        senha = request.POST['senha']
+        email = request.POST["email"]
+        senha = request.POST["senha"]
         user = auth.authenticate(username=email, password=senha)
 
         if user is not None:
+            if not user.is_active:
+                messages.warning(request, "Verifique seu e-mail antes de fazer login.")
+                return redirect("perfil")
             auth.login(request, user)
-            return redirect('cardapio')
+            return redirect("cardapio")
         else:
             messages.error(request, "E-mail ou senha incorretos.")
-            return redirect('perfil')
+            return redirect("perfil")
 
 
 def sair(request):
     auth.logout(request)
-    return redirect('/')  # Vai pra home 
+    return redirect("/")
+
 
 
 # ===================== BUSCA =====================
