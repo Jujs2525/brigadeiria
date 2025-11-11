@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginBox = document.getElementById("loginSection");
   const registerBox = document.getElementById("registerSection");
   const btnToRegister = document.getElementById("btnToRegister");
-  const btnToLogin = document.getElementById("btnToLogin");
+  const btnToLogin = document.getElementById("btn-login");
 
   // === LOGIN / CADASTRO ===
   if (loginBox && registerBox) {
@@ -60,5 +60,39 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+// === VALIDAR CONFIRMAÇÃO DE SENHA ===
+const registerForm = document.querySelector("#registerSection form");
+
+if (registerForm) {
+  registerForm.addEventListener("submit", function (e) {
+    const senha = registerForm.querySelector("input[name='senha']");
+    const confirmar = registerForm.querySelector("input[name='confirmarSenha']");
+
+    // remove mensagem antiga
+    const oldMsg = registerForm.querySelector(".erro-senha");
+    if (oldMsg) oldMsg.remove();
+
+    // impede envio se forem diferentes
+    if (senha.value.trim() !== confirmar.value.trim()) {
+      e.preventDefault();
+      const msg = document.createElement("p");
+      msg.textContent = "⚠️ As senhas não coincidem.";
+      msg.classList.add("erro-senha");
+      msg.style.color = "#d33";
+      msg.style.marginTop = "5px";
+      msg.style.fontSize = "0.9rem";
+      confirmar.insertAdjacentElement("afterend", msg);
+      confirmar.focus();
+      return; // <-- evita continuar
+    }
+
+    // 🔹 se as senhas forem iguais, aí sim envia normalmente
+  });
+}
+
+
+
+
 
 

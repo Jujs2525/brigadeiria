@@ -119,33 +119,45 @@ def perfil(request):
 
 def registrar(request):
     if request.method == "POST":
-        nome = request.POST.get("nome")
-        email = request.POST.get("email")
-        senha = request.POST.get("senha")
-        confirmar = request.POST.get("confirmar")
+        nome = request.POST.get("nome", "").strip()
+        email = request.POST.get("email", "").strip().lower()
+        senha = request.POST.get("senha", "")
+        confirmar = request.POST.get("confirmarSenha", "")
 
+        # === 1️⃣ Verifica se todos os campos foram preenchidos ===
+        if not nome or not email or not senha or not confirmar:
+            messages.error(request, "Preencha todos os campos.")
+            return redirect("perfil")
+
+        # === 2️⃣ Verifica se as senhas coincidem ===
         if senha != confirmar:
             messages.error(request, "As senhas não coincidem.")
             return redirect("perfil")
 
-        if User.objects.filter(email=email).exists():
+        # === 3️⃣ Verifica se o e-mail já está cadastrado ===
+        if User.objects.filter(email=email).exists() or User.objects.filter(username=email).exists():
             messages.warning(request, "E-mail já cadastrado.")
             return redirect("perfil")
 
-        # Cria o usuário como inativo até verificar o e-mail
-        user = User.objects.create_user(username=email, email=email, password=senha, first_name=nome)
+        # === 4️⃣ Cria o usuário ===
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            password=senha,
+            first_name=nome
+        )
         user.is_active = False
         user.save()
 
-        # Cria código de verificação e envia por e-mail
-        verif = EmailVerification.objects.create(user=user)
+        # === 5️⃣ Gera e envia o código de verificação ===
+        verif, _ = EmailVerification.objects.get_or_create(user=user)
         verif.generate_code()
-
         send_verification_email(user, verif.code)
 
         messages.success(request, "Cadastro realizado! Verifique seu e-mail para confirmar.")
         return redirect(f"/verificar_email/?email={email}")
 
+    # === GET ===
     return render(request, "perfil.html")
 
 @csrf_exempt
