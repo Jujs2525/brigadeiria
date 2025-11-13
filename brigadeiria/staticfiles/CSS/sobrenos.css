@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Vidaloka&display=swap');
+
+
+.sobrenos_slide {
+    background-color: #FBE6C4;
+    margin: 5rem auto;
+    display: flex;
+    padding: 2rem;
+
+    max-width: 2000px; /* não passa disso */
+    width: 100%;       /* ocupa todo o espaço possível até o limite */
+    min-height: 500px; /* garante altura mínima */
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.foto_sandra img{
+    width: auto;
+    height: 350px;
+    border-radius: 12px;
+}
+
+.escrita {
+    display: flex;
+    justify-content: center; /* centraliza no eixo horizontal */
+    align-items: flex-start; /* mantém no topo */
+    height: 100px; /* altura do bloco (ajuste se quiser) */
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Vidaloka', serif;
+    color: #70482A;
+    letter-spacing: 2px;
+}
+
+
+.sobrenos{
+    white-space: pre-line;
+    font-size: 17px;
+    color: #70482A;
+}
+
+@media (max-width: 600px) {
+  .sobrenos_slide {
+    padding: 2rem 1rem;
+  }
+
+  .foto_sandra img {
+    width: 100%;
+    height: auto;
+  }
+
+  .escrita {
+    font-size: 22px;
+  }
+
+  .sobrenos {
+    font-size: 15px;
+    text-align: center;
+  }
+}

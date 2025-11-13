@@ -16,10 +16,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Arquivos estáticos (CSS, JS, imagens)
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
-    BASE_DIR / 'produtos' / 'static',
+    BASE_DIR / 'static',
 ]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Arquivos de mídia (imagens enviadas pelo admin)
 MEDIA_URL = '/media/'
@@ -65,7 +67,7 @@ AUTHENTICATION_BACKENDS = [
 
 
 MIDDLEWARE = [
-    'produtos.middlewares.SplitSessionMiddleware', 
+    #'produtos.middlewares.SplitSessionMiddleware', 
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',  
@@ -78,6 +80,7 @@ MIDDLEWARE = [
 
 MIDDLEWARE += [
     "admin_sessions.middleware.AdminSessionExpiryMiddleware",
+    "brigadeiria.admin.middleware.AdminTimeRemainingMiddleware",
 ]
 
 # Duração da sessão do admin (em segundos)
@@ -85,8 +88,9 @@ ADMIN_SESSION_DURATION = 60  # 2 horas
 
 
 # Sessões do painel admin (isoladas)
-ADMIN_SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-ADMIN_SESSION_COOKIE_NAME = 'admin_sessionid'
+ADMIN_SESSION_ENGINE = "admin_sessions.backends.db" 
+ADMIN_SESSION_COOKIE_NAME = "admin_sessionid"
+
 
 # Sessões do site
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'

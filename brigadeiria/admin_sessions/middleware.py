@@ -1,13 +1,12 @@
-import datetime
-from django.utils import timezone
+import time
+from django.contrib.auth import logout
 from django.conf import settings
 
 ADMIN_SESSION_DURATION = getattr(settings, "ADMIN_SESSION_DURATION", 2 * 60 * 60)
 
 class AdminSessionExpiryMiddleware:
     """
-    Expira a sessão SOMENTE de usuários do admin
-    e envia um aviso se estiver perto da expiração.
+    Expira somente a sessão do admin e envia o tempo restante ao template.
     """
 
     def __init__(self, get_response):
@@ -15,28 +14,29 @@ class AdminSessionExpiryMiddleware:
 
     def __call__(self, request):
 
-        # Apenas para admin logado
+        # Só administra sessão de usuários do admin
         if request.user.is_authenticated and request.user.is_staff:
 
-            now = timezone.now().timestamp()
+            now = time.time()
 
-            # Criar timestamp inicial
-            if not request.session.get("admin_last_activity"):
+            last = request.session.get("admin_last_activity")
+
+            # Primeira requisição
+            if not last:
                 request.session["admin_last_activity"] = now
+                request.admin_time_remaining = ADMIN_SESSION_DURATION
+                return self.get_response(request)
 
-            last = request.session["admin_last_activity"]
-            elapsed = now - last
+            elapsed = now - float(last)
             remaining = ADMIN_SESSION_DURATION - elapsed
 
-            # Expirar se passou do limite
-            if elapsed > ADMIN_SESSION_DURATION:
-                from django.contrib.auth import logout
+            # Expirou
+            if remaining <= 0:
                 logout(request)
+                request.admin_time_remaining = 0
             else:
-                # Atualizar atividade
+                # Atualiza timestamp
                 request.session["admin_last_activity"] = now
-
-            # Enviar tempo restante para o template/admin
-            request.admin_time_remaining = remaining
+                request.admin_time_remaining = int(remaining)
 
         return self.get_response(request)
