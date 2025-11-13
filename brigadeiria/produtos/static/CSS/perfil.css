@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Vidaloka&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Voces&display=swap');
+
 /* === RESPONSIVO === */
 @media (max-width: 480px) {
   .container {
@@ -67,7 +70,18 @@
 }
 
 /* === BOXES === */
-.box-login,
+.box-login{
+  justify-self: center;
+  width: 500px;
+  height: 400px;
+  padding: 45px 35px;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
 .box-register {
   justify-self: center;
   width: 500px;
@@ -94,20 +108,52 @@
 }
 
 /* === CABEÇALHO DO FORM === */
-.titulo {
+.titulo-login {
   font-size: 1.6rem;
   font-weight: 700;
   color: #353535;
   margin-bottom: 10px;
   text-align: center;
+  font-family: 'Vidaloka', serif;
 }
 
-.icon-profile {
+.titulo-register{
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #353535;
+  margin-bottom: 10px;
+  text-align: center;
+  font-family: 'Vidaloka', serif;
+}
+
+.icon-profile-login {
   width: 95px;
   height: 95px;
   object-fit: cover;
   margin-bottom: 18px;
   opacity: 0.9;
+  align-items: center;
+  display: block;
+  margin: 0 auto 18px auto; /* centraliza horizontalmente */
+}
+
+.icon-profile-register{
+  width: 95px;
+  height: 95px;
+  object-fit: cover;
+  margin-bottom: 18px;
+  opacity: 0.9;
+  display: block;
+  margin: 0 auto 18px auto; /* centraliza horizontalmente */
+}
+
+.end{
+  font-size: 20px;
+  font-weight: 700;
+  color: #353535;
+  margin-bottom: 10px;
+  text-align: center;
+  font-family: 'Vidaloka', serif;
 }
 
 /* === FORMULÁRIOS === */
@@ -123,10 +169,11 @@ input {
   padding: 11px 14px;
   margin: 7px 0;
   border-radius: 10px;
-  border: 1.5px solid #e0d0c6;
+  border: 1.5px solid #b1b1b1;
   background: #b8b8b8;
   transition: all 0.25s ease;
   font-size: 0.95rem;
+  font-family: 'Voces', sans-serif;
 }
 
 input:focus {
@@ -142,12 +189,13 @@ button {
   margin-top: 15px;
   border: none;
   border-radius: 30px;
-  background-color: #f3a5a4;
-  color: #f0f0f0;
+  background-color: #FEECD6;
+  color: #303030;
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s, transform 0.15s ease;
+  font-family: 'Voces', sans-serif;
 }
 
 button:hover {
@@ -161,6 +209,7 @@ button:hover {
   font-size: 0.95rem;
   color: #353535;
   text-align: center;
+  font-family: 'Voces' sans-serif;
 }
 
 .texto-mudar a {

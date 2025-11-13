@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<script>
+    window.ADMIN_TIME_REMAINING = "{{ request.admin_time_remaining|default:0 }}";
+</script>
+
+<link rel="stylesheet" href="{% static 'admin_custom/admin_expire.css' %}">
+<script src="{% static 'admin_custom/admin_expire.js' %}"></script>
+
+{% endblock %}
+
+{% block footer %}
+{{ block.super }}
+<div id="admin-expire-alert"></div>
+{% endblock %}

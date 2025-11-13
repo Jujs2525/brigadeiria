@@ -1,0 +1,13 @@
+#admin-expire-alert {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #f44336;
+    color: white;
+    padding: 14px 18px;
+    font-size: 15px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px #0003;
+    z-index: 9999;
+    display: none;
+}

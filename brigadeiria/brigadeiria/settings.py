@@ -16,7 +16,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Arquivos estáticos (CSS, JS, imagens)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'produtos' / 'static']
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'produtos' / 'static',
+]
 
 # Arquivos de mídia (imagens enviadas pelo admin)
 MEDIA_URL = '/media/'
@@ -55,6 +58,12 @@ INSTALLED_APPS = [
     'admin_sessions', 
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "admin_sessions.backends.admin_backend.AdminSessionBackend",  # backend para admin
+    "django.contrib.auth.backends.ModelBackend",                  # backend padrão
+]
+
+
 MIDDLEWARE = [
     'produtos.middlewares.SplitSessionMiddleware', 
     'corsheaders.middleware.CorsMiddleware',
@@ -66,6 +75,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+MIDDLEWARE += [
+    "admin_sessions.middleware.AdminSessionExpiryMiddleware",
+]
+
+# Duração da sessão do admin (em segundos)
+ADMIN_SESSION_DURATION = 60  # 2 horas
 
 
 # Sessões do painel admin (isoladas)
@@ -90,7 +106,7 @@ ROOT_URLCONF = 'brigadeiria.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,6 +117,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'brigadeiria.wsgi.application'
 

@@ -8,6 +8,8 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'CSS/perfil.css' %}">
+  <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
+
 </head>
 <body>
 
@@ -44,8 +46,8 @@
       <!-- LOGIN -->
       <section class="box-login ativo" id="loginSection">
         <div class="form-content">
-          <h3 class="titulo">Login</h3>
-          <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile">
+          <h3 class="titulo-login">Login</h3>
+          <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile-login">
 
           <form action="{% url 'logar' %}" method="POST">
             {% csrf_token %}
@@ -53,7 +55,7 @@
             <input type="password" name="senha" placeholder="Senha" required>
             <button type="submit"> Entrar </button>
 
-            <p class="texto-mudar"> Não tem conta? <a href="#" id="btnToRegister"> Cadastre-se </a></p>
+            <p class="texto-mudar"> Não tem conta? <a href="#" id="btn-register"> Cadastre-se </a></p>
           </form>
         </div>
       </section>
@@ -61,8 +63,8 @@
       <!-- CADASTRO -->
       <section class="box-register" id="registerSection">
         <div class="form-content">
-          <h3 class="titulo">Cadastre-se</h3>
-          <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile">
+          <h3 class="titulo-register">Cadastre-se</h3>
+          <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile-register">
 
           <form action="{% url 'registrar' %}" method="POST">
             {% csrf_token %}
@@ -71,8 +73,9 @@
             <input type="tel" name="telefone" placeholder="Telefone" required>
             <input type="password" name="senha" placeholder="Senha" required>
             <input type="password" name="confirmarSenha" placeholder="Confirmar senha" required>
+            <p class="end"> Endereço </p>
+            <input type="text" name="cep" placeholder="CEP">
             <input type="text" name="endereco" placeholder="Endereço">
-            <input type="number" name="cep" placeholder="CEP">
             <input type="text" name="complemento" placeholder="Complemento">
             <button type="submit"> Cadastrar-se </button>
 
