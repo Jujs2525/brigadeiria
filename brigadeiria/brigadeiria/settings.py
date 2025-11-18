@@ -80,11 +80,10 @@ MIDDLEWARE = [
 
 MIDDLEWARE += [
     "admin_sessions.middleware.AdminSessionExpiryMiddleware",
-    "brigadeiria.admin.middleware.AdminTimeRemainingMiddleware",
 ]
 
 # Duração da sessão do admin (em segundos)
-ADMIN_SESSION_DURATION = 60  # 2 horas
+ADMIN_SESSION_DURATION = 2 * 60 * 60  # 2 horas
 
 
 # Sessões do painel admin (isoladas)

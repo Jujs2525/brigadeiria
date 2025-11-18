@@ -1,25 +1,42 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const timeRemaining = parseInt(window.ADMIN_TIME_REMAINING);
 
-    const WARNING_TIME = 20; // PARA TESTE – depois troque para 300 (5 min)
+    // Sempre vem como string → converter para número
+    let timeRemaining = parseInt(window.ADMIN_TIME_REMAINING);
 
-    if (timeRemaining > 0 && timeRemaining <= WARNING_TIME) {
-        const alertBox = document.getElementById("admin-expire-alert");
-        if (!alertBox) return;
+    // Se não houver tempo → não exibe nada
+    if (isNaN(timeRemaining) || timeRemaining <= 0) return;
 
-        alertBox.style.display = "block";
+    const alertBox = document.getElementById("admin-expire-alert");
+    if (!alertBox) return;
 
-        let secondsLeft = Math.floor(timeRemaining);
+    alertBox.style.display = "block";
 
-        alertBox.innerText = `Sua sessão irá expirar em ${secondsLeft} segundos.`;
+    // Atualiza pela primeira vez
+    alertBox.innerText = `Sua sessão irá expirar em ${timeRemaining} segundos.`;
 
-        setInterval(() => {
-            secondsLeft--;
-            if (secondsLeft <= 0) {
-                alertBox.innerText = "Sua sessão expirou.";
-            } else {
-                alertBox.innerText = `Sua sessão irá expirar em ${secondsLeft} segundos.`;
-            }
-        }, 1000);
-    }
+    const countdown = setInterval(() => {
+
+        timeRemaining--;
+
+        // Quando expira
+        if (timeRemaining <= 0) {
+            clearInterval(countdown);
+
+            alertBox.innerText = "Sua sessão expirou.";
+
+            // Remover o cookie da sessão do admin
+            document.cookie = "admin_sessionid=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax";
+
+            // Redirecionar para a tela de login do admin
+            setTimeout(() => {
+                window.location.href = "/admin/login/?next=/admin/";
+            }, 1200);
+
+            return;
+        }
+
+        // Atualiza o texto normal
+        alertBox.innerText = `Sua sessão irá expirar em ${timeRemaining} segundos.`;
+
+    }, 1000);
 });
