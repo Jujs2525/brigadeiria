@@ -1,0 +1,107 @@
+/* === BOX PRINCIPAL === */
+.perfil-logado-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    max-width: 650px;
+    margin: 40px auto;
+}
+
+/* === TÍTULO === */
+.perfil-titulo {
+    text-align: center;
+    color: var(--brown);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* === BLOCOS (view e edit) === */
+.view-box, .edit-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* === LINHAS DE INFO === */
+.linha-info {
+    background: #f9eee0;
+    padding: 12px 16px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    color: #70482A;
+    font-size: 1rem;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.subtitulo {
+    font-size: 1.2rem;
+    color: var(--brown-2);
+    margin-top: 15px;
+    font-weight: 700;
+    text-align: left;
+}
+
+/* === INPUTS === */
+.edit-box input {
+    padding: 12px 15px;
+    background: #fff;
+    border: 1.5px solid #c9c9c9;
+    border-radius: 12px;
+    font-size: 1rem;
+}
+
+.edit-box input:focus {
+    border-color: var(--brown-2);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(185,121,73,0.3);
+}
+
+/* === BOTÕES === */
+.btn-editar, .btn-salvar, .btn-cancelar {
+    width: 100%;
+    padding: 14px;
+    border-radius: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-editar {
+    background: var(--pink);
+    color: var(--brown);
+}
+
+.btn-editar:hover {
+    background: #eeb9b9;
+}
+
+.btn-salvar {
+    background: #b97949;
+    color: white;
+}
+
+.btn-salvar:hover {
+    background: #a5663c;
+}
+
+.btn-cancelar {
+    background: transparent;
+    border: 2px solid #bb4f4f;
+    color: #bb4f4f;
+}
+
+.btn-cancelar:hover {
+    background: #bb4f4f;
+    color: white;
+}
+
+/* BOTÕES PADRÃO */
+.perfil-acoes {
+    margin-top: 20px;
+}

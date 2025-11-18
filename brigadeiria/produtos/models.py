@@ -4,6 +4,23 @@ import random, string
 
 
 # ==========================
+#   PERFIL DO USUÁRIO
+# ==========================
+class Perfil(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="perfil")
+
+    telefone = models.CharField(max_length=20, blank=True, null=True)
+    cep = models.CharField(max_length=9, blank=True, null=True)
+    endereco = models.CharField(max_length=255, blank=True, null=True)
+    complemento = models.CharField(max_length=100, blank=True, null=True)
+
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Perfil de {self.user.username}"
+    
+
+# ==========================
 #   CATEGORIA
 # ==========================
 class Categoria(models.Model):
@@ -23,7 +40,7 @@ class Produto(models.Model):
     categoria = models.ForeignKey(
         Categoria,
         related_name='produtos',
-        on_delete=models.SET_NULL,  # Evita perder o produto se a categoria for deletada
+        on_delete=models.SET_NULL,
         null=True,
         blank=True
     )
@@ -82,17 +99,26 @@ class Carrinho(models.Model):
     def __str__(self):
         return f"{self.quantidade}x {self.produto.nome} ({self.usuario.username})"
 
+
 # ==========================
 #   CARRINHO TEMPORÁRIO (JSON)
 # ==========================
 class CarrinhoTemporario(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='carrinho_temporario')
-    dados = models.JSONField(default=list)  # Aqui salvamos o conteúdo do carrinho (JSON)
+    usuario = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='carrinho_temporario'
+    )
+    dados = models.JSONField(default=list)
     atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Carrinho de {self.usuario.username}"
 
+
+# ==========================
+#   VERIFICAÇÃO DE EMAIL
+# ==========================
 class EmailVerification(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     code = models.CharField(max_length=6)

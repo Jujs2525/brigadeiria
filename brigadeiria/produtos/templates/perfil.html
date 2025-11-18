@@ -1,101 +1,218 @@
+{% extends "blank.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PERFIL | Sayuri's Brigaderia</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'CSS/perfil.css' %}">
-  <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
+{% block title %}Perfil | Sayuri's Brigaderia{% endblock %}
 
-</head>
-<body>
+{% block head %}
+<link rel="stylesheet" href="{% static 'CSS/perfil.css' %}">
+{% if user.is_authenticated %}
+<link rel="stylesheet" href="{% static 'CSS/perfil_logado.css' %}">
+<link rel="stylesheet" href="{% static 'CSS/base.css' %}">
+{% else %}
+<style>
+    header, footer { display: none !important; }
+</style>
+{% endif %}
+{% endblock %}
 
-  <main class="container">
+{% block content %}
+
+{% if user.is_authenticated %}
+<!-- ================= HEADER ================= -->
+<header class="main-header">
+    <div class="container header-grid">
+        <a href="{% url 'index' %}" class="brand">
+            <img src="{% static 'src/TCC.png' %}" alt="Logo Sayuri's Brigadeiros" class="fotologo">
+        </a>
+
+        <div class="search-wrapper">
+            <div class="search" id="search">
+                <label for="searchInput">
+                    <span class="material-symbols-outlined">search</span>
+                </label>
+                <input class="searchInput" type="search" id="searchInput" placeholder="Pesquisar...">
+            </div>
+            <div class="results-box" id="resultsBox"></div>
+        </div>
+
+        <img src="{% static 'src/ICONS.png' %}" alt="Brigadeiro" class="brigadeiro">
+    </div>
+
+    <nav class="menu-opcoes">
+        <ul class="container nav-list">
+            <li><a href="{% url 'index' %}">PÁGINA INICIAL</a></li>
+            <li><a href="{% url 'cardapio' %}">CARDÁPIO</a></li>
+            <li><a href="{% url 'perfil' %}">PERFIL</a></li>
+            <li><a href="{% url 'carrinho' %}">CARRINHO</a></li>
+            <li><a href="#sobrenos_slide" class="scroll-link">SOBRE NÓS</a></li>
+        </ul>
+    </nav>
+</header>
+{% endif %}
+
+<!-- ================= CONTAINER CENTRAL ================= -->
+<main class="perfil-wrapper">
 
     {% if messages %}
-      <div class="msg-container">
+    <div class="msg-container">
         {% for message in messages %}
-          <div class="msg {{ message.tags }}">{{ message }}</div>
+        <div class="msg {{ message.tags }}">{{ message }}</div>
         {% endfor %}
-      </div>
+    </div>
     {% endif %}
 
     {% if user.is_authenticated %}
-      <!-- 🔹 Se o usuário estiver logado -->
-      <section class="box-logged">
-  <h3 class="titulo">Olá, {{ user.first_name|default:user.username }} 👋</h3>
-  <form class="edit-form" action="{% url 'atualizar_perfil' %}" method="POST">
-    {% csrf_token %}
-    <input type="text" name="nome" value="{{ user.first_name }}" placeholder="Nome completo" required>
-    <input type="email" name="email" value="{{ user.email }}" placeholder="E-mail" required>
-    <input type="tel" name="telefone" value="{{ user.perfil.telefone }}" placeholder="Telefone">
-    <p class="end">Endereço</p>
-    <input type="text" name="cep" value="{{ user.perfil.cep }}" placeholder="CEP">
-    <input type="text" name="endereco" value="{{ user.perfil.endereco }}" placeholder="Endereço">
-    <input type="text" name="complemento" value="{{ user.perfil.complemento }}" placeholder="Complemento">
-    <button type="submit">Salvar alterações</button>
-  </form>
-    <button id="logoutBtn" class="logout-btn">Sair</button>
-      </section>
 
-      <!-- Modal de confirmação -->
-      <div id="logoutModal" class="logout-modal">
-        <div class="logout-modal-content">
-          <h3>Deseja realmente sair?</h3>
-          <div class="logout-buttons">
-            <a href="{% url 'sair' %}" id="confirmLogout" class="btn-confirm">Sim, sair</a>
-            <button id="cancelLogout" class="btn-cancel">Cancelar</button>
-          </div>
+    <!-- =========== PERFIL LOGADO =========== -->
+    <section class="perfil-logado-box">
+
+        <h2 class="perfil-titulo">Olá, {{ user.first_name|default:user.username }} 👋</h2>
+
+        <!-- MODO VISUALIZAÇÃO -->
+        <div id="viewMode">
+            <p><strong>Nome:</strong> {{ user.first_name }}</p>
+            <p><strong>E-mail:</strong> {{ user.email }}</p>
+            <p><strong>Telefone:</strong> {{ user.perfil.telefone|default:"Não informado" }}</p>
+
+            <p class="end">Endereço</p>
+            <p><strong>CEP:</strong> {{ user.perfil.cep|default:"Não informado" }}</p>
+            <p><strong>Endereço:</strong> {{ user.perfil.endereco|default:"Não informado" }}</p>
+            <p><strong>Complemento:</strong> {{ user.perfil.complemento|default:"Não informado" }}</p>
+
+            <button class="btn-editar" id="btnEditarPerfil">Editar Perfil</button>
         </div>
-      </div>
+
+        <!-- MODO EDIÇÃO -->
+        <form id="editMode" class="editar-form" action="{% url 'atualizar_perfil' %}" method="POST" style="display:none;">
+            {% csrf_token %}
+            
+            <input type="text" name="nome" value="{{ user.first_name }}" placeholder="Nome completo" required>
+            <input type="email" name="email" value="{{ user.email }}" placeholder="E-mail" required>
+            <input type="tel" name="telefone" value="{{ user.perfil.telefone }}" placeholder="Telefone">
+
+            <p class="end">Endereço</p>
+
+            <input type="text" name="cep" id="cep" value="{{ user.perfil.cep }}" placeholder="CEP" required>
+            <input type="text" name="endereco" id="endereco" value="{{ user.perfil.endereco }}" placeholder="Endereço" required>
+            <input type="text" name="complemento" value="{{ user.perfil.complemento }}" placeholder="Complemento">
+
+            <button type="submit" class="btn-salvar">Salvar</button>
+            <button type="button" id="btnCancelarEdicao" class="btn-cancelar">Cancelar</button>
+        </form>
+
+        <div class="perfil-acoes">
+            <button id="logoutBtn" class="logout-btn">Sair</button>
+            <button id="deleteAccountBtn" class="delete-btn">Excluir conta</button>
+        </div>
+
+    </section>
+
+    <!-- MODAL LOGOUT -->
+    <div id="logoutModal" class="logout-modal">
+        <div class="logout-modal-content">
+            <h3>Deseja realmente sair?</h3>
+            <div class="logout-buttons">
+                <a href="{% url 'sair' %}" class="btn-confirm">Sim, sair</a>
+                <button id="cancelLogout" class="btn-cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
 
     {% else %}
-      <!-- LOGIN -->
-      <section class="box-login ativo" id="loginSection">
+
+    <!-- =========== LOGIN =========== -->
+    <section class="box-login ativo" id="loginSection">
         <div class="form-content">
-          <h3 class="titulo-login">Login</h3>
-          <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile-login">
 
-          <form action="{% url 'logar' %}" method="POST">
-            {% csrf_token %}
-            <input type="email" name="email" placeholder="E-mail" required>
-            <input type="password" name="senha" placeholder="Senha" required>
-            <button type="submit"> Entrar </button>
+            <h3 class="titulo-login">Login</h3>
+            <img src="{% static 'src/perfilicon.png' %}" class="icon-profile-login">
 
-            <p class="texto-mudar"> Não tem conta? <a href="#" id="btnToRegister"> Cadastre-se </a></p>
-          </form>
+            <form action="{% url 'logar' %}" method="POST">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="E-mail" required>
+                <input type="password" name="senha" placeholder="Senha" required>
+
+                <button type="submit">Entrar</button>
+
+                <p class="texto-mudar">
+                    Não tem conta? <a href="#" id="btnToRegister">Cadastre-se</a>
+                </p>
+            </form>
+
         </div>
-      </section>
+    </section>
 
-      <!-- CADASTRO -->
-      <section class="box-register" id="registerSection">
+    <!-- =========== CADASTRO =========== -->
+    <section class="box-register" id="registerSection">
         <div class="form-content">
-          <h3 class="titulo-register">Cadastre-se</h3>
-          <img src="{% static 'src/perfilicon.png' %}" alt="Perfil" class="icon-profile-register">
 
-          <form action="{% url 'registrar' %}" method="POST">
-            {% csrf_token %}
-            <input type="text" name="nome" placeholder="Nome completo" required>
-            <input type="email" name="email" placeholder="E-mail" required>
-            <input type="tel" name="telefone" placeholder="Telefone" required>
-            <input type="password" name="senha" placeholder="Senha" required>
-            <input type="password" name="confirmarSenha" placeholder="Confirmar senha" required>
-            <p class="end"> Endereço </p>
-            <input type="text" name="cep" placeholder="CEP">
-            <input type="text" name="endereco" placeholder="Endereço">
-            <input type="text" name="complemento" placeholder="Complemento">
-            <button type="submit"> Cadastrar-se </button>
+            <h3 class="titulo-register">Cadastre-se</h3>
+            <img src="{% static 'src/perfilicon.png' %}" class="icon-profile-register">
 
-            <p class="texto-mudar"> Já tem conta? <a href="#" id="btnToLogin"> Login </a></p>
-          </form>
+            <form action="{% url 'registrar' %}" method="POST">
+                {% csrf_token %}
+
+                <input type="text" name="nome" placeholder="Nome completo" required>
+                <input type="email" name="email" placeholder="E-mail" required>
+                <input type="tel" name="telefone" placeholder="Telefone" required>
+
+                <input type="password" name="senha" placeholder="Senha" required>
+                <input type="password" name="confirmarSenha" placeholder="Confirmar senha" required>
+
+                <p class="end">Endereço</p>
+                <input type="text" name="cep" placeholder="CEP">
+                <input type="text" name="endereco" placeholder="Endereço">
+                <input type="text" name="complemento" placeholder="Complemento">
+
+                <button type="submit">Cadastrar</button>
+
+                <p class="texto-mudar">
+                    Já tem conta? <a href="#" id="btnToLogin">Login</a>
+                </p>
+
+            </form>
+
         </div>
-      </section>
+    </section>
+
     {% endif %}
-  </main>
 
-  <script src="{% static 'JS/perfil.js' %}"></script>
-</body>
-</html>
+</main>
+
+{% if user.is_authenticated %}
+<footer class="main-footer">
+    <div class="container footer-grid">
+
+        <div class="footer-logo-esquerda">
+            <img src="{% static 'src/TCC.png' %}" class="fotologo1">
+        </div>
+
+        <div class="redesSociais">
+            <a href="mailto:sayurimo@gmail.com?subject=Contato">
+                <img src="{% static 'src/e-mail.png' %}" class="icones">
+            </a>
+
+            <a href="tel:+5515981453091">
+                <img src="{% static 'src/chamada-telefonica.png' %}" class="icones">
+            </a>
+
+            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Alice+Garcia+da+Silva,+380">
+                <img src="{% static 'src/localizacao.png' %}" class="icones">
+            </a>
+
+            <a href="https://www.instagram.com/sayuri_brigadeiros" target="_blank">
+                <img src="{% static 'src/instagram.png' %}" class="icones">
+            </a>
+        </div>
+
+        <div class="footer-logo-direita">
+            <img src="{% static 'src/Logo Principal.png' %}" class="logo-direita">
+        </div>
+
+    </div>
+</footer>
+{% endif %}
+
+<script src="{% static 'JS/perfil.js' %}"></script>
+<script src="{% static 'JS/search.js' %}"></script>
+{% endblock %}

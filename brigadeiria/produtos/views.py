@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User
-
-from django.contrib import messages, auth
+from django.contrib import auth, messages
+from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 
-from .models import Banner, FotoGaleria, Categoria, Carrinho, Produto, CarrinhoTemporario, EmailVerification
+from .models import (
+    Banner, FotoGaleria, Categoria,
+    Carrinho, Produto, CarrinhoTemporario,
+    EmailVerification, Perfil
+)
 from .serializers import CategoriaSerializer, ProdutoSerializer
 from .utils import send_verification_email
 
@@ -19,20 +22,23 @@ class CategoriaList(generics.ListCreateAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
 
+
 class CategoriaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
 
+
 class ProdutoList(generics.ListCreateAPIView):
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
+
 
 class ProdutoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
 
 
-# ===================== PÁGINAS =====================
+# ===================== PÁGINAS PRINCIPAIS =====================
 def index(request):
     banners = Banner.objects.all()[:3]
     fotos = FotoGaleria.objects.all()
@@ -74,19 +80,17 @@ def adicionar_ao_carrinho(request, produto_id):
 
         messages.success(request, f'{produto.nome} adicionado ao carrinho!')
         return redirect('carrinho')
-    
+
+
 @csrf_exempt
 @login_required
 def api_carrinho(request):
     user = request.user
-    from .models import CarrinhoTemporario  # importa o novo modelo
 
-    # ======== GET → Carregar carrinho salvo ========
     if request.method == "GET":
         carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
         return JsonResponse(carrinho.dados, safe=False)
 
-    # ======== POST → Salvar carrinho recebido do JS ========
     elif request.method == "POST":
         try:
             body = json.loads(request.body)
@@ -100,8 +104,7 @@ def api_carrinho(request):
     return JsonResponse({'error': 'Método não permitido'}, status=405)
 
 
-
-# ===================== LOGIN CHECK (para JS) =====================
+# ===================== LOGIN CHECK =====================
 def verificar_login(request):
     return JsonResponse({'autenticado': request.user.is_authenticated})
 
@@ -112,10 +115,11 @@ def produto_detalhe(request, pk):
     return render(request, 'produto_detalhe.html', {'produto': produto})
 
 
-# ===================== PERFIL / AUTENTICAÇÃO =====================
+# ===================== PERFIL =====================
 def perfil(request):
-    return render(request, 'perfil.html')
-
+    if request.user.is_authenticated:
+        Perfil.objects.get_or_create(user=request.user)
+    return render(request, "perfil.html")
 
 def registrar(request):
     if request.method == "POST":
@@ -124,23 +128,19 @@ def registrar(request):
         senha = request.POST.get("senha", "")
         confirmar = request.POST.get("confirmarSenha", "")
 
-        # === 1️⃣ Verifica se todos os campos foram preenchidos ===
         if not nome or not email or not senha or not confirmar:
             messages.error(request, "Preencha todos os campos.")
             return redirect("perfil")
 
-        # === 2️⃣ Verifica se as senhas coincidem ===
         if senha != confirmar:
             messages.error(request, "As senhas não coincidem.")
             return redirect("perfil")
 
-        # === 3️⃣ Verifica se o e-mail já está cadastrado ===
-        if User.objects.filter(email=email).exists() or User.objects.filter(username=email).exists():
+        if auth.models.User.objects.filter(email=email).exists():
             messages.warning(request, "E-mail já cadastrado.")
             return redirect("perfil")
 
-        # === 4️⃣ Cria o usuário ===
-        user = User.objects.create_user(
+        user = auth.models.User.objects.create_user(
             username=email,
             email=email,
             password=senha,
@@ -149,26 +149,24 @@ def registrar(request):
         user.is_active = False
         user.save()
 
-        # === 5️⃣ Gera e envia o código de verificação ===
         verif, _ = EmailVerification.objects.get_or_create(user=user)
         verif.generate_code()
         send_verification_email(user, verif.code)
 
-        messages.success(request, "Cadastro realizado! Verifique seu e-mail para confirmar.")
+        messages.success(request, "Cadastro realizado! Verifique seu e-mail.")
         return redirect(f"/verificar_email/?email={email}")
 
-    # === GET ===
     return render(request, "perfil.html")
+
 
 @csrf_exempt
 def verificar_email(request):
-    email = request.GET.get("email", "")  # ← pega o e-mail da URL
+    email = request.GET.get("email", "")
     if request.method == "POST":
-        email = request.POST.get("email")
         codigo = request.POST.get("codigo")
 
         try:
-            user = User.objects.get(email=email)
+            user = auth.models.User.objects.get(email=email)
             verif = EmailVerification.objects.get(user=user)
 
             if verif.code == codigo:
@@ -176,7 +174,7 @@ def verificar_email(request):
                 verif.save()
                 user.is_active = True
                 user.save()
-                messages.success(request, "E-mail verificado com sucesso! Agora você pode entrar.")
+                messages.success(request, "E-mail verificado!")
                 return redirect("perfil")
             else:
                 messages.error(request, "Código incorreto.")
@@ -185,16 +183,18 @@ def verificar_email(request):
 
     return render(request, "verificar_email.html", {"email": email})
 
+
 def reenviar_codigo(request):
     email = request.GET.get("email")
     try:
-        user = User.objects.get(email=email)
+        user = auth.models.User.objects.get(email=email)
         verif, _ = EmailVerification.objects.get_or_create(user=user)
         verif.generate_code()
         send_verification_email(user, verif.code)
-        messages.success(request, "Um novo código foi enviado para seu e-mail.")
+        messages.success(request, "Código reenviado!")
     except:
         messages.error(request, "Usuário não encontrado.")
+
     return redirect(f"/verificar_email/?email={email}")
 
 
@@ -206,19 +206,18 @@ def logar(request):
 
         if user is not None:
             if not user.is_active:
-                messages.warning(request, "Verifique seu e-mail antes de fazer login.")
+                messages.warning(request, "Verifique seu e-mail antes.")
                 return redirect("perfil")
             auth.login(request, user)
             return redirect("cardapio")
         else:
-            messages.error(request, "E-mail ou senha incorretos.")
+            messages.error(request, "Credenciais inválidas.")
             return redirect("perfil")
 
 
 def sair(request):
     auth.logout(request)
     return redirect("/")
-
 
 
 # ===================== BUSCA =====================
@@ -241,3 +240,46 @@ def buscar(request):
     return JsonResponse({'results': resultados})
 
 
+def check_auth(request):
+    if request.user.is_authenticated:
+        return JsonResponse({
+            "logged": True,
+            "username": request.user.username,
+            "email": request.user.email
+        })
+    return JsonResponse({"logged": False})
+
+
+# ===================== EXCLUIR CONTA =====================
+def excluir_conta(request):
+    if not request.user.is_authenticated:
+        return redirect("perfil")
+
+    user = request.user
+    auth.logout(request)
+    user.delete()
+
+    return redirect("/")
+
+
+# ===================== ATUALIZAR PERFIL =====================
+@login_required
+def atualizar_perfil(request):
+    if request.method == "POST":
+        user = request.user
+        user.first_name = request.POST.get("nome")
+        user.email = request.POST.get("email")
+        user.username = request.POST.get("email")  # mantém login pelo email
+        user.save()
+
+        # garante que SEMPRE exista um perfil para esse usuário
+        perfil, created = Perfil.objects.get_or_create(user=user)
+
+        perfil.telefone = request.POST.get("telefone")
+        perfil.cep = request.POST.get("cep")
+        perfil.endereco = request.POST.get("endereco")
+        perfil.complemento = request.POST.get("complemento")
+        perfil.save()
+
+        messages.success(request, "Perfil atualizado com sucesso!")
+        return redirect("perfil")
