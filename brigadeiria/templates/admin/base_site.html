@@ -7,14 +7,23 @@
 
 {% block extrahead %}
 <script src="{% static 'admin_custom/admin_expire.js' %}"></script>
-
 <script>
-    // SEMPRE como STRING, para evitar erro de parse no JS
     window.ADMIN_TIME_REMAINING = "{{ request.admin_time_remaining|default:'0' }}";
+    window.ADMIN_SESSION_DURATION = "{{ ADMIN_SESSION_DURATION|default:'0' }}";
 </script>
 {% endblock %}
 
 {% block footer %}
     {{ block.super }}
-    <div id="admin-expire-alert"></div>
+
+    {% if request.user.is_authenticated and request.user.is_staff %}
+    <div id="admin-expire-alert" class="expire-box">
+        <span id="expire-text"></span>
+
+        <div class="expire-actions">
+            <button id="btn-renew" class="renew">Continuar logado</button>
+            <button id="btn-logout" class="logout">Sair agora</button>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}

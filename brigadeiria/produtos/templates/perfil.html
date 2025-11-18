@@ -26,9 +26,19 @@
     {% if user.is_authenticated %}
       <!-- 🔹 Se o usuário estiver logado -->
       <section class="box-logged">
-        <h3 class="titulo">Olá, {{ user.first_name|default:user.username }} 👋</h3>
-        <p>Você já está conectado à sua conta.</p>
-        <button id="logoutBtn" class="logout-btn">Sair</button>
+  <h3 class="titulo">Olá, {{ user.first_name|default:user.username }} 👋</h3>
+  <form class="edit-form" action="{% url 'atualizar_perfil' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="nome" value="{{ user.first_name }}" placeholder="Nome completo" required>
+    <input type="email" name="email" value="{{ user.email }}" placeholder="E-mail" required>
+    <input type="tel" name="telefone" value="{{ user.perfil.telefone }}" placeholder="Telefone">
+    <p class="end">Endereço</p>
+    <input type="text" name="cep" value="{{ user.perfil.cep }}" placeholder="CEP">
+    <input type="text" name="endereco" value="{{ user.perfil.endereco }}" placeholder="Endereço">
+    <input type="text" name="complemento" value="{{ user.perfil.complemento }}" placeholder="Complemento">
+    <button type="submit">Salvar alterações</button>
+  </form>
+    <button id="logoutBtn" class="logout-btn">Sair</button>
       </section>
 
       <!-- Modal de confirmação -->
@@ -55,7 +65,7 @@
             <input type="password" name="senha" placeholder="Senha" required>
             <button type="submit"> Entrar </button>
 
-            <p class="texto-mudar"> Não tem conta? <a href="#" id="btn-register"> Cadastre-se </a></p>
+            <p class="texto-mudar"> Não tem conta? <a href="#" id="btnToRegister"> Cadastre-se </a></p>
           </form>
         </div>
       </section>
@@ -79,7 +89,7 @@
             <input type="text" name="complemento" placeholder="Complemento">
             <button type="submit"> Cadastrar-se </button>
 
-            <p class="texto-mudar"> Já tem conta? <a href="#" id="btn-login"> Login </a></p>
+            <p class="texto-mudar"> Já tem conta? <a href="#" id="btnToLogin"> Login </a></p>
           </form>
         </div>
       </section>

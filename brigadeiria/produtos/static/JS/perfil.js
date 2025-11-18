@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loginBox = document.getElementById("loginSection");
   const registerBox = document.getElementById("registerSection");
-  const btnToRegister = document.getElementById("btnToRegister");
+  const btnToRegister = document.getElementById("btn-register");
   const btnToLogin = document.getElementById("btn-login");
 
   // === LOGIN / CADASTRO ===
@@ -90,9 +90,3 @@ if (registerForm) {
     // 🔹 se as senhas forem iguais, aí sim envia normalmente
   });
 }
-
-
-
-
-
-
