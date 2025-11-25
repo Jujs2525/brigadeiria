@@ -78,6 +78,40 @@ document.addEventListener('DOMContentLoaded', async () => {
       location.reload();
     });
   }
+
+  // Finalizar via WhatsApp (somente se o usuário estiver logado)
+  const checkoutBtn = document.getElementById('checkout-btn');
+  if (checkoutBtn) {
+    checkoutBtn.onclick = async () => {
+      const logado = await verificarLogin();  // Verifica se o usuário está logado
+
+      if (!logado) {
+        // Se o usuário não estiver logado, avisa ou redireciona
+        alert("Você precisa estar logado para finalizar o pedido.");
+        window.location.href = '/logar/';  // Redireciona para a página de login (ajuste conforme sua rota de login)
+        return;  // Impede o envio do pedido via WhatsApp
+      }
+
+      // Se o usuário estiver logado, prossegue com o envio via WhatsApp
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let total = 0;
+      let mensagem = 'Olá! Segue meu pedido:\n\n';
+
+      // Criar a mensagem do pedido com os itens
+      cart.forEach(prod => {
+        const preco = precoPorCategoria(prod.category);
+        const subtotal = preco * (prod.quantity || 25);
+        total += subtotal;
+        mensagem += `- ${prod.name} (${prod.category}): ${prod.quantity || 25} unid. = R$ ${subtotal.toFixed(2)}\n`;
+      });
+
+      mensagem += `\n*Total: R$ ${total.toFixed(2)}*`;  // Total do pedido
+
+      const url = `https://wa.me/5515981453091?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');  // Abre o WhatsApp com a mensagem do pedido
+      localStorage.removeItem('cart');  // Limpar o carrinho local após finalizar a compra
+    };
+  }
 });
 
 // Função para calcular o preço por categoria
@@ -175,28 +209,5 @@ function carregarCarrinho(container, totalEl, checkoutBtn) {
     });
     totalEl.textContent = `R$ ${novoTotal.toFixed(2)}`;
     total = novoTotal;
-  }
-
-  // Finalizar via WhatsApp
-  if (checkoutBtn) {
-    checkoutBtn.onclick = async () => {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      let total = 0;
-      let mensagem = 'Olá! Segue meu pedido:\n\n';
-
-      // Criar a mensagem do pedido com os itens
-      cart.forEach(prod => {
-        const preco = precoPorCategoria(prod.category);
-        const subtotal = preco * (prod.quantity || 25);
-        total += subtotal;
-        mensagem += `- ${prod.name} (${prod.category}): ${prod.quantity || 25} unid. = R$ ${subtotal.toFixed(2)}\n`;
-      });
-
-      mensagem += `\n*Total: R$ ${total.toFixed(2)}*`;  // Total do pedido
-
-      const url = `https://wa.me/5515981453091?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, '_blank');  // Abre o WhatsApp com a mensagem do pedido
-      localStorage.removeItem('cart');  // Limpar o carrinho local após finalizar a compra
-    };
   }
 }
