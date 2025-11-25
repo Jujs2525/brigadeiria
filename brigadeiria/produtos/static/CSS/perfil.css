@@ -12,6 +12,7 @@
   padding: 35px 28px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.12);
   animation: fadeIn 0.3s ease;
+  margin-top: 250px;
 }
 
 /* Animação */
@@ -174,5 +175,4 @@ button:hover {
     from { transform: scale(0.8); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
-
 

@@ -58,10 +58,4 @@ document.addEventListener("DOMContentLoaded", function () {
       resultsBox.style.display = "none";
     }
   });
-
-  ScrollReveal().reveal('#sobrenos_texto',{
-    origin: 'right',
-    duration: 2000,
-    distance: '20%'
-  })
 });

@@ -327,3 +327,27 @@ def atualizar_perfil(request):
 
     messages.success(request, "Perfil atualizado com sucesso!")
     return redirect("perfil")
+
+# ===================== API CARRINHO =====================
+@csrf_exempt
+@login_required
+def api_carrinho(request):
+    user = request.user  # Usuário logado
+
+    if request.method == "GET":
+        # Retorna o carrinho do usuário do servidor
+        carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
+        return JsonResponse(carrinho.dados, safe=False)
+
+    elif request.method == "POST":
+        # Salva o carrinho no servidor
+        try:
+            body = json.loads(request.body)  # Recebe os dados do carrinho
+            carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
+            carrinho.dados = body  # Armazena os dados
+            carrinho.save()
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    return JsonResponse({'error': 'Método não permitido'}, status=405)
