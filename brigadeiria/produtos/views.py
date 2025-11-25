@@ -310,14 +310,19 @@ def atualizar_perfil(request):
 
     user.save()
 
+    # Atualizando o perfil
     perfil, _ = Perfil.objects.get_or_create(user=user)
+    
+    # Debugging: Verifique os dados sendo capturados
+    print(f"Telefone: {request.POST.get('telefoneEdit')}")
+    print(f"Número: {request.POST.get('numeroEdit')}")
+    
     perfil.telefone = request.POST.get("telefoneEdit")
     perfil.cep = request.POST.get("cepEdit")
     perfil.endereco = request.POST.get("enderecoEdit")
     perfil.numero = request.POST.get("numeroEdit")
     perfil.complemento = request.POST.get("complementoEdit")
-    # se tiver campo numero no perfil:
-    # perfil.numero = request.POST.get("numeroEdit")
+    
     perfil.save()
 
     messages.success(request, "Perfil atualizado com sucesso!")
