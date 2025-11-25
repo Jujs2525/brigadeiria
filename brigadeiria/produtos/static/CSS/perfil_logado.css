@@ -1,93 +1,102 @@
-/* === BOX PRINCIPAL === */
+/* ======================================
+   CONTAINER PRINCIPAL DO PERFIL LOGADO
+====================================== */
 .perfil-logado-box {
-    background: #fff;
-    padding: 30px;
-    border-radius: 18px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    background: #ffffff;
+    padding: 32px 28px;
+    border-radius: 20px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.15);
     max-width: 650px;
+    width: 100%;
     margin: 40px auto;
+    animation: fadeIn 0.3s ease;
 }
 
-/* === TÍTULO === */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* TÍTULO */
 .perfil-titulo {
     text-align: center;
-    color: var(--brown);
-    font-size: 1.8rem;
+    color: #70482A;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    font-family: 'Vidaloka', serif;
 }
 
-/* === BLOCOS (view e edit) === */
-.view-box, .edit-box {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-/* === LINHAS DE INFO === */
-.linha-info {
-    background: #f9eee0;
-    padding: 12px 16px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
+/* MODO DE VISUALIZAÇÃO & EDIÇÃO */
+#viewMode p,
+#editMode p {
+    margin: 5px 0;
     color: #70482A;
     font-size: 1rem;
 }
 
-.label {
+.end {
     font-weight: bold;
-}
-
-.subtitulo {
     font-size: 1.2rem;
-    color: var(--brown-2);
-    margin-top: 15px;
-    font-weight: 700;
-    text-align: left;
+    margin-top: 18px;
+    color: #b97949;
 }
 
-/* === INPUTS === */
-.edit-box input {
+/*
+    AQUI ESTÁ A CORREÇÃO:
+    REMOVIDO display:none!important
+*/
+#editMode {
+    display: none; /* sem important */
+    flex-direction: column;
+    width: 100%;
+}
+
+/* INPUTS */
+#editMode input {
+    width: 100%;
     padding: 12px 15px;
+    margin: 10px 0;
     background: #fff;
-    border: 1.5px solid #c9c9c9;
+    border: 1.5px solid #c8b299;
     border-radius: 12px;
     font-size: 1rem;
+    color: #70482A;
 }
 
-.edit-box input:focus {
-    border-color: var(--brown-2);
+#editMode input:focus {
+    border-color: #b97949;
     outline: none;
-    box-shadow: 0 0 0 2px rgba(185,121,73,0.3);
+    box-shadow: 0 0 0 2px rgba(185,121,73,0.25);
 }
 
-/* === BOTÕES === */
-.btn-editar, .btn-salvar, .btn-cancelar {
+/* BOTÕES PRINCIPAIS */
+.btn-editar,
+.btn-salvar,
+.btn-cancelar {
     width: 100%;
     padding: 14px;
     border-radius: 22px;
     font-weight: 700;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 12px;
+    transition: 0.2s;
 }
 
 .btn-editar {
-    background: var(--pink);
-    color: var(--brown);
+    background: #FEECD6;
+    color: #70482A;
 }
-
 .btn-editar:hover {
-    background: #eeb9b9;
+    background: #f7dfc5;
 }
 
 .btn-salvar {
     background: #b97949;
-    color: white;
+    color: #fff;
 }
-
 .btn-salvar:hover {
-    background: #a5663c;
+    background: #a56b3f;
 }
 
 .btn-cancelar {
@@ -95,13 +104,30 @@
     border: 2px solid #bb4f4f;
     color: #bb4f4f;
 }
-
 .btn-cancelar:hover {
     background: #bb4f4f;
-    color: white;
+    color: #fff;
 }
 
-/* BOTÕES PADRÃO */
 .perfil-acoes {
-    margin-top: 20px;
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.logout-btn {
+    background: #ffe1e1;
+    color: #a34242;
+}
+.logout-btn:hover {
+    background: #ffcccc;
+}
+
+.delete-btn {
+    background: #ffb3b3;
+    color: #9e2424;
+}
+.delete-btn:hover {
+    background: #ff9999;
 }

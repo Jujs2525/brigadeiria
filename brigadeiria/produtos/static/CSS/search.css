@@ -1,113 +1,88 @@
-/* Container geral */
+/* Wrapper */
 .search-wrapper {
-  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 420px;
   margin: 0 auto;
-  font-family: 'Voces', sans-serif;
-  transform: translateX(-10%); /* desloca a barra de pesquisa para a esquerda */
-  z-index: 10000;
+  position: relative;
 }
 
-/* Barra de pesquisa */
+/* Barra igual da Home */
 .search {
   display: flex;
   align-items: center;
-  background: #70482A;
-  border: 1px solid rgb(128, 105, 63);
-  border-radius: 12px;
-  padding: 8px 12px;
+  background: #5c3b1e; /* MESMA cor da Home */
+  border-radius: 25px;
+  padding: 8px 18px;
   width: 100%;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
 }
 
+/* SEARCH BAR */
+/* Remove o fundo branco padrão do input[type=search] nos navegadores */
+input[type="search"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #f7e7cf;
+}
+
+/* Ícone */
 .search .material-symbols-outlined {
-  color: #ffedbd;
-  font-size: 20px;
-  margin-right: 6px;
+  color: #f7e7cf; /* MESMA cor da Home */
+  font-size: 22px;
+  margin-right: 8px;
 }
 
+/* Input */
 .searchInput {
   flex: 1;
   border: none;
   outline: none;
-  font-size: 0.95rem;
-  color: #ffedbd;
-  background: transparent;
+  background: rgba(0, 0, 0, 0);
+  font-size: 1rem;
+  color: #f7e7cf; /* MESMA cor da Home */
 }
 
 .searchInput::placeholder {
-  color: #ffedbd;
-}
-
-/* muda a cor de seleção de texto no input */
-.searchInput::selection {
-  background: #ffedbd; /* cor de fundo ao selecionar o texto */
-  color: #70482A;      /* cor da letra selecionada */
+  color: #5c3b1e; 
 }
 
 /* Caixa de resultados */
 .results-box {
   position: absolute;
-  top: 46px; /* logo abaixo da barra */
+  top: 45px;
   width: 100%;
-  background: var(--brown);
-  border: 1px solid #ffedbd;
+  background: #5c3b1e;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  padding: 10px 14px;
-  display: none; /* começa escondido */
-  z-index: 9999;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: none;
+  z-index: 999;
 }
 
-.results-box p {
-  color: #70482A;
-}
-
-/* Deixa o botão “X” da barra de busca com cor personalizada */
-.searchInput::-webkit-search-cancel-button {
-  -webkit-appearance: none;   /* remove o botão padrão azul */
-  height: 16px;
-  width: 16px;
-  cursor: pointer;
-
-  /* cria o mesmo “X” porém com a cor do tema */
-  background-color: #ffedbd; /* define a cor do “X” */
-  mask: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2370482A" stroke-width="3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>') center/contain no-repeat;
-}
-
-/* Cada item */
+/* Items */
 .result-item {
   padding: 8px 0;
-  border-bottom: 1px solid #ffedbd;
   cursor: pointer;
-}
-
-.result-item:last-child {
-  border-bottom: none;
 }
 
 .result-item h3 {
   margin: 0;
+  color: #5c3b1e;
   font-size: 1rem;
-  color: #ffedbd;
 }
 
 .result-item p {
   margin: 2px 0 0;
-  font-size: 0.85rem;
-  color: #fff5da;
+  color: #7a5a45;
+  font-size: .85rem;
 }
 
-/* Hover */
 .result-item:hover {
-  background: #70482A;
-  border-radius: 8px;
-}
-
-.result-item:hover h3,
-.result-item:hover p {
-  color: #70482A;
+  background: rgba(0,0,0,0.05);
+  border-radius: 6px;
 }

@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth, messages
-from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 import json
 
 from .models import (
@@ -121,6 +122,8 @@ def perfil(request):
         Perfil.objects.get_or_create(user=request.user)
     return render(request, "perfil.html")
 
+
+# ===================== REGISTRO + VERIFICAÇÃO DE EMAIL =====================
 def registrar(request):
     if request.method == "POST":
         nome = request.POST.get("nome", "").strip()
@@ -128,6 +131,7 @@ def registrar(request):
         senha = request.POST.get("senha", "")
         confirmar = request.POST.get("confirmarSenha", "")
 
+        # validações básicas
         if not nome or not email or not senha or not confirmar:
             messages.error(request, "Preencha todos os campos.")
             return redirect("perfil")
@@ -136,87 +140,114 @@ def registrar(request):
             messages.error(request, "As senhas não coincidem.")
             return redirect("perfil")
 
-        if auth.models.User.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             messages.warning(request, "E-mail já cadastrado.")
             return redirect("perfil")
 
-        user = auth.models.User.objects.create_user(
+        # cria usuário inativo
+        user = User.objects.create_user(
             username=email,
             email=email,
             password=senha,
-            first_name=nome
+            first_name=nome,
         )
         user.is_active = False
         user.save()
 
+        # cria/atualiza perfil com dados do cadastro
+        perfil, _ = Perfil.objects.get_or_create(user=user)
+        perfil.telefone = request.POST.get("telefone")
+        perfil.cep = request.POST.get("cep")
+        perfil.endereco = request.POST.get("endereco")
+        perfil.numero = request.POST.get("num")
+        perfil.complemento = request.POST.get("complemento")
+        # se existir campo numero no Perfil, descomenta:
+        # perfil.numero = request.POST.get("num")
+        perfil.save()
+
+        # gera/verifica código
         verif, _ = EmailVerification.objects.get_or_create(user=user)
         verif.generate_code()
         send_verification_email(user, verif.code)
 
-        messages.success(request, "Cadastro realizado! Verifique seu e-mail.")
+        messages.success(request, "Cadastro realizado! Verifique seu e-mail para ativar a conta.")
         return redirect(f"/verificar_email/?email={email}")
 
-    return render(request, "perfil.html")
+    # se não for POST, volta pro perfil
+    return redirect("perfil")
 
 
 @csrf_exempt
 def verificar_email(request):
-    email = request.GET.get("email", "")
+    # pega o email tanto no GET quanto no POST
     if request.method == "POST":
-        codigo = request.POST.get("codigo")
+        email = request.POST.get("email", "").strip().lower()
+    else:
+        email = request.GET.get("email", "").strip().lower()
+
+    if request.method == "POST":
+        codigo = request.POST.get("codigo", "").strip()
 
         try:
-            user = auth.models.User.objects.get(email=email)
+            user = User.objects.get(email=email)
             verif = EmailVerification.objects.get(user=user)
-
+        except (User.DoesNotExist, EmailVerification.DoesNotExist):
+            messages.error(request, "Usuário não encontrado.")
+        else:
             if verif.code == codigo:
                 verif.is_verified = True
                 verif.save()
+
                 user.is_active = True
                 user.save()
-                messages.success(request, "E-mail verificado!")
+
+                messages.success(request, "E-mail verificado com sucesso! Você já pode acessar.")
                 return redirect("perfil")
             else:
-                messages.error(request, "Código incorreto.")
-        except:
-            messages.error(request, "Usuário não encontrado.")
+                messages.error(request, "Código incorreto. Tente novamente.")
 
     return render(request, "verificar_email.html", {"email": email})
 
 
 def reenviar_codigo(request):
-    email = request.GET.get("email")
+    email = request.GET.get("email", "").strip().lower()
+
     try:
-        user = auth.models.User.objects.get(email=email)
+        user = User.objects.get(email=email)
         verif, _ = EmailVerification.objects.get_or_create(user=user)
         verif.generate_code()
         send_verification_email(user, verif.code)
-        messages.success(request, "Código reenviado!")
-    except:
+        messages.success(request, "Código reenviado para seu e-mail!")
+    except User.DoesNotExist:
         messages.error(request, "Usuário não encontrado.")
 
     return redirect(f"/verificar_email/?email={email}")
 
 
+# ===================== LOGIN / LOGOUT =====================
 def logar(request):
     if request.method == "POST":
-        email = request.POST["email"]
-        senha = request.POST["senha"]
-        user = auth.authenticate(username=email, password=senha)
+        email = request.POST.get("email", "").strip().lower()
+        senha = request.POST.get("senha", "")
+
+        user = authenticate(username=email, password=senha)
 
         if user is not None:
             if not user.is_active:
-                messages.warning(request, "Verifique seu e-mail antes.")
+                messages.warning(request, "Verifique seu e-mail e ative sua conta antes de entrar.")
                 return redirect("perfil")
-            auth.login(request, user)
+
+            login(request, user)
             return redirect("cardapio")
         else:
             messages.error(request, "Credenciais inválidas.")
             return redirect("perfil")
 
+    return redirect("perfil")
+
 
 def sair(request):
-    auth.logout(request)
+    logout(request)
     return redirect("/")
 
 
@@ -251,35 +282,43 @@ def check_auth(request):
 
 
 # ===================== EXCLUIR CONTA =====================
+@login_required
 def excluir_conta(request):
-    if not request.user.is_authenticated:
-        return redirect("perfil")
-
     user = request.user
-    auth.logout(request)
+    logout(request)
     user.delete()
-
     return redirect("/")
 
 
 # ===================== ATUALIZAR PERFIL =====================
 @login_required
 def atualizar_perfil(request):
-    if request.method == "POST":
-        user = request.user
-        user.first_name = request.POST.get("nome")
-        user.email = request.POST.get("email")
-        user.username = request.POST.get("email")  # mantém login pelo email
-        user.save()
-
-        # garante que SEMPRE exista um perfil para esse usuário
-        perfil, created = Perfil.objects.get_or_create(user=user)
-
-        perfil.telefone = request.POST.get("telefone")
-        perfil.cep = request.POST.get("cep")
-        perfil.endereco = request.POST.get("endereco")
-        perfil.complemento = request.POST.get("complemento")
-        perfil.save()
-
-        messages.success(request, "Perfil atualizado com sucesso!")
+    if request.method != "POST":
         return redirect("perfil")
+
+    user = request.user
+
+    # campos vindos do form de edição
+    nome = request.POST.get("nomeEdit", "").strip()
+    email = request.POST.get("emailEdit", "").strip().lower()
+
+    if nome:
+        user.first_name = nome
+    if email:
+        user.email = email
+        user.username = email  # mantém login pelo email
+
+    user.save()
+
+    perfil, _ = Perfil.objects.get_or_create(user=user)
+    perfil.telefone = request.POST.get("telefoneEdit")
+    perfil.cep = request.POST.get("cepEdit")
+    perfil.endereco = request.POST.get("enderecoEdit")
+    perfil.numero = request.POST.get("numeroEdit")
+    perfil.complemento = request.POST.get("complementoEdit")
+    # se tiver campo numero no perfil:
+    # perfil.numero = request.POST.get("numeroEdit")
+    perfil.save()
+
+    messages.success(request, "Perfil atualizado com sucesso!")
+    return redirect("perfil")

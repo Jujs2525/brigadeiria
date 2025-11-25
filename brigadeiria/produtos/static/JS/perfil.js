@@ -1,28 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // ====== CEP AUTOMÁTICO ======
-    const cepInput = document.getElementById("cep");
-    const enderecoInput = document.getElementById("endereco");
 
-    // Função para preencher o endereço automaticamente ao colocar o CEP
-    cepInput.addEventListener("blur", () => {
-        const cep = cepInput.value.replace(/\D/g, ""); // Remove qualquer não-dígito
+    /* EDITAR PERFIL */
+    const viewMode = document.getElementById("viewMode");
+    const editMode = document.getElementById("editMode");
+    const btnEditar = document.getElementById("btnEditarPerfil");
+    const btnCancelar = document.getElementById("btnCancelarEdicao");
 
-        if (cep.length === 8) {
-            // Realiza a consulta da API dos Correios para obter o endereço
-            fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.erro) {
-                        enderecoInput.value = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
-                    } else {
-                        alert("CEP não encontrado.");
-                    }
-                })
-                .catch(error => alert("Erro ao buscar CEP: " + error));
-        }
-    });
+    if (viewMode && editMode) {
+        editMode.style.display = "none"; // começa escondido
+        viewMode.style.display = "block";
+    }
 
-    // ====== LOGIN / CADASTRO ======
+    if (btnEditar) {
+        btnEditar.addEventListener("click", () => {
+            viewMode.style.display = "none";
+            editMode.style.display = "flex";   // Modo de edição em flex
+        });
+    }
+
+    if (btnCancelar) {
+        btnCancelar.addEventListener("click", () => {
+            editMode.style.display = "none";
+            viewMode.style.display = "block";  // Retorna ao modo de visualização
+        });
+    }
+
+    /* ============================
+       LOGIN / CADASTRO
+    ============================ */
     const loginBox = document.getElementById("loginSection");
     const registerBox = document.getElementById("registerSection");
     const btnToRegister = document.getElementById("btnToRegister");
@@ -40,14 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (btnToRegister) {
-            btnToRegister.addEventListener("click", (e) => {
+            btnToRegister.addEventListener("click", e => {
                 e.preventDefault();
                 showRegister();
             });
         }
 
         if (btnToLogin) {
-            btnToLogin.addEventListener("click", (e) => {
+            btnToLogin.addEventListener("click", e => {
                 e.preventDefault();
                 showLogin();
             });
@@ -56,11 +61,12 @@ document.addEventListener("DOMContentLoaded", () => {
         showLogin();
     }
 
-    // ====== LOGOUT MODAL ======
+    /* ============================
+       LOGOUT
+    ============================ */
     const logoutBtn = document.getElementById("logoutBtn");
     const logoutModal = document.getElementById("logoutModal");
     const cancelLogout = document.getElementById("cancelLogout");
-    const confirmLogout = document.getElementById("confirmLogout");
 
     if (logoutBtn && logoutModal) {
         logoutBtn.addEventListener("click", () => {
@@ -68,76 +74,110 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (cancelLogout && logoutModal) {
+    if (cancelLogout) {
         cancelLogout.addEventListener("click", () => {
             logoutModal.classList.remove("show");
         });
     }
 
-    if (confirmLogout) {
-        confirmLogout.addEventListener("click", (e) => {
-            e.preventDefault();
-            localStorage.removeItem("cart");
-            window.location.href = "/sair/";
-        });
-    }
-
-    // ====== DELETAR CONTA ======
+    /* ============================
+       DELETE ACCOUNT
+    ============================ */
     const deleteBtn = document.getElementById("deleteAccountBtn");
-    if (deleteBtn) {
+    const deleteModal = document.getElementById("deleteModal");
+    const cancelDelete = document.getElementById("cancelDelete");
+
+    if (deleteBtn && deleteModal) {
         deleteBtn.addEventListener("click", () => {
-            if (confirm("Tem certeza que deseja excluir sua conta? Isso não poderá ser desfeito.")) {
-                window.location.href = "/excluir-conta/";
+            deleteModal.classList.add("show");
+        });
+    }
+
+    if (cancelDelete) {
+        cancelDelete.addEventListener("click", () => {
+            deleteModal.classList.remove("show");
+        });
+    }
+
+    /* ============================
+       FUNÇÃO GENÉRICA DE BUSCA
+    ============================ */
+    function buscarCEP(cep, callback) {
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(r => r.json())
+            .then(data => {
+                if (!data.erro) {
+                    callback(null, data);
+                } else {
+                    callback("CEP inválido");
+                }
+            })
+            .catch(() => {
+                callback("Falha ao conectar ao ViaCEP");
+            });
+    }
+
+    /* ============================
+        CEP — CADASTRO
+    ============================ */
+    const cepCadastro = document.getElementById("cep");
+    const enderecoCadastro = document.getElementById("endereco");
+
+    if (cepCadastro) {
+        cepCadastro.addEventListener("blur", () => {
+            const cep = cepCadastro.value.replace(/\D/g, "");
+            if (cep.length === 8) {
+                buscarCEP(cep, (erro, data) => {
+                    if (!erro) {
+                        enderecoCadastro.value =
+                            `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+                    }
+                });
             }
         });
     }
 
-    // ====== VALIDAR CONFIRMAÇÃO DE SENHA ======
-    const registerForm = document.querySelector("#registerSection form");
+    /* ============================
+        CEP — EDITAR PERFIL
+    ============================ */
+    const cepEdit = document.getElementById("cepEdit");
+    const enderecoEdit = document.getElementById("enderecoEdit");
 
-    if (registerForm) {
-        registerForm.addEventListener("submit", function (e) {
-            const senha = registerForm.querySelector("input[name='senha']");
-            const confirmar = registerForm.querySelector("input[name='confirmarSenha']");
-
-            // remove mensagem antiga
-            const oldMsg = registerForm.querySelector(".erro-senha");
-            if (oldMsg) oldMsg.remove();
-
-            // impede envio se forem diferentes
-            if (senha.value.trim() !== confirmar.value.trim()) {
-                e.preventDefault();
-                const msg = document.createElement("p");
-                msg.textContent = "⚠️ As senhas não coincidem.";
-                msg.classList.add("erro-senha");
-                msg.style.color = "#d33";
-                msg.style.marginTop = "5px";
-                msg.style.fontSize = "0.9rem";
-                confirmar.insertAdjacentElement("afterend", msg);
-                confirmar.focus();
-                return;
+    if (cepEdit) {
+        cepEdit.addEventListener("blur", () => {
+            const cep = cepEdit.value.replace(/\D/g, "");
+            if (cep.length === 8) {
+                buscarCEP(cep, (erro, data) => {
+                    if (!erro) {
+                        enderecoEdit.value =
+                            `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+                    }
+                });
             }
         });
     }
 
-    // ====== MODOS DE EDIÇÃO ======
-    const btnEditar = document.getElementById("btnEditarPerfil");
-    const btnCancelar = document.getElementById("btnCancelarEdicao");
+    // Seleciona todos os inputs do formulário de cadastro
+    const inputs = document.querySelectorAll("#registerSection form input");
 
-    const viewMode = document.getElementById("viewMode");
-    const editMode = document.getElementById("editMode");
+    // Para cada input, adicionamos o comportamento desejado
+    inputs.forEach((input, index) => {
+        input.addEventListener("keydown", function (e) {
 
-    if (btnEditar) {
-        btnEditar.addEventListener("click", () => {
-            viewMode.style.display = "none";
-            editMode.style.display = "flex";
+            // Se apertou ENTER
+            if (e.key === "Enter") {
+                e.preventDefault(); // impede submit automático
+
+                const nextInput = inputs[index + 1];
+
+                // Se existe um próximo input → foca nele
+                if (nextInput) {
+                    nextInput.focus();
+                }
+                // Se NÃO existe (último input) → não faz nada
+            }
         });
-    }
+    });
 
-    if (btnCancelar) {
-        btnCancelar.addEventListener("click", () => {
-            editMode.style.display = "none";
-            viewMode.style.display = "block";
-        });
-    }
+
 });

@@ -13,13 +13,16 @@
 
     <form method="POST" class="verificar-form">
       {% csrf_token %}
+
+      <!-- EMAIL REAL usado no POST -->
+      <input type="hidden" name="email" value="{{ email }}">
+
+      <!-- Campo apenas visual -->
       <div class="input-group">
-        <input 
-          type="email" 
-          name="email" 
-          value="{{ email|default:request.GET.email }}" 
-          readonly 
-          required
+        <input
+          type="email"
+          value="{{ email }}"
+          readonly
         >
       </div>
 
