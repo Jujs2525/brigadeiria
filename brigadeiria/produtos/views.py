@@ -58,9 +58,7 @@ def cardapio(request):
 
 
 def carrinho(request):
-    itens_carrinho = Carrinho.objects.all()
-    total = sum(item.produto.preco * item.quantidade for item in itens_carrinho)
-    return render(request, 'carrinho.html', {'itens_carrinho': itens_carrinho, 'total': total})
+    return render(request, 'carrinho.html')
 
 
 @login_required(login_url='perfil')
@@ -82,27 +80,6 @@ def adicionar_ao_carrinho(request, produto_id):
         messages.success(request, f'{produto.nome} adicionado ao carrinho!')
         return redirect('carrinho')
 
-
-@csrf_exempt
-@login_required
-def api_carrinho(request):
-    user = request.user
-
-    if request.method == "GET":
-        carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
-        return JsonResponse(carrinho.dados, safe=False)
-
-    elif request.method == "POST":
-        try:
-            body = json.loads(request.body)
-            carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
-            carrinho.dados = body
-            carrinho.save()
-            return JsonResponse({'success': True})
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
-
-    return JsonResponse({'error': 'Método não permitido'}, status=405)
 
 
 # ===================== LOGIN CHECK =====================
@@ -238,6 +215,18 @@ def logar(request):
                 return redirect("perfil")
 
             login(request, user)
+
+            # 🔥 PEGAR CARRINHO LOCAL DO POST (ENVIADO PELO JS)
+            local_cart = request.POST.get("local_cart")
+            if local_cart:
+                try:
+                    data = json.loads(local_cart)
+                    carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
+                    carrinho.dados = data
+                    carrinho.save()
+                except:
+                    pass
+
             return redirect("cardapio")
         else:
             messages.error(request, "Credenciais inválidas.")
@@ -246,8 +235,13 @@ def logar(request):
     return redirect("perfil")
 
 
+
 def sair(request):
+    # Remove sessão COMPLETA do Django
+    request.session.flush()
     logout(request)
+
+    # Redirecionar normalmente
     return redirect("/")
 
 
@@ -332,22 +326,29 @@ def atualizar_perfil(request):
 @csrf_exempt
 @login_required
 def api_carrinho(request):
-    user = request.user  # Usuário logado
+    user = request.user  
 
     if request.method == "GET":
-        # Retorna o carrinho do usuário do servidor
         carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
         return JsonResponse(carrinho.dados, safe=False)
 
     elif request.method == "POST":
-        # Salva o carrinho no servidor
         try:
-            body = json.loads(request.body)  # Recebe os dados do carrinho
+            body = json.loads(request.body)
             carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
-            carrinho.dados = body  # Armazena os dados
+            carrinho.dados = body
             carrinho.save()
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
+
+    elif request.method == "DELETE":
+        try:
+            carrinho, _ = CarrinhoTemporario.objects.get_or_create(usuario=user)
+            carrinho.dados = []   # <<< limpa o carrinho no servidor
+            carrinho.save()
+            return JsonResponse({'success': True})
+        except:
+            return JsonResponse({'error': "Erro ao limpar"}, status=400)
 
     return JsonResponse({'error': 'Método não permitido'}, status=405)

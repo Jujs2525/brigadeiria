@@ -127,6 +127,12 @@
 
     {% else %}
     <!-- CONTAINER LOGIN & CADASTRO -->
+
+    <script>
+        // Usuário entrando na tela de login → limpa carrinho local
+        localStorage.removeItem("cart");
+    </script>
+
     <div class="perfil-container-login">
         <!-- LOGIN -->
         <section class="box-login ativo" id="loginSection">
@@ -191,4 +197,18 @@
 <script src="{% static 'JS/perfil.js' %}"></script>
 <script src="{% static 'JS/search.js' %}"></script>
 <script src="https://unpkg.com/scrollreveal"></script>
+
+<!-- 🔥 LIMPAR CARRINHO AO SAIR -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const logout = document.getElementById("logoutBtn");
+    if (logout) {
+        logout.addEventListener("click", () => {
+            localStorage.removeItem("cart");
+        });
+    }
+});
+</script>
+
 {% endblock %}
+

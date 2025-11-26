@@ -114,6 +114,8 @@
   </script>
 
   <script src="{% static 'JS/search.js' %}"></script>
-  <script src="{% static 'JS/script.js' %}"></script>
+  {% now "U" as timestamp %}
+  <script src="{% static 'JS/script.js' %}?v={{ timestamp }}"></script>
+
 </body>
 </html>
