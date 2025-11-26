@@ -1,60 +1,86 @@
-/* ============================
-   SISTEMA UNIVERSAL DE ALERTAS
-============================ */
-
-.alerta-box {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99999;
-  padding: 12px 22px;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #4a2e19;
-  background: #f7e7cf;
-  border-left: 6px solid #d4a574;
-  box-shadow: 0 5px 18px rgba(0,0,0,0.15);
-  opacity: 0;
-  animation: alertaShow 0.4s forwards ease;
-  display: flex;
-  gap: 8px;
-  align-items: center;
+/* ================================
+   CONTAINER DO ALERTA
+================================ */
+.msg-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    animation: fadeIn 0.4s ease;
 }
 
-/* Tipos */
-.alerta-sucesso {
-  background: #e8ffe9;
-  border-left-color: #75c985;
-  color: #226b33;
+/* ================================
+   ESTILO BASE DO ALERTA
+================================ */
+.msg {
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    min-width: 280px;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
+
+    /* Entrada + saída automática */
+    animation: 
+        slideDown 0.4s ease,
+        fadeOut 0.5s ease 3.5s forwards;
 }
 
-.alerta-erro {
-  background: #ffe6e6;
-  border-left-color: #d9534f;
-  color: #922b29;
+/* ================================
+   TIPOS DE ALERTA
+================================ */
+
+/* Sucesso */
+.msg.success, .msg.sucesso {
+    background: #e8ffe8;
+    color: #2d7a2d;
+    border-left: 6px solid #2d7a2d;
 }
 
-.alerta-aviso {
-  background: #fff4d6;
-  border-left-color: #e7b44c;
-  color: #8a5c16;
+/* Erro */
+.msg.error, .msg.erro {
+    background: #ffe8e8;
+    color: #992828;
+    border-left: 6px solid #992828;
 }
 
-.alerta-info {
-  background: #e6f1ff;
-  border-left-color: #5a9bdc;
-  color: #204a7a;
+/* Aviso */
+.msg.warning, .msg.aviso {
+    background: #fff7e0;
+    color: #8a6d1c;
+    border-left: 6px solid #d6b74a;
 }
 
-/* Animações */
-@keyframes alertaShow {
-  from { opacity: 0; transform: translate(-50%, -20px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+/* Info */
+.msg.info {
+    background: #e8f2ff;
+    color: #285a9c;
+    border-left: 6px solid #285a9c;
 }
 
-@keyframes alertaHide {
-  from { opacity: 1; transform: translate(-50%, 0); }
-  to { opacity: 0; transform: translate(-50%, -20px); }
+/* ================================
+   ANIMAÇÕES
+================================ */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Animação de desaparecimento */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
 }

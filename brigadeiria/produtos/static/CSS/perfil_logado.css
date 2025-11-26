@@ -17,7 +17,9 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* TÍTULO */
+/* ======================================
+   TÍTULO
+====================================== */
 .perfil-titulo {
     text-align: center;
     color: #70482A;
@@ -27,32 +29,55 @@
     font-family: 'Vidaloka', serif;
 }
 
-/* MODO DE VISUALIZAÇÃO & EDIÇÃO */
-#viewMode p,
-#editMode p {
-    margin: 5px 0;
-    color: #70482A;
-    font-size: 1rem;
+/* ======================================
+   VIEW MODE (EXIBIÇÃO)
+====================================== */
+#viewMode {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.end {
-    font-weight: bold;
+/* Títulos das seções (Informações pessoais / Endereço) */
+.view-separator {
     font-size: 1.2rem;
-    margin-top: 18px;
+    font-weight: 700;
+    color: #70482A;
+    margin: 25px 0 10px 0;
+}
+
+/* CAIXA DE EXIBIÇÃO – IDÊNTICA AO EDIT MODE */
+.view-field {
+    width: 100%;
+    background: #fff;
+    border: 1.5px solid #c8b299;
+    border-radius: 12px;
+
+    padding: 12px 15px !important;
+    margin: 10px 0 !important;
+
+    font-size: 1rem;
+    color: #70482A;
+    line-height: 1.4rem;
+}
+
+.view-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
     color: #b97949;
 }
 
-/*
-    AQUI ESTÁ A CORREÇÃO:
-    REMOVIDO display:none!important
-*/
+/* ======================================
+   EDIT MODE (FORMULÁRIO)
+====================================== */
 #editMode {
-    display: none; /* sem important */
+    display: none;
     flex-direction: column;
     width: 100%;
 }
 
-/* INPUTS */
 #editMode input {
     width: 100%;
     padding: 12px 15px;
@@ -70,7 +95,9 @@
     box-shadow: 0 0 0 2px rgba(185,121,73,0.25);
 }
 
-/* BOTÕES PRINCIPAIS */
+/* ======================================
+   BOTÕES
+====================================== */
 .btn-editar,
 .btn-salvar,
 .btn-cancelar {
@@ -83,6 +110,7 @@
     transition: 0.2s;
 }
 
+/* Botão editar */
 .btn-editar {
     background: #FEECD6;
     color: #70482A;
@@ -91,6 +119,7 @@
     background: #f7dfc5;
 }
 
+/* Botão salvar */
 .btn-salvar {
     background: #b97949;
     color: #fff;
@@ -99,6 +128,7 @@
     background: #a56b3f;
 }
 
+/* Botão cancelar */
 .btn-cancelar {
     background: transparent;
     border: 2px solid #bb4f4f;
@@ -109,6 +139,9 @@
     color: #fff;
 }
 
+/* ======================================
+   AÇÕES (LOGOUT / DELETE)
+====================================== */
 .perfil-acoes {
     margin-top: 25px;
     display: flex;

@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>Verificar e-mail | Sayuri’s Brigadeiros</title>
   <link rel="stylesheet" href="{% static 'CSS/verificar.css' %}">
+  <link rel="stylesheet" href="{% static 'CSS/alerta.css' %}">
 </head>
 <body>
   <main class="verificar-container">
@@ -53,5 +54,6 @@
       Não recebeu o código? <a href="{% url 'reenviar_codigo' %}?email={{ email }}">Reenviar e-mail</a>
     </p>
   </main>
+
 </body>
 </html>

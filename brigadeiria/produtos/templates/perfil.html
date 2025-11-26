@@ -7,18 +7,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
 <link rel="stylesheet" href="{% static 'CSS/perfil.css' %}">
+
 {% if user.is_authenticated %}
-<link rel="stylesheet" href="{% static 'CSS/perfil_logado.css' %}">
-<link rel="stylesheet" href="{% static 'CSS/search.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/perfil_logado.css' %}">
+    <link rel="stylesheet" href="{% static 'CSS/search.css' %}">
 {% else %}
-<link rel="icon" href="{% static 'src/TCC.png' %}" type="image/png">
-<style>
-    header, footer { display: none !important; }
-</style>
+    <link rel="icon" href="{% static 'src/TCC.png' %}" type="image/png">
+    <style>
+        header, footer { display: none !important; }
+    </style>
 {% endif %}
 {% endblock %}
 
 {% block content %}
+
 {% if user.is_authenticated %}
 <!-- ================= HEADER ================= -->
 <header class="main-header">
@@ -26,6 +28,7 @@
         <a href="{% url 'index' %}" class="brand">
             <img src="{% static 'src/TCC.png' %}" alt="Logo Sayuri's Brigadeiros" class="fotologo">
         </a>
+
         <div class="search-wrapper">
             <div class="search" id="search">
                 <label for="searchInput">
@@ -35,8 +38,10 @@
             </div>
             <div class="results-box" id="resultsBox"></div>
         </div>
+
         <img src="{% static 'src/ICONS.png' %}" alt="Brigadeiro" class="brigadeiro">
     </div>
+
     <nav class="menu-opcoes">
         <ul class="container nav-list">
             <li><a href="{% url 'index' %}">PÁGINA INICIAL</a></li>
@@ -51,6 +56,7 @@
 
 <!-- ================= CONTAINER CENTRAL ================= -->
 <main class="perfil-wrapper">
+
     {% if messages %}
     <div class="msg-container">
         {% for message in messages %}
@@ -66,16 +72,49 @@
 
         <!-- MODO VISUALIZAÇÃO -->
         <div id="viewMode">
-            <p><strong>Nome:</strong> {{ user.first_name }}</p>
-            <p><strong>E-mail:</strong> {{ user.email }}</p>
-            <p><strong>Telefone:</strong> {{ user.perfil.telefone|default:"Não informado" }}</p>
-            <p class="end">Endereço</p>
-            <p><strong>CEP:</strong> {{ user.perfil.cep|default:"Não informado" }}</p>
-            <p><strong>Endereço:</strong> {{ user.perfil.endereco|default:"Não informado" }}</p>
-            <p><strong>Número:</strong> {{ user.perfil.numero|default:"Não informado" }}</p>
-            <p><strong>Complemento:</strong> {{ user.perfil.complemento|default:"Não informado" }}</p>
+
+            <p class="view-separator">Informações pessoais</p>
+
+            <div class="view-field">
+                <label>Nome</label>
+                {{ user.first_name }}
+            </div>
+
+            <div class="view-field">
+                <label>E-mail</label>
+                {{ user.email }}
+            </div>
+
+            <div class="view-field">
+                <label>Telefone</label>
+                {{ user.perfil.telefone|default:"Não informado" }}
+            </div>
+
+            <p class="view-separator">Endereço</p>
+
+            <div class="view-field">
+                <label>CEP</label>
+                {{ user.perfil.cep|default:"Não informado" }}
+            </div>
+
+            <div class="view-field">
+                <label>Endereço</label>
+                {{ user.perfil.endereco|default:"Não informado" }}
+            </div>
+
+            <div class="view-field">
+                <label>Número</label>
+                {{ user.perfil.numero|default:"Não informado" }}
+            </div>
+
+            <div class="view-field">
+                <label>Complemento</label>
+                {{ user.perfil.complemento|default:"Não informado" }}
+            </div>
+
             <button class="btn-editar" id="btnEditarPerfil">Editar Perfil</button>
         </div>
+
 
         <!-- MODO EDIÇÃO -->
         <form id="editMode" class="editar-form" action="{% url 'atualizar_perfil' %}" method="POST" style="display:none;">
@@ -84,20 +123,21 @@
             <input type="text" name="nomeEdit" value="{{ user.first_name }}" placeholder="Nome completo" required>
             <input type="email" name="emailEdit" value="{{ user.email }}" placeholder="E-mail" required>
             <input type="tel" name="telefoneEdit" value="{{ user.perfil.telefone }}" placeholder="Telefone">
+
             <p class="end">Endereço</p>
             <input type="text" id="cepEdit" name="cepEdit" value="{{ user.perfil.cep }}" placeholder="CEP">
             <input type="text" id="enderecoEdit" name="enderecoEdit" value="{{ user.perfil.endereco }}" placeholder="Endereço">
             <input type="number" id="numberEdit" name="numeroEdit" value="{{ user.perfil.numero }}" placeholder="Número">
             <input type="text" name="complementoEdit" value="{{ user.perfil.complemento }}" placeholder="Complemento">
+
             <button type="submit" class="btn-salvar">Salvar</button>
             <button type="button" id="btnCancelarEdicao" class="btn-cancelar">Cancelar</button>
         </form>
 
         <div class="perfil-acoes">
-            <button id="logoutBtn" href="{% url 'sair' %}" class="logout-btn">Sair</button>
+            <button id="logoutBtn" class="logout-btn">Sair</button>
             <button id="deleteAccountBtn" class="delete-btn">Excluir conta</button>
         </div>
-
     </section>
 
     <!-- MODAL LOGOUT -->
@@ -126,25 +166,29 @@
     </div>
 
     {% else %}
-    <!-- CONTAINER LOGIN & CADASTRO -->
+    <!-- ======== TELA DE LOGIN / CADASTRO ======== -->
 
     <script>
-        // Usuário entrando na tela de login → limpa carrinho local
         localStorage.removeItem("cart");
     </script>
 
     <div class="perfil-container-login">
+
         <!-- LOGIN -->
         <section class="box-login ativo" id="loginSection">
             <div class="form-content">
                 <h3 class="titulo-login">Login</h3>
                 <img src="{% static 'src/perfilicon.png' %}" class="icon-profile">
+
                 <form action="{% url 'logar' %}" method="POST">
                     {% csrf_token %}
                     <input type="email" name="email" placeholder="E-mail" required>
                     <input type="password" name="senha" placeholder="Senha" required>
                     <button type="submit">Entrar</button>
-                    <p class="texto-mudar">Não tem conta? <a href="#" id="btnToRegister">Cadastre-se</a></p>
+
+                    <p class="texto-mudar">Não tem conta?
+                        <a href="#" id="btnToRegister">Cadastre-se</a>
+                    </p>
                 </form>
             </div>
         </section>
@@ -154,6 +198,7 @@
             <div class="form-content">
                 <h3 class="titulo-register">Cadastre-se</h3>
                 <img src="{% static 'src/perfilicon.png' %}" class="icon-profile">
+
                 <form action="{% url 'registrar' %}" method="POST">
                     {% csrf_token %}
                     <input type="text" name="nome" placeholder="Nome completo" required>
@@ -161,16 +206,22 @@
                     <input type="tel" name="telefone" placeholder="Telefone" required>
                     <input type="password" name="senha" placeholder="Senha" required>
                     <input type="password" name="confirmarSenha" placeholder="Confirmar senha" required>
+
                     <p class="end">Endereço</p>
                     <input type="text" id="cep" name="cep" placeholder="CEP">
                     <input type="text" id="endereco" name="endereco" placeholder="Endereço">
                     <input type="number" id="numero" name="num" placeholder="Número">
                     <input type="text" name="complemento" placeholder="Complemento">
+
                     <button type="submit">Cadastrar</button>
-                    <p class="texto-mudar">Já tem conta? <a href="#" id="btnToLogin">Login</a></p>
+
+                    <p class="texto-mudar">Já tem conta?
+                        <a href="#" id="btnToLogin">Login</a>
+                    </p>
                 </form>
             </div>
         </section>
+
     </div>
     {% endif %}
 </main>
@@ -181,12 +232,14 @@
         <div class="footer-logo-esquerda">
             <img src="{% static 'src/TCC.png' %}" class="fotologo1">
         </div>
+
         <div class="redesSociais">
             <a href="mailto:sayurimo@gmail.com?subject=Contato"><img src="{% static 'src/e-mail.png' %}" class="icones"></a>
             <a href="tel:+5515981453091"><img src="{% static 'src/chamada-telefonica.png' %}" class="icones"></a>
             <a href="https://www.google.com/maps/search/?api=1&query=Rua+Alice+Garcia+da+Silva,+380"><img src="{% static 'src/localizacao.png' %}" class="icones"></a>
             <a href="https://www.instagram.com/sayuri_brigadeiros" target="_blank"><img src="{% static 'src/instagram.png' %}" class="icones"></a>
         </div>
+
         <div class="footer-logo-direita">
             <img src="{% static 'src/Logo Principal.png' %}" class="logo-direita">
         </div>
@@ -211,4 +264,3 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 {% endblock %}
-
