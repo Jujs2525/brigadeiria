@@ -1,61 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Vidaloka&display=swap');
 
-
 .sobrenos_slide {
-    background-color: #FBE6C4;
-    margin: 5rem auto;
-    display: flex;
-    padding: 2rem;
+  background-color: #FBE6C4;
+  margin: 5rem auto;
+  display: flex;
+  padding: 2rem;
 
-    max-width: 2000px; /* não passa disso */
-    width: 100%;       /* ocupa todo o espaço possível até o limite */
-    min-height: 500px; /* garante altura mínima */
-    justify-content: space-evenly;
-    align-items: center;
-
+  max-width: 2000px; /* não passa disso */
+  width: 100%; /* ocupa todo o espaço possível até o limite */
+  min-height: 500px; /* garante altura mínima */
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-.foto_sandra img{
-    width: auto;
-    height: 350px;
-    border-radius: 12px;
+.foto_sandra img {
+  width: auto;
+  height: 350px;
+  border-radius: 12px;
 }
 
 .escrita {
-    display: flex;
-    justify-content: center; /* centraliza no eixo horizontal */
-    align-items: flex-start; /* mantém no topo */
-    height: 100px; /* altura do bloco (ajuste se quiser) */
-    text-align: center;
-    font-size: 30px;
-    font-family: 'Vidaloka', serif;
-    color: #70482A;
-    letter-spacing: 2px;
+  display: flex;
+  justify-content: center; /* centraliza no eixo horizontal */
+  align-items: flex-start; /* mantém no topo */
+  height: 100px; /* altura do bloco (ajuste se quiser) */
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Vidaloka', serif;
+  color: #70482A;
+  letter-spacing: 2px;
 }
 
-
-.sobrenos{
-    white-space: pre-line;
-    font-size: 17px;
-    color: #70482A;
+.sobrenos {
+  white-space: pre-line;
+  font-size: 17px;
+  color: #70482A;
 }
 
+/* Media Query para telas menores que 600px */
 @media (max-width: 600px) {
   .sobrenos_slide {
-    padding: 2rem 1rem;
+    flex-direction: column; /* Coloca a imagem e o texto em coluna */
+    padding: 2rem 1rem; /* Ajusta o padding */
+    align-items: center; /* Centraliza os itens */
   }
 
   .foto_sandra img {
-    width: 100%;
-    height: auto;
+    width: 100%; /* Ajusta a imagem para 100% da largura */
+    height: auto; /* Mantém a proporção da imagem */
   }
 
   .escrita {
-    font-size: 22px;
+    font-size: 22px; /* Ajusta o tamanho da fonte */
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Faz o texto ocupar toda a largura */
   }
 
   .sobrenos {
-    font-size: 15px;
-    text-align: center;
+    font-size: 15px; /* Reduz o tamanho da fonte */
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Faz o texto ocupar toda a largura */
   }
 }

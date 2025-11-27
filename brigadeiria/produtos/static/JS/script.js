@@ -1,8 +1,14 @@
 document.addEventListener("DOMContentLoaded", async () => {
 
-  /* ===============================
-     FUNÇÕES UTILITÁRIAS
-  =============================== */
+  /* ================= FUNÇÃO DE PREÇO POR CATEGORIA =============== */
+  function precoPorCategoria(cat = "") {
+    const c = (cat || "").toLowerCase();
+    if (c.includes("premium")) return 1.80;
+    if (c.includes("especial")) return 2.00;
+    return 1.50;
+  }
+
+  /* ================= FUNÇÕES UTILITÁRIAS =============== */
 
   async function verificarLogin() {
     try {
@@ -21,9 +27,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cart),
       });
+      console.log("Salvando carrinho no servidor:", cart);
     } catch (err) {
       console.error("Erro salvar servidor:", err);
-      alerta("Não foi possível salvar seu carrinho.", "erro");
+      alert("Não foi possível salvar seu carrinho.");
     }
   }
 
@@ -34,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return await r.json();
     } catch (err) {
       console.error("Erro carregar servidor:", err);
-      alerta("Falha ao carregar seu carrinho.", "erro");
+      alert("Falha ao carregar seu carrinho.");
       return [];
     }
   }
@@ -44,19 +51,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       await fetch("/api/carrinho/", { method: "DELETE" });
     } catch (err) {
       console.error("Erro ao limpar servidor:", err);
-      alerta("Erro ao limpar carrinho do servidor.", "erro");
+      alert("Erro ao limpar carrinho do servidor.");
     }
   }
 
-  /* ==========================================
-     SINCRONIZAÇÃO LOCAL ↔ SERVIDOR AO LOGAR
-  ========================================== */
+  /* =========== SINCRONIZAÇÃO LOCAL ↔ SERVIDOR AO LOGAR ============= */
   const logado = await verificarLogin();
   let localCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
   if (logado) {
     const serverCart = await carregarCarrinhoDoServidor();
-
     if (localCart.length > 0) {
       await salvarCarrinhoNoServidor(localCart);
       localStorage.setItem("cart", JSON.stringify(localCart));
@@ -67,9 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   localCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-  /* ======================================
-     CARREGAR E MANIPULAR CARRINHO NA TELA
-  ====================================== */
+  /* ========== CARREGAR E MANIPULAR CARRINHO NA TELA ========== */
 
   const itensEl = document.getElementById("card-itens-container");
   const totalEl = document.getElementById("card-total-value");
@@ -83,28 +85,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     limparBtn.onclick = async () => {
       localStorage.removeItem("cart");
       await limparCarrinhoServidor();
-      alerta("Carrinho limpo com sucesso!", "sucesso");
+      alert("Carrinho limpo com sucesso!");
       location.reload();
     };
   }
 
-  /* ============================
-     FINALIZAR VIA WHATSAPP
-  ============================ */
-
+  /* ================= FINALIZAR VIA WHATSAPP =============== */
   if (checkoutBtn) {
     checkoutBtn.onclick = async () => {
       const logado = await verificarLogin();
 
       if (!logado) {
-        alerta("Você precisa estar logado para finalizar o pedido!", "erro");
+        alert("Você precisa estar logado para finalizar o pedido!");
         window.location.href = "/perfil/";
         return;
       }
 
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       if (cart.length === 0) {
-        alerta("Seu carrinho está vazio.", "aviso");
+        alert("Seu carrinho está vazio.");
         return;
       }
 
@@ -123,118 +122,110 @@ document.addEventListener("DOMContentLoaded", async () => {
       const url = `https://wa.me/5515981453091?text=${encodeURIComponent(msg)}`;
       window.open(url, "_blank");
 
-      alerta("Pedido enviado! Obrigado 💛", "sucesso");
+      alert("Pedido enviado! Obrigado 💛");
 
       localStorage.removeItem("cart");
       await limparCarrinhoServidor();
     };
   }
 
-});
+  /* ================= REMOVE ITEM ================= */
+  function carregarCarrinho(container, totalEl) {
+    let cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
+    console.log("Carrinho carregado:", cart);
 
-/* ============================
-   PREÇO POR CATEGORIA
-============================ */
+    container.innerHTML = "";
 
-function precoPorCategoria(cat = "") {
-  const c = (cat || "").toLowerCase();
-  if (c.includes("premium")) return 1.80;
-  if (c.includes("especial")) return 2.00;
-  return 1.50;
-}
+    if (cart.length === 0) {
+      container.innerHTML = "<p>Seu carrinho está vazio.</p>";
+      totalEl.textContent = "R$ 0,00";
+      return;
+    }
 
+    cart.forEach((product, index) => {
+      const precoUnit = precoPorCategoria(product.category);
+      const subtotal = precoUnit * (product.quantity || 25);
 
-/* ============================
-   CARREGAR CARRINHO FRONTEND
-============================ */
+      const item = document.createElement("div");
+      item.classList.add("cart-item");
+      item.innerHTML = `
+        <span>${product.name}</span>
 
-function carregarCarrinho(container, totalEl) {
-  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  container.innerHTML = "";
+        <div class="quantidade-controle">
+          <button class="menos">-</button>
+          <input type="number" min="25" value="${product.quantity}">
+          <button class="mais">+</button>
+        </div>
 
-  if (cart.length === 0) {
-    container.innerHTML = "<p>Seu carrinho está vazio.</p>";
-    totalEl.textContent = "R$ 0,00";
-    return;
-  }
+        <div class="preco-container">
+          <span class="preco">R$ ${subtotal.toFixed(2)}</span>
+          <button class="remove-item">
+            <img src="/static/src/lata-de-lixo.png" class="icon-trash">
+          </button>
+        </div>
+      `;
 
-  cart.forEach((product, index) => {
-    const precoUnit = precoPorCategoria(product.category);
-    const subtotal = precoUnit * (product.quantity || 25);
+      container.appendChild(item);
 
-    const item = document.createElement("div");
-    item.classList.add("cart-item");
-    item.innerHTML = `
-      <span>${product.name}</span>
+      const input = item.querySelector("input");
+      const menos = item.querySelector(".menos");
+      const mais = item.querySelector(".mais");
+      const precoEl = item.querySelector(".preco");
+      const removeBtn = item.querySelector(".remove-item");
 
-      <div class="quantidade-controle">
-        <button class="menos">-</button>
-        <input type="number" min="25" value="${product.quantity}">
-        <button class="mais">+</button>
-      </div>
+      const atualizar = async () => {
+        const qtd = Math.max(25, parseInt(input.value) || 25);
+        cart[index].quantity = qtd;
 
-      <div class="preco-container">
-        <span class="preco">R$ ${subtotal.toFixed(2)}</span>
-        <button class="remove-item">
-          <img src="/static/src/lata-de-lixo.png" class="icon-trash">
-        </button>
-      </div>
-    `;
+        const newSubtotal = precoUnit * qtd;
+        precoEl.textContent = `R$ ${newSubtotal.toFixed(2)}`;
 
-    container.appendChild(item);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        await salvarCarrinhoNoServidor(cart);
+        atualizarTotal();
+        alert("Quantidade atualizada!");
+      };
 
-    const input = item.querySelector("input");
-    const menos = item.querySelector(".menos");
-    const mais = item.querySelector(".mais");
-    const precoEl = item.querySelector(".preco");
-    const removeBtn = item.querySelector(".remove-item");
-
-    const atualizar = async () => {
-      const qtd = Math.max(25, parseInt(input.value) || 25);
-      cart[index].quantity = qtd;
-
-      const newSubtotal = precoUnit * qtd;
-      precoEl.textContent = `R$ ${newSubtotal.toFixed(2)}`;
-
-      localStorage.setItem("cart", JSON.stringify(cart));
-      await salvarCarrinhoNoServidor(cart);
-      atualizarTotal();
-      alerta("Quantidade atualizada!", "info");
-    };
-
-    mais.onclick = () => {
-      input.value = parseInt(input.value) + 1;
-      atualizar();
-    };
-
-    menos.onclick = () => {
-      if (parseInt(input.value) > 25) {
-        input.value = parseInt(input.value) - 1;
+      mais.onclick = () => {
+        input.value = parseInt(input.value) + 1;
         atualizar();
-      } else {
-        alerta("O pedido mínimo é 25 unidades!", "aviso");
-      }
-    };
+      };
 
-    input.onchange = atualizar;
+      menos.onclick = () => {
+        if (parseInt(input.value) > 25) {
+          input.value = parseInt(input.value) - 1;
+          atualizar();
+        } else {
+          alert("O pedido mínimo é 25 unidades!");
+        }
+      };
 
-    removeBtn.onclick = async () => {
-      cart.splice(index, 1);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      await salvarCarrinhoNoServidor(cart);
-      alerta("Item removido!", "sucesso");
-      carregarCarrinho(container, totalEl);
-    };
-  });
+      input.onchange = atualizar;
 
-  atualizarTotal();
+      // Agora a função de remoção
+      removeBtn.onclick = async () => {
+        console.log("Remover item", product.name);
+        cart.splice(index, 1); // Remove o item do array
+        localStorage.setItem("cart", JSON.stringify(cart)); // Atualiza o localStorage
+        console.log("Carrinho atualizado:", cart);
 
-  function atualizarTotal() {
-    let total = 0;
-    cart.forEach(prod => {
-      total += precoPorCategoria(prod.category) * (prod.quantity || 25);
+        await salvarCarrinhoNoServidor(cart); // Salva o carrinho atualizado no servidor
+        alert("Item removido!");
+
+        carregarCarrinho(container, totalEl); // Recarrega o carrinho após remoção
+      };
     });
-    totalEl.textContent = "R$ " + total.toFixed(2);
+
+    atualizarTotal();
+
+    function atualizarTotal() {
+      let total = 0;
+      cart.forEach(prod => {
+        total += precoPorCategoria(prod.category) * (prod.quantity || 25);
+      });
+      totalEl.textContent = "R$ " + total.toFixed(2);
+    }
   }
-}
+
+});

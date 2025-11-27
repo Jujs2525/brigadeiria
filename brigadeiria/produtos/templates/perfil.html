@@ -44,11 +44,11 @@
 
     <nav class="menu-opcoes">
         <ul class="container nav-list">
-            <li><a href="{% url 'index' %}">PÁGINA INICIAL</a></li>
-            <li><a href="{% url 'cardapio' %}">CARDÁPIO</a></li>
-            <li><a href="{% url 'perfil' %}">PERFIL</a></li>
-            <li><a href="{% url 'carrinho' %}">CARRINHO</a></li>
-            <li><a href="{% url 'index' %}#sobrenos_slide">SOBRE NÓS</a></li>
+        <li><a href="{% url 'index' %}">PÁGINA INICIAL</a></li>
+        <li><a href="{% url 'index' %}#sobrenos_slide">SOBRE NÓS</a></li>
+        <li><a href="{% url 'cardapio' %}">CARDÁPIO</a></li>
+        <li><a href="{% url 'carrinho' %}">CARRINHO</a></li>
+        <li><a href="{% url 'perfil' %}">PERFIL</a></li>
         </ul>
     </nav>
 </header>
@@ -206,6 +206,8 @@
                     <input type="tel" name="telefone" placeholder="Telefone" required>
                     <input type="password" name="senha" placeholder="Senha" required>
                     <input type="password" name="confirmarSenha" placeholder="Confirmar senha" required>
+                    <!-- A mensagem de erro será criada automaticamente após o campo confirmarSenha -->
+
 
                     <p class="end">Endereço</p>
                     <input type="text" id="cep" name="cep" placeholder="CEP">
@@ -236,7 +238,7 @@
         <div class="redesSociais">
             <a href="mailto:sayurimo@gmail.com?subject=Contato"><img src="{% static 'src/e-mail.png' %}" class="icones"></a>
             <a href="tel:+5515981453091"><img src="{% static 'src/chamada-telefonica.png' %}" class="icones"></a>
-            <a href="https://www.google.com/maps/search/?api=1&query=Rua+Alice+Garcia+da+Silva,+380"><img src="{% static 'src/localizacao.png' %}" class="icones"></a>
+            <a href="https://www.google.com/maps/place/Horto+Florestal+Villagio/@-23.4388829,-47.4939461,17z/data=!4m10!1m2!2m1!1shorto+florestal+villagio!3m6!1s0x94c5f5a1b90c2bf3:0x82d29e5ce04c50a!8m2!3d-23.4388157!4d-47.4913903!15sChhob3J0byBmbG9yZXN0YWwgdmlsbGFnaW-SARNjb25kb21pbml1bV9jb21wbGV44AEA!16s%2Fg%2F11k3w806rl?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D"><img src="{% static 'src/localizacao.png' %}" class="icones"></a>
             <a href="https://www.instagram.com/sayuri_brigadeiros" target="_blank"><img src="{% static 'src/instagram.png' %}" class="icones"></a>
         </div>
 

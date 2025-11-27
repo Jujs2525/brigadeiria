@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         item = { name, category, priceUnit: precoBase, quantity: qtd, subtotal };
         cart.push(item);
-        alert(`${qtd} unidades de ${name} adicionadas — Total R$ ${subtotal.toFixed(2)}`);
+        alert(`${qtd} unidades de ${name} adicionadas — R$ ${subtotal.toFixed(2)}`);
       }
 
       localStorage.setItem('cart', JSON.stringify(cart));

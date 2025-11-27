@@ -119,8 +119,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     cart.push(produto);
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert(`${valor} unidades de "${produto.name}" foram adicionadas ao carrinho!`);
-  });
 
+    // Exibe a mensagem de confirmação, como no "Descrição Produto"
+    alert(`${valor} unidades de "${produto.name}" adicionadas — R$ ${subtotal.toFixed(2).replace(".", ",")}`);
+  });
   atualizarTotal();
 });

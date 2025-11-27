@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{% static 'CSS/base.css' %}" />
   <link rel="stylesheet" href="{% static 'CSS/carrinho.css' %}" />
   <link rel="stylesheet" href="{% static 'CSS/search.css' %}" />
+  <link rel="stylesheet" href="{% static 'CSS/alerta.css' %}" />
   <link rel="icon" href="{% static 'src/TCC.png' %}" type="image/png">
 </head>
 
@@ -43,10 +44,10 @@
     <nav class="menu-opcoes">
       <ul class="container nav-list">
         <li><a href="{% url 'index' %}">PÁGINA INICIAL</a></li>
-        <li><a href="{% url 'cardapio' %}">CARDÁPIO</a></li>
-        <li><a href="{% url 'perfil' %}">PERFIL</a></li>
-        <li><a href="{% url 'carrinho' %}">CARRINHO</a></li>
         <li><a href="{% url 'index' %}#sobrenos_slide">SOBRE NÓS</a></li>
+        <li><a href="{% url 'cardapio' %}">CARDÁPIO</a></li>
+        <li><a href="{% url 'carrinho' %}">CARRINHO</a></li>
+        <li><a href="{% url 'perfil' %}">PERFIL</a></li>
       </ul>
     </nav>
   </header>
@@ -76,6 +77,9 @@
     </section>
   </main>
 
+  <!-- Alerta -->
+  <div id="alert-container" class="msg-container"></div>
+
   <!-- RODAPÉ -->
   <footer class="main-footer">
     <div class="container footer-grid">
@@ -86,7 +90,7 @@
       <div class="redesSociais">
         <a href="mailto:sayurimo@gmail.com"><img src="{% static 'src/e-mail.png' %}" alt="email" class="icones"></a>
         <a href="tel:+5515981453091"><img src="{% static 'src/chamada-telefonica.png' %}" alt="telefone" class="icones"></a>
-        <a href="https://www.google.com/maps/search/?api=1&query=Rua+Alice+Garcia+da+Silva,+380+B14+-+19" target="_blank"><img src="{% static 'src/localizacao.png' %}" alt="endereço" class="icones"></a>
+        <a href="https://www.google.com/maps/place/Horto+Florestal+Villagio/@-23.4388829,-47.4939461,17z/data=!4m10!1m2!2m1!1shorto+florestal+villagio!3m6!1s0x94c5f5a1b90c2bf3:0x82d29e5ce04c50a!8m2!3d-23.4388157!4d-47.4913903!15sChhob3J0byBmbG9yZXN0YWwgdmlsbGFnaW-SARNjb25kb21pbml1bV9jb21wbGV44AEA!16s%2Fg%2F11k3w806rl?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D" target="_blank"><img src="{% static 'src/localizacao.png' %}" alt="endereço" class="icones"></a>
         <a href="https://www.instagram.com/sayuri_brigadeiros?igsh=MWh4Zjc0Ynp6NTA2eg==" target="_blank"><img src="{% static 'src/instagram.png' %}" alt="Instagram" class="icones"></a>
       </div>
 
@@ -100,7 +104,7 @@
   <div id="loginModal" class="login-modal">
     <div class="login-modal-content">
       <h2>🍫 Você precisa estar logado</h2>
-      <p>Para finalizar seu pedido, faça login ou crie sua conta rapidinho!</p>
+      <p>Para finalizar seu pedido, faça login ou crie sua conta!</p>
       <div class="login-modal-buttons">
         <a href="/perfil/" class="btn-login">Fazer Login</a>
         <button id="closeModal" class="btn-cancel">Agora não</button>
@@ -116,6 +120,8 @@
   <script src="{% static 'JS/search.js' %}"></script>
   {% now "U" as timestamp %}
   <script src="{% static 'JS/script.js' %}?v={{ timestamp }}"></script>
+  <script src="{% static 'JS/alerta_carrinho.js' %}"></script>
+
 
 </body>
 </html>

@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 import json
+from django.utils.html import format_html
 
 from .models import (
     Banner, FotoGaleria, Categoria,
