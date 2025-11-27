@@ -5,7 +5,11 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    position: fixed;
+    top: 20px; /* Distância do topo */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    z-index: 9999; /* Garante que o alerta ficará acima de outros elementos */
     animation: fadeIn 0.4s ease;
 }
 
@@ -20,9 +24,9 @@
     min-width: 280px;
     max-width: 600px;
     text-align: center;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.15);
-
-    /* Entrada + saída automática */
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+    color: #333;
     animation: 
         slideDown 0.4s ease,
         fadeOut 0.5s ease 3.5s forwards;
@@ -33,21 +37,21 @@
 ================================ */
 
 /* Sucesso */
-.msg.success, .msg.sucesso {
+.msg.success {
     background: #e8ffe8;
     color: #2d7a2d;
     border-left: 6px solid #2d7a2d;
 }
 
 /* Erro */
-.msg.error, .msg.erro {
+.msg.error {
     background: #ffe8e8;
     color: #992828;
     border-left: 6px solid #992828;
 }
 
 /* Aviso */
-.msg.warning, .msg.aviso {
+.msg.warning {
     background: #fff7e0;
     color: #8a6d1c;
     border-left: 6px solid #d6b74a;

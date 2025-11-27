@@ -1,33 +1,47 @@
-function showAlert(message, type = 'success'){
-    const alertContainer = document.getElementById("alert-container");
+document.addEventListener("DOMContentLoaded", async () => {
+  // Carregar o carrinho do localStorage
+  let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  
+  // Selecionar todos os botões de remoção
+  const removeButtons = document.querySelectorAll(".remove-item");
 
-    //Cria - novo alerta
-    const newAlert = document.createElement("div");
-    newAlert.classList.add("msg", type);
-    newAlert.textContent = message;
-
-    //Adiciona alerta 
-    alertContainer.appendChild(newAlert);
-
-    //Remove o alerta
-    setTimeout(() => {
-        alertContainer.removeChild(newAlert);
-    }, 4000); // 4 segundos no total para o efeito
-    }
-
-    // Substitua `alert()` por `showAlert()` no código de remoção do carrinho
-    document.addEventListener("DOMContentLoaded", async () => {
-
-    // Função de remover item no carrinho
+  removeButtons.forEach((removeBtn, index) => {
     removeBtn.onclick = async () => {
-        console.log("Remover item", product.name);
-        cart.splice(index, 1); // Remove o item do array
-        localStorage.setItem("cart", JSON.stringify(cart)); // Atualiza o localStorage
-        console.log("Carrinho atualizado:", cart);
+      const product = cart[index];  // Pega o produto correto do carrinho
+      console.log("Remover item", product.name);
 
-        await salvarCarrinhoNoServidor(cart); // Salva o carrinho atualizado no servidor
-        showAlert("Item removido!", "success"); // Mostra a mensagem de sucesso
+      // Remove o item do carrinho
+      cart.splice(index, 1); 
+      localStorage.setItem("cart", JSON.stringify(cart)); // Atualiza o localStorage
 
-        carregarCarrinho(container, totalEl); // Recarrega o carrinho após remoção
+      console.log("Carrinho atualizado:", cart);
+
+      // Salva o carrinho atualizado no servidor
+      await salvarCarrinhoNoServidor(cart); 
+
+      // Exibe o alerta de sucesso
+      showAlert("Item removido!", "success"); 
+
+      // Recarrega o carrinho após remoção
+      carregarCarrinho(container, totalEl); 
     };
+  });
 });
+
+// Função de exibição de alerta
+function showAlert(message, type = 'success') {
+  const alertContainer = document.getElementById("alert-container");
+
+  // Cria um novo alerta
+  const newAlert = document.createElement("div");
+  newAlert.classList.add("msg", type);
+  newAlert.textContent = message;
+
+  // Adiciona o alerta ao container
+  alertContainer.appendChild(newAlert);
+
+  // Remove o alerta após 4 segundos
+  setTimeout(() => {
+    alertContainer.removeChild(newAlert);
+  }, 4000); // 4 segundos no total para o efeito
+}

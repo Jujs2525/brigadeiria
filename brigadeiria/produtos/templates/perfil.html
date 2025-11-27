@@ -122,7 +122,8 @@
             <p class="end">Informações pessoais</p>
             <input type="text" name="nomeEdit" value="{{ user.first_name }}" placeholder="Nome completo" required>
             <input type="email" name="emailEdit" value="{{ user.email }}" placeholder="E-mail" required>
-            <input type="tel" name="telefoneEdit" value="{{ user.perfil.telefone }}" placeholder="Telefone">
+            <input type="tel" name="telefoneEdit" value="{{ user.perfil.telefone }}" placeholder="Telefone" required>
+            <!-- E outros campos necessários -->
 
             <p class="end">Endereço</p>
             <input type="text" id="cepEdit" name="cepEdit" value="{{ user.perfil.cep }}" placeholder="CEP">
@@ -201,6 +202,7 @@
 
                 <form action="{% url 'registrar' %}" method="POST">
                     {% csrf_token %}
+                    <p class="personalInfo">Informações pessoais</p>
                     <input type="text" name="nome" placeholder="Nome completo" required>
                     <input type="email" name="email" placeholder="E-mail" required>
                     <input type="tel" name="telefone" placeholder="Telefone" required>

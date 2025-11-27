@@ -2,30 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const P = window.PRODUTO || { nome: "", descricao: "", categoria: "" };
 
   const nomeProduto = (P.nome || "").toLowerCase();
-  const descProduto = (P.descricao || "").toLowerCase();
-  const catInformada = (P.categoria || "").toLowerCase();
-
-  const UNIT = { gourmet: 1.50, premium: 1.80, especial: 2.00 };
-  const KW = {
-    premium: ["premium", "nutella", "4 leites", "paçoca", "crocante"],
-    especial: ["especial", "surpresinha", "uva"],
-    gourmet: ["gourmet", "ao leite", "cacau", "ninho", "coco", "café"]
-  };
-
-  const hasAny = (str, arr) => arr.some(k => str.includes(k));
-
-  function detectarCategoria() {
-    if (catInformada.includes("premium")) return "premium";
-    if (catInformada.includes("especial")) return "especial";
-    if (catInformada.includes("gourmet")) return "gourmet";
-    const contexto = `${nomeProduto} ${descProduto}`;
-    if (hasAny(contexto, KW.premium)) return "premium";
-    if (hasAny(contexto, KW.especial)) return "especial";
-    return "gourmet";
-  }
-
-  const categoria = detectarCategoria();
-  const precoUnitario = UNIT[categoria];
+  const precoUnitario = P.preco || 1.50; // Atribui o preço diretamente (se necessário)
   const minimo = 25;
   const passo = 1;
   let quantidade = minimo;
@@ -111,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const subtotal = valor * precoUnitario;
     const produto = {
       name: P.nome,
-      category: categoria,
+      category: P.categoria, // A categoria é diretamente atribuída ao produto
       unit_price: precoUnitario,
       quantity: valor,
       subtotal
@@ -120,8 +97,26 @@ document.addEventListener("DOMContentLoaded", function () {
     cart.push(produto);
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    // Exibe a mensagem de confirmação, como no "Descrição Produto"
-    alert(`${valor} unidades de "${produto.name}" adicionadas — R$ ${subtotal.toFixed(2).replace(".", ",")}`);
+    // Exibe a mensagem de confirmação com o alerta visual
+    showAlert(`${valor} unidades de ${produto.name} adicionadas — R$ ${subtotal.toFixed(2).replace(".", ",")}`, "success");
   });
   atualizarTotal();
 });
+
+// Função de exibição de alerta
+function showAlert(message, type = 'success') {
+  const alertContainer = document.getElementById("alert-container");
+
+  // Cria um novo alerta
+  const newAlert = document.createElement("div");
+  newAlert.classList.add("msg", type);
+  newAlert.textContent = message;
+
+  // Adiciona o alerta ao container
+  alertContainer.appendChild(newAlert);
+
+  // Remove o alerta após 4 segundos
+  setTimeout(() => {
+    alertContainer.removeChild(newAlert);
+  }, 4000); // 4 segundos no total para o efeito
+}

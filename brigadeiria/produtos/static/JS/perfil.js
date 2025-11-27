@@ -26,6 +26,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ============================
+    VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS NO EDITAR PERFIL
+    ============================*/
+
+    const editForm = document.querySelector("#editMode");
+    if (editForm) {
+        editForm.addEventListener("submit", (e) => {
+            const requiredInputs = editForm.querySelectorAll("input[required]");
+            let valid = true;
+
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    valid = false;
+                    input.setCustomValidity("Este campo é obrigatório.");
+                } else {
+                    input.setCustomValidity(""); // Limpa qualquer erro anterior
+                }
+            });
+
+            if (!valid) {
+                e.preventDefault(); // Impede o envio do formulário caso algum campo obrigatório esteja vazio
+                alert("Por favor, preencha todos os campos obrigatórios.");
+            }
+        });
+    }
+
+    /* ============================
        LOGIN / CADASTRO
     ============================ */
     const loginBox = document.getElementById("loginSection");
@@ -60,6 +86,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
         showLogin();
     }
+
+    /* ============================ 
+    VALIDAÇÃO DE SENHAS
+
+    const senhaInput = document.querySelector("input[name='senha']");
+    const confirmarSenhaInput = document.querySelector("input[name='confirmarSenha']");
+    const mensagemErro = document.createElement("div");
+    mensagemErro.style.color = "red";
+    mensagemErro.style.fontSize = "12px";
+    mensagemErro.style.display = "none";  // Começa escondido
+
+    if (confirmarSenhaInput) {
+        confirmarSenhaInput.parentElement.appendChild(mensagemErro); // Adiciona a mensagem de erro após o campo de confirmar senha
+        
+        // Função para verificar as senhas
+        const verificarSenhas = () => {
+            if (senhaInput && confirmarSenhaInput) {
+                if (senhaInput.value !== confirmarSenhaInput.value) {
+                    mensagemErro.textContent = "As senhas não coincidem.";
+                    mensagemErro.style.display = "block"; // Exibe a mensagem
+                } else {
+                    mensagemErro.style.display = "none"; // Esconde a mensagem
+                }
+            }
+        };
+
+        // Verifica sempre que o usuário digitar algo nas senhas
+        senhaInput.addEventListener("input", verificarSenhas);
+        confirmarSenhaInput.addEventListener("input", verificarSenhas);
+    }
+
+    /* ============================ 
+    IMPEDIR ENVIO DE FORMULÁRIO CASO SENHAS NÃO COINCIDAM
+
+    const formularioCadastro = document.querySelector("form"); // O formulário de cadastro
+    if (formularioCadastro) {
+        formularioCadastro.addEventListener("submit", (e) => {
+            if (senhaInput.value !== confirmarSenhaInput.value) {
+                e.preventDefault(); // Impede o envio do formulário
+                alert("As senhas não coincidem. Corrija e tente novamente.");
+            }
+        });
+    }
+
 
     /* ============================
        LOGOUT
@@ -157,27 +227,49 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Seleciona todos os inputs do formulário de cadastro
-    const inputs = document.querySelectorAll("#registerSection form input");
+    /* ============================
+        INPUTS OBRIGATÓRIOS
+    ============================ */
+    // Seleciona todos os inputs do formulário que são obrigatórios
+    const inputs = document.querySelectorAll("input[required]");
 
     // Para cada input, adicionamos o comportamento desejado
-    inputs.forEach((input, index) => {
-        input.addEventListener("keydown", function (e) {
-
-            // Se apertou ENTER
-            if (e.key === "Enter") {
-                e.preventDefault(); // impede submit automático
-
-                const nextInput = inputs[index + 1];
-
-                // Se existe um próximo input → foca nele
-                if (nextInput) {
-                    nextInput.focus();
-                }
-                // Se NÃO existe (último input) → não faz nada
+    inputs.forEach(input => {
+        // Quando o campo for inválido (não preenchido), exibe a mensagem personalizada
+        input.addEventListener("invalid", function () {
+            if (this.value === "") {
+                this.setCustomValidity("Este campo é obrigatório."); // Mensagem personalizada
             }
+        });
+
+        // Quando o campo for preenchido corretamente, limpa a mensagem de erro
+        input.addEventListener("input", function () {
+            this.setCustomValidity(""); // Limpa a mensagem de erro quando o campo for preenchido
         });
     });
 
+    // Agora, se o formulário for enviado com algum campo obrigatório vazio, o envio será bloqueado
+    const formularioCadastro = document.querySelector("form"); 
+    if (formularioCadastro) {
+        formularioCadastro.addEventListener("submit", (e) => {
+            const invalidInputs = document.querySelectorAll("input[required]:invalid");
+            if (invalidInputs.length > 0) {
+                e.preventDefault(); 
+                alert("Por favor, preencha todos os campos obrigatórios.");
+            }
+        });
+    }
 
+    // Validar campos obrigatórios na página de login
+    const loginForm = document.querySelector("#loginSection form");
+    if (loginForm) {
+        loginForm.addEventListener("submit", (e) => {
+            const invalidInputs = loginForm.querySelectorAll("input[required]:invalid");
+
+            if (invalidInputs.length > 0) {
+                e.preventDefault(); // Impede o envio do formulário
+                alert("Por favor, preencha todos os campos obrigatórios.");
+            }
+        });
+    }
 });

@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 import json
 from django.utils.html import format_html
 
+# Importando o modelo Produto corretamente
 from .models import (
     Banner, FotoGaleria, Categoria,
     Carrinho, Produto, CarrinhoTemporario,
@@ -48,6 +49,7 @@ def index(request):
 
 
 def cardapio(request):
+    # Garantir que os produtos estão sendo filtrados e passados corretamente
     produtos = Produto.objects.all().order_by('categoria__nome')
     produtos_por_categoria = {}
 
@@ -82,7 +84,6 @@ def adicionar_ao_carrinho(request, produto_id):
         return redirect('carrinho')
 
 
-
 # ===================== LOGIN CHECK =====================
 def verificar_login(request):
     return JsonResponse({'autenticado': request.user.is_authenticated})
@@ -90,6 +91,7 @@ def verificar_login(request):
 
 # ===================== PRODUTO =====================
 def produto_detalhe(request, pk):
+    # Garantir que o produto está sendo recuperado corretamente
     produto = get_object_or_404(Produto, pk=pk)
     return render(request, 'produto_detalhe.html', {'produto': produto})
 
@@ -139,8 +141,6 @@ def registrar(request):
         perfil.endereco = request.POST.get("endereco")
         perfil.numero = request.POST.get("num")
         perfil.complemento = request.POST.get("complemento")
-        # se existir campo numero no Perfil, descomenta:
-        # perfil.numero = request.POST.get("num")
         perfil.save()
 
         # gera/verifica código
@@ -151,13 +151,11 @@ def registrar(request):
         messages.success(request, "Cadastro realizado! Verifique seu e-mail para ativar a conta.")
         return redirect(f"/verificar_email/?email={email}")
 
-    # se não for POST, volta pro perfil
     return redirect("perfil")
 
 
 @csrf_exempt
 def verificar_email(request):
-    # pega o email tanto no GET quanto no POST
     if request.method == "POST":
         email = request.POST.get("email", "").strip().lower()
     else:
@@ -217,7 +215,6 @@ def logar(request):
 
             login(request, user)
 
-            # 🔥 PEGAR CARRINHO LOCAL DO POST (ENVIADO PELO JS)
             local_cart = request.POST.get("local_cart")
             if local_cart:
                 try:
@@ -236,13 +233,9 @@ def logar(request):
     return redirect("perfil")
 
 
-
 def sair(request):
-    # Remove sessão COMPLETA do Django
     request.session.flush()
     logout(request)
-
-    # Redirecionar normalmente
     return redirect("/")
 
 
@@ -292,8 +285,6 @@ def atualizar_perfil(request):
         return redirect("perfil")
 
     user = request.user
-
-    # campos vindos do form de edição
     nome = request.POST.get("nomeEdit", "").strip()
     email = request.POST.get("emailEdit", "").strip().lower()
 
@@ -305,12 +296,7 @@ def atualizar_perfil(request):
 
     user.save()
 
-    # Atualizando o perfil
     perfil, _ = Perfil.objects.get_or_create(user=user)
-    
-    # Debugging: Verifique os dados sendo capturados
-    print(f"Telefone: {request.POST.get('telefoneEdit')}")
-    print(f"Número: {request.POST.get('numeroEdit')}")
     
     perfil.telefone = request.POST.get("telefoneEdit")
     perfil.cep = request.POST.get("cepEdit")

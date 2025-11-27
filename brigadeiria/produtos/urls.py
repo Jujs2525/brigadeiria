@@ -14,7 +14,6 @@ urlpatterns = [
     path('logar/', views.logar, name='logar'),
     path('sair/', views.sair, name='sair'),
     path('verificar-login/', views.verificar_login, name='verificar-login'),
-
     path('atualizar-perfil/', views.atualizar_perfil, name='atualizar_perfil'),
     path('excluir-conta/', views.excluir_conta, name='excluir_conta'),
 
@@ -30,9 +29,13 @@ urlpatterns = [
     path('categorias/', views.CategoriaList.as_view(), name='categoria-list'),
     path('categorias/<int:pk>/', views.CategoriaDetail.as_view(), name='categoria-detail'),
 
-    path('produtos/', views.ProdutoList.as_view(), name='produto-list'),
+    # API de produtos
+    path('api/produtos/', views.ProdutoList.as_view(), name='produto-list'),
+    path('api/produtos/<int:pk>/', views.ProdutoDetail.as_view(), name='produto-detail'),
+
+    # ===================== PÁGINAS DE PRODUTO =====================
+    # Esta URL é a página normal do produto, com a view 'produto_detalhe'
     path('produtos/<int:pk>/', views.produto_detalhe, name='produto-detalhe'),
 
-    path('api/produtos/<int:pk>/', views.ProdutoDetail.as_view(), name='produto-detail'),
     path('api/check-auth/', views.check_auth, name='check_auth'),
 ]

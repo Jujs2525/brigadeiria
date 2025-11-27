@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.utils.html import format_html
 from .models import Perfil, User, Produto, Categoria, Banner, FotoGaleria
 
 # Registra os modelos no admin
