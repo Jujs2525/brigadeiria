@@ -14,7 +14,11 @@
 </head>
 
 <body style="background:#f9eee0; font-family: 'Voces', sans-serif;">
+    <div id="global-alerts" class="msg-container"></div>
+
     {% block content %}{% endblock %}
+
+    <script src="{% static 'JS/alerta.js' %}"></script>
 
 </body>
 </html>

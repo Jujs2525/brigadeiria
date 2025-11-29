@@ -7,29 +7,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnCancelar = document.getElementById("btnCancelarEdicao");
 
     if (viewMode && editMode) {
-        editMode.style.display = "none"; // começa escondido
+        editMode.style.display = "none";
         viewMode.style.display = "block";
     }
 
     if (btnEditar) {
         btnEditar.addEventListener("click", () => {
             viewMode.style.display = "none";
-            editMode.style.display = "flex";   // Modo de edição em flex
+            editMode.style.display = "flex";
         });
     }
 
     if (btnCancelar) {
         btnCancelar.addEventListener("click", () => {
             editMode.style.display = "none";
-            viewMode.style.display = "block";  // Retorna ao modo de visualização
+            viewMode.style.display = "block";
         });
     }
 
     /* ============================
-    VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS NO EDITAR PERFIL
-    ============================*/
-
-    const editForm = document.querySelector("#editMode");
+       VALIDAÇÃO CAMPOS – EDITAR PERFIL
+    ============================ */
+    const editForm = document.querySelector("#editMode form");
     if (editForm) {
         editForm.addEventListener("submit", (e) => {
             const requiredInputs = editForm.querySelectorAll("input[required]");
@@ -40,13 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     valid = false;
                     input.setCustomValidity("Este campo é obrigatório.");
                 } else {
-                    input.setCustomValidity(""); // Limpa qualquer erro anterior
+                    input.setCustomValidity("");
                 }
             });
 
             if (!valid) {
-                e.preventDefault(); // Impede o envio do formulário caso algum campo obrigatório esteja vazio
-                alert("Por favor, preencha todos os campos obrigatórios.");
+                e.preventDefault();
+                showAlert("Por favor, preencha todos os campos obrigatórios.", "error");
             }
         });
     }
@@ -60,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnToLogin = document.getElementById("btnToLogin");
 
     if (loginBox && registerBox) {
+
         function showLogin() {
             loginBox.classList.add("ativo");
             registerBox.classList.remove("ativo");
@@ -87,49 +87,58 @@ document.addEventListener("DOMContentLoaded", () => {
         showLogin();
     }
 
-    /* ============================ 
-    VALIDAÇÃO DE SENHAS
+    /* ============================
+    VALIDAÇÃO SENHAS — ABAIXO DO CAMPO
+    ============================ */
+    const senhaInput = document.querySelector("#registerSection input[name='senha']");
+    const confirmarSenhaInput = document.querySelector("#registerSection input[name='confirmarSenha']");
 
-    const senhaInput = document.querySelector("input[name='senha']");
-    const confirmarSenhaInput = document.querySelector("input[name='confirmarSenha']");
-    const mensagemErro = document.createElement("div");
-    mensagemErro.style.color = "red";
-    mensagemErro.style.fontSize = "12px";
-    mensagemErro.style.display = "none";  // Começa escondido
+    if (senhaInput && confirmarSenhaInput) {
 
-    if (confirmarSenhaInput) {
-        confirmarSenhaInput.parentElement.appendChild(mensagemErro); // Adiciona a mensagem de erro após o campo de confirmar senha
-        
-        // Função para verificar as senhas
-        const verificarSenhas = () => {
-            if (senhaInput && confirmarSenhaInput) {
-                if (senhaInput.value !== confirmarSenhaInput.value) {
-                    mensagemErro.textContent = "As senhas não coincidem.";
-                    mensagemErro.style.display = "block"; // Exibe a mensagem
-                } else {
-                    mensagemErro.style.display = "none"; // Esconde a mensagem
-                }
+        // impede duplicação da mensagem
+        let msg = document.querySelector("#senha-mensagem");
+
+        if (!msg) {
+            msg = document.createElement("div");
+            msg.id = "senha-mensagem";
+            msg.className = "msg error small-alert";
+            msg.style.display = "none";
+            confirmarSenhaInput.insertAdjacentElement("afterend", msg);
+        }
+
+        const validar = () => {
+            if (senhaInput.value === "" || confirmarSenhaInput.value === "") {
+                msg.style.display = "none";
+                return;
+            }
+
+            if (senhaInput.value !== confirmarSenhaInput.value) {
+                msg.textContent = "As senhas não coincidem.";
+                msg.style.display = "block";
+            } else {
+                msg.style.display = "none";
             }
         };
 
-        // Verifica sempre que o usuário digitar algo nas senhas
-        senhaInput.addEventListener("input", verificarSenhas);
-        confirmarSenhaInput.addEventListener("input", verificarSenhas);
+        senhaInput.addEventListener("input", validar);
+        confirmarSenhaInput.addEventListener("input", validar);
     }
 
-    /* ============================ 
-    IMPEDIR ENVIO DE FORMULÁRIO CASO SENHAS NÃO COINCIDAM
 
-    const formularioCadastro = document.querySelector("form"); // O formulário de cadastro
-    if (formularioCadastro) {
-        formularioCadastro.addEventListener("submit", (e) => {
+
+    /* ============================
+       IMPEDIR ENVIO SE SENHA NÃO BATER
+    ============================ */
+    const formularioCadastroSenha = document.querySelector("#registerSection form");
+
+    if (formularioCadastroSenha && senhaInput && confirmarSenhaInput) {
+        formularioCadastroSenha.addEventListener("submit", (e) => {
             if (senhaInput.value !== confirmarSenhaInput.value) {
-                e.preventDefault(); // Impede o envio do formulário
-                alert("As senhas não coincidem. Corrija e tente novamente.");
+                e.preventDefault();
+                showAlert("As senhas não coincidem.", "error");
             }
         });
     }
-
 
     /* ============================
        LOGOUT
@@ -170,25 +179,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ============================
-       FUNÇÃO GENÉRICA DE BUSCA
+       VIACEP – FUNÇÃO
     ============================ */
     function buscarCEP(cep, callback) {
         fetch(`https://viacep.com.br/ws/${cep}/json/`)
             .then(r => r.json())
             .then(data => {
-                if (!data.erro) {
-                    callback(null, data);
-                } else {
-                    callback("CEP inválido");
-                }
+                if (!data.erro) callback(null, data);
+                else callback("CEP inválido");
             })
-            .catch(() => {
-                callback("Falha ao conectar ao ViaCEP");
-            });
+            .catch(() => callback("Falha ao conectar ao ViaCEP"));
     }
 
     /* ============================
-        CEP — CADASTRO
+       CEP CADASTRO
     ============================ */
     const cepCadastro = document.getElementById("cep");
     const enderecoCadastro = document.getElementById("endereco");
@@ -199,8 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (cep.length === 8) {
                 buscarCEP(cep, (erro, data) => {
                     if (!erro) {
-                        enderecoCadastro.value =
-                            `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+                        enderecoCadastro.value = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
                     }
                 });
             }
@@ -208,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ============================
-        CEP — EDITAR PERFIL
+       CEP EDITAR PERFIL
     ============================ */
     const cepEdit = document.getElementById("cepEdit");
     const enderecoEdit = document.getElementById("enderecoEdit");
@@ -219,8 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (cep.length === 8) {
                 buscarCEP(cep, (erro, data) => {
                     if (!erro) {
-                        enderecoEdit.value =
-                            `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+                        enderecoEdit.value = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
                     }
                 });
             }
@@ -228,48 +230,119 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ============================
-        INPUTS OBRIGATÓRIOS
+       INPUTS OBRIGATÓRIOS (GENÉRICO)
     ============================ */
-    // Seleciona todos os inputs do formulário que são obrigatórios
     const inputs = document.querySelectorAll("input[required]");
 
-    // Para cada input, adicionamos o comportamento desejado
     inputs.forEach(input => {
-        // Quando o campo for inválido (não preenchido), exibe a mensagem personalizada
         input.addEventListener("invalid", function () {
             if (this.value === "") {
-                this.setCustomValidity("Este campo é obrigatório."); // Mensagem personalizada
+                this.setCustomValidity("Este campo é obrigatório.");
             }
         });
 
-        // Quando o campo for preenchido corretamente, limpa a mensagem de erro
         input.addEventListener("input", function () {
-            this.setCustomValidity(""); // Limpa a mensagem de erro quando o campo for preenchido
+            this.setCustomValidity("");
         });
     });
 
-    // Agora, se o formulário for enviado com algum campo obrigatório vazio, o envio será bloqueado
-    const formularioCadastro = document.querySelector("form"); 
+    /* ============================
+    BLOQUEAR CADASTRO SE FALTAR ALGO
+    ============================ */
+    const formularioCadastro = document.querySelector("#registerSection form");
     if (formularioCadastro) {
         formularioCadastro.addEventListener("submit", (e) => {
-            const invalidInputs = document.querySelectorAll("input[required]:invalid");
-            if (invalidInputs.length > 0) {
-                e.preventDefault(); 
-                alert("Por favor, preencha todos os campos obrigatórios.");
+
+            const requiredInputs = formularioCadastro.querySelectorAll("input[required]");
+            let empty = false;
+
+            requiredInputs.forEach(input => {
+                if (!input.value.trim()) {
+                    empty = true;
+                }
+            });
+
+            if (empty) {
+                e.preventDefault();
+                showAlert("Por favor, preencha todos os campos obrigatórios.", "error");
             }
+
         });
     }
 
-    // Validar campos obrigatórios na página de login
+
+    /* ============================
+       BLOQUEAR LOGIN SE FALTAR ALGO
+    ============================ */
     const loginForm = document.querySelector("#loginSection form");
     if (loginForm) {
         loginForm.addEventListener("submit", (e) => {
             const invalidInputs = loginForm.querySelectorAll("input[required]:invalid");
 
             if (invalidInputs.length > 0) {
-                e.preventDefault(); // Impede o envio do formulário
-                alert("Por favor, preencha todos os campos obrigatórios.");
+                e.preventDefault();
+                showAlert("Por favor, preencha todos os campos obrigatórios.", "error");
             }
         });
     }
+
+    /* ==========================================
+    IMPEDIR QUE ENTER ENVIE O FORMULÁRIO
+    ========================================== */
+    const formCadastroEnter = document.querySelector("#registerSection form");
+
+    if (formCadastroEnter) {
+        formCadastroEnter.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+
+                // se for required e estiver vazio, não avança
+                if (e.target.hasAttribute("required") && !e.target.value.trim()) {
+                    e.target.reportValidity(); // mostra a mensagem de campo obrigatório
+                    return;
+                }
+
+                const form = e.target.form;
+                const index = Array.prototype.indexOf.call(form, e.target);
+                form.elements[index + 1]?.focus();
+            }
+        });
+    }
+
+    /* ============================
+    MÁSCARA DE TELEFONE
+    ============================ */
+    function maskPhone(value) {
+        return value
+            .replace(/\D/g, "")                     // remove tudo que não é número
+            .replace(/^(\d{2})(\d)/, "($1) $2")     // (11) 9...
+            .replace(/(\d{5})(\d)/, "$1-$2")        // 98765-4321
+            .slice(0, 15);
+    }
+
+    /* Aplica a máscara nos campos corretos */
+    const phoneInputs = document.querySelectorAll("input[name='telefone'], input[name='telefoneEdit']");
+    phoneInputs.forEach(input => {
+        input.addEventListener("input", e => {
+            e.target.value = maskPhone(e.target.value);
+        });
+    });
+
+
+    /* ============================
+    MÁSCARA DE CEP
+    ============================ */
+    function maskCEP(value) {
+        return value
+            .replace(/\D/g, "")               // remove não números
+            .replace(/(\d{5})(\d)/, "$1-$2")  // 12345-678
+            .slice(0, 9);
+    }
+
+    const cepInputs = document.querySelectorAll("#cep, #cepEdit");
+    cepInputs.forEach(input => {
+        input.addEventListener("input", e => {
+            e.target.value = maskCEP(e.target.value);
+        });
+    });
 });

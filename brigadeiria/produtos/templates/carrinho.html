@@ -19,6 +19,8 @@
 </head>
 
 <body>
+  <div id="global-alerts" class="msg-container"></div>
+
   <!-- CABEÇALHO -->
   <header class="main-header">
     <div class="container header-grid">
@@ -120,7 +122,7 @@
   <script src="{% static 'JS/search.js' %}"></script>
   {% now "U" as timestamp %}
   <script src="{% static 'JS/script.js' %}?v={{ timestamp }}"></script>
-  <script src="{% static 'JS/alerta_carrinho.js' %}"></script>
+  <script src="{% static 'JS/alerta.js' %}"></script>
 
 
 </body>

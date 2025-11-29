@@ -177,11 +177,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (item) {
         item.quantity = qtd;
         item.subtotal = subtotal;
-        alert(`${name} atualizado! Quantidade: ${qtd}`);
+        showAlert(`${name} atualizado! Quantidade: ${qtd}`, "success");
       } else {
         item = { name, category, priceUnit: precoBase, quantity: qtd, subtotal };
         cart.push(item);
-        alert(`${qtd} unidades de ${name} adicionadas — R$ ${subtotal.toFixed(2)}`);
+        showAlert(`${qtd} unidades de ${name} adicionadas — R$ ${subtotal.toFixed(2).replace(".", ",")}`, "success");
       }
 
       localStorage.setItem('cart', JSON.stringify(cart));

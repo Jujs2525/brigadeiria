@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("Salvando carrinho no servidor:", cart);
     } catch (err) {
       console.error("Erro salvar servidor:", err);
-      alert("Não foi possível salvar seu carrinho.");
+      showAlert("Não foi possível salvar seu carrinho.", "error");
     }
   }
 
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       return await r.json();
     } catch (err) {
       console.error("Erro carregar servidor:", err);
-      alert("Falha ao carregar seu carrinho.");
+      showAlert("Falha ao carregar seu carrinho.", "error");
       return [];
     }
   }
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       await fetch("/api/carrinho/", { method: "DELETE" });
     } catch (err) {
       console.error("Erro ao limpar servidor:", err);
-      alert("Erro ao limpar carrinho do servidor.");
+      showAlert("Erro ao limpar carrinho do servidor.", "error");
     }
   }
 
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     limparBtn.onclick = async () => {
       localStorage.removeItem("cart");
       await limparCarrinhoServidor();
-      alert("Carrinho limpo com sucesso!");
+      showAlert("Carrinho limpo com sucesso!", "success");
       location.reload();
     };
   }
@@ -96,14 +96,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       const logado = await verificarLogin();
 
       if (!logado) {
-        alert("Você precisa estar logado para finalizar o pedido!");
+        showAlert("Você precisa estar logado para finalizar o pedido!", "error");
         window.location.href = "/perfil/";
         return;
       }
 
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       if (cart.length === 0) {
-        alert("Seu carrinho está vazio.");
+        showAlert("Seu carrinho está vazio.", "error");
         return;
       }
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const url = `https://wa.me/5515981453091?text=${encodeURIComponent(msg)}`;
       window.open(url, "_blank");
 
-      alert("Pedido enviado! Obrigado 💛");
+      showAlert("Pedido enviado! Obrigado 💛", "success");
 
       localStorage.removeItem("cart");
       await limparCarrinhoServidor();
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         localStorage.setItem("cart", JSON.stringify(cart));
         await salvarCarrinhoNoServidor(cart);
         atualizarTotal();
-        alert("Quantidade atualizada!");
+        showAlert("Quantidade atualizada!", "success");
       };
 
       mais.onclick = () => {
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           input.value = parseInt(input.value) - 1;
           atualizar();
         } else {
-          alert("O pedido mínimo é 25 unidades!");
+          showAlert("O pedido mínimo é 25 unidades!", "error");
         }
       };
 
@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Carrinho atualizado:", cart);
 
         await salvarCarrinhoNoServidor(cart); // Salva o carrinho atualizado no servidor
-        alert("Item removido!");
+        showAlert("Item removido!", "success");
 
         carregarCarrinho(container, totalEl); // Recarrega o carrinho após remoção
       };

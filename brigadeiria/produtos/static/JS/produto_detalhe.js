@@ -102,21 +102,3 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   atualizarTotal();
 });
-
-// Função de exibição de alerta
-function showAlert(message, type = 'success') {
-  const alertContainer = document.getElementById("alert-container");
-
-  // Cria um novo alerta
-  const newAlert = document.createElement("div");
-  newAlert.classList.add("msg", type);
-  newAlert.textContent = message;
-
-  // Adiciona o alerta ao container
-  alertContainer.appendChild(newAlert);
-
-  // Remove o alerta após 4 segundos
-  setTimeout(() => {
-    alertContainer.removeChild(newAlert);
-  }, 4000); // 4 segundos no total para o efeito
-}
