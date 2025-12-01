@@ -95,18 +95,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (senhaInput && confirmarSenhaInput) {
 
-        // impede duplicação da mensagem
         let msg = document.querySelector("#senha-mensagem");
 
         if (!msg) {
             msg = document.createElement("div");
             msg.id = "senha-mensagem";
-            msg.className = "msg error small-alert";
+            msg.className = "msg error small-alert until-correct";
             msg.style.display = "none";
             confirmarSenhaInput.insertAdjacentElement("afterend", msg);
         }
 
         const validar = () => {
+            // Se um dos campos estiver vazio → não mostrar nada
             if (senhaInput.value === "" || confirmarSenhaInput.value === "") {
                 msg.style.display = "none";
                 return;
@@ -116,15 +116,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 msg.textContent = "As senhas não coincidem.";
                 msg.style.display = "block";
             } else {
-                msg.style.display = "none";
+                msg.style.display = "none"; // Só some quando estiver igual
             }
         };
 
-        senhaInput.addEventListener("input", validar);
-        confirmarSenhaInput.addEventListener("input", validar);
+        // ⭐ Mudança aqui: antes era "input"
+        senhaInput.addEventListener("blur", validar);
+        confirmarSenhaInput.addEventListener("blur", validar);
     }
-
-
 
     /* ============================
        IMPEDIR ENVIO SE SENHA NÃO BATER
@@ -345,4 +344,39 @@ document.addEventListener("DOMContentLoaded", () => {
             e.target.value = maskCEP(e.target.value);
         });
     });
+
+    /* ============================
+    SENHAS VISÍVEIS 
+    // Pega TODOS os campos de senha que usam o mesmo ID
+    const inputsSenha = document.querySelectorAll("#passwordInput");
+    const iconesOlho = document.querySelectorAll("#eyeClosed");
+
+    iconesOlho.forEach((icone, index) => {
+        const input = inputsSenha[index];
+
+        icone.addEventListener("click", () => {
+            if (input.type === "password") {
+                input.type = "text"; // 👉 mostra a senha
+                icone.src = "/static/src/eyeOpen.png"; // olho ABERTO
+            } else {
+                input.type = "password"; // 👉 esconde novamente
+                icone.src = "/static/src/eyeClosed.png"; // olho FECHADO
+            }
+        });
+    });
+    ============================ */
 });
+
+document.querySelectorAll(".passwordInput").forEach(container => {
+    const input = container.querySelector("input");
+    const eye = container.querySelector(".eyeToggle");
+
+    eye.addEventListener("click", () => {
+        const isPassword = input.type === "password";
+        input.type = isPassword ? "text" : "password";
+        eye.src = isPassword 
+            ? eye.src.replace("eyeClosed", "eyeOpen")
+            : eye.src.replace("eyeOpen", "eyeClosed");
+    });
+});
+

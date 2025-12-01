@@ -124,7 +124,6 @@
             <input type="email" name="emailEdit" value="{{ user.email }}" placeholder="E-mail" required>
             <input type="tel" name="telefoneEdit" value="{{ user.perfil.telefone }}" placeholder="Telefone" required>
             <!-- E outros campos necessários -->
-
             <p class="end">Endereço</p>
             <input type="text" id="cepEdit" name="cepEdit" value="{{ user.perfil.cep }}" placeholder="CEP">
             <input type="text" id="enderecoEdit" name="enderecoEdit" value="{{ user.perfil.endereco }}" placeholder="Endereço">
@@ -184,7 +183,10 @@
                 <form action="{% url 'logar' %}" method="POST">
                     {% csrf_token %}
                     <input type="email" name="email" placeholder="E-mail" required>
-                    <input type="password" name="senha" placeholder="Senha" required>
+                    <div class="passwordInput">
+                        <input type="password" name="senha" placeholder="Senha" required>
+                        <img src="{% static 'src/eyeClosed.png' %}" class="eyeToggle">
+                    </div>
                     <button type="submit">Entrar</button>
 
                     <p class="texto-mudar">Não tem conta?
@@ -206,11 +208,12 @@
                     <input type="text" name="nome" placeholder="Nome completo" required>
                     <input type="email" name="email" placeholder="E-mail" required>
                     <input type="tel" name="telefone" placeholder="Telefone" required>
-                    <input type="password" name="senha" placeholder="Senha" required>
+                    <div class="passwordInput">
+                        <input type="password" name="senha" placeholder="Senha" required>
+                        <img src="{% static 'src/eyeClosed.png' %}" class="eyeToggle">
+                    </div>
                     <input type="password" name="confirmarSenha" placeholder="Confirmar senha" required>
                     <!-- A mensagem de erro será criada automaticamente após o campo confirmarSenha -->
-
-
                     <p class="end">Endereço</p>
                     <input type="text" id="cep" name="cep" placeholder="CEP" required>
                     <input type="text" id="endereco" name="endereco" placeholder="Endereço" required>

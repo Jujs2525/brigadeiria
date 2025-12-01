@@ -50,14 +50,15 @@ input[type="search"] {
 
 /* Placeholder */
 .searchInput::placeholder {
-    color: #f7e7bc; /* amarelo clarinho */
-    opacity: 0.7;
+    color: #fcf1d5; /* amarelo clarinho */
+    opacity: 0.8;
 }
 
 /* Caixa de resultados */
 .results-box {
   position: absolute;
-  top: 45px;
+  top: 55px; /* ou até 60px se quiser mais afastado */
+  left: 0;
   width: 100%;
   background: #5c3b1e;
   border-radius: 12px;
@@ -65,6 +66,23 @@ input[type="search"] {
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   display: none;
   z-index: 999;
+
+  max-height: 500px;      /* define a altura que você quiser */
+  overflow-y: auto;       /* ativa a rolagem apenas dentro dessa div */
+  overflow-x: hidden;     /* evita scroll horizontal */
+  
+  box-sizing: border-box;
+  padding-right: 12px;    /* espaço para scrollbar */
+}
+
+.results-box::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* parte da rolagem dos resultados */
+.results-box::-webkit-scrollbar-thumb {
+  background: #d6b08a;    /* cor da barra */
+  border-radius: 5px;
 }
 
 /* Items */

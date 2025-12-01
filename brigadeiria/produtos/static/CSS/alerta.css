@@ -41,6 +41,7 @@
     background: #e8ffe8;
     color: #2d7a2d;
     border-left: 6px solid #2d7a2d;
+    z-index: 9999; /* Garante que o alerta ficará acima de outros elementos */
 }
 
 /* Erro */
@@ -48,6 +49,16 @@
     background: #ffe8e8;
     color: #992828;
     border-left: 6px solid #992828;
+}
+
+/* ALERTA DE SENHAS — NÃO some sozinho */
+.msg.until-correct {
+    animation: slideDown 0.4s ease !important; /* apenas entra */
+    background: #ffe8e8;
+    color: #992828;
+    border-left: 6px solid #992828;
+    width: 400px;
+    justify-self: center;
 }
 
 /* Aviso */
