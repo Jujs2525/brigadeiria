@@ -148,13 +148,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (logoutBtn && logoutModal) {
         logoutBtn.addEventListener("click", () => {
-            logoutModal.classList.add("show");
+            logoutModal.classList.add("show");  
+            document.body.classList.add("no-scroll"); // ⛔ trava scroll
         });
     }
 
     if (cancelLogout) {
         cancelLogout.addEventListener("click", () => {
             logoutModal.classList.remove("show");
+            document.body.classList.remove("no-scroll"); // ✅ libera scroll
         });
     }
 
@@ -168,12 +170,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (deleteBtn && deleteModal) {
         deleteBtn.addEventListener("click", () => {
             deleteModal.classList.add("show");
+            document.body.classList.add("no-scroll"); // ⛔ trava scroll
         });
     }
 
     if (cancelDelete) {
         cancelDelete.addEventListener("click", () => {
             deleteModal.classList.remove("show");
+            document.body.classList.remove("no-scroll"); // ✅ libera scroll
         });
     }
 

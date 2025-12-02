@@ -6,10 +6,10 @@
     display: flex;
     justify-content: center;
     position: fixed;
-    top: 20px; /* Distância do topo */
+    top: 20px;
     left: 50%;
-    transform: translateX(-50%); /* Centraliza horizontalmente */
-    z-index: 9999; /* Garante que o alerta ficará acima de outros elementos */
+    transform: translateX(-50%);
+    z-index: 999999; 
     animation: fadeIn 0.4s ease;
 }
 
@@ -77,10 +77,10 @@
 
 
 .input-alert {
-    background: #ffe6e6;            /* fundo rosa claro igual ao alerta */
-    border-left: 5px solid #d9534f; /* vermelho elegante igual ao principal */
+    background: #ffe6e6;            
+    border-left: 5px solid #d9534f; 
     padding: 6px 10px;
-    color: #8a3a3a;                 /* marrom igual ao texto do alerta */
+    color: #8a3a3a;                 
     font-size: 13px;
     margin-top: 5px;
     border-radius: 6px;
