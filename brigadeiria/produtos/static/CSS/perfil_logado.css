@@ -132,11 +132,11 @@
 /* Botão cancelar */
 .btn-cancelar {
     background: transparent;
-    border: 1.5px solid #686868;
-    color: #686868;
+    border: 2px solid #e56161;
+    color: #2e2e2e;
 }
 .btn-cancelar:hover {
-    background: #cfcfcf;
+    background: #e15a5a;
     color: #fff;
 }
 
@@ -160,14 +160,15 @@
     font-weight: 700;
     cursor: pointer;
     transition: 0.2s;
-    background: #ffa8a8;
-    color: #a34242;
+    
+    background: #fc7f7f;
+    color: #ffffff;
     border: none;
 }
 
 .logout-btn:hover,
 .delete-btn:hover {
-    background: #f88383;
+    background: #ff9393; /* igual ao hover da modal */
 }
 
 /* ================================
@@ -182,14 +183,15 @@
     font-size: 1rem;
     font-weight: 600;
     text-decoration: none;
+    margin-top: 10px;
     white-space: nowrap;
     transition: 0.2s;
 }
 
 /* Confirmar (sair / excluir) */
-.btn-confirm,
-.btn-confirm:link,
-.btn-confirm:visited {
+.btnConfirm,
+.btnConfirm:link,
+.btnConfirm:visited {
     display: inline-block;
     padding: 10px 18px;
     border-radius: 8px;
@@ -203,12 +205,12 @@
     white-space: nowrap; /* impede que o texto quebre */    
 }
 
-.btn-confirm:hover {
+.btnConfirm:hover {
     background: #f59898;
 }
 
 /* Cancelar */
-.btn-cancel {
+.btnCancel {
     display: inline-block;
     padding: 10px 18px;
     border-radius: 8px;
@@ -222,12 +224,12 @@
     white-space: nowrap; /* impede que o texto quebre */
 }
 
-.btn-cancel:hover {
+.btnCancel:hover {
     background: #fecbcb;
 }
 
 /* Para garantir que o <button> não pegue estilo nativo */
-.btn-confirm[type="submit"] {
+.btnConfirm[type="submit"] {
     appearance: none;
     -webkit-appearance: none;
 }

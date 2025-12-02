@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Vidaloka&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Voces&display=swap');
 
+
 .verificar-container {
   max-width: 400px;
   width: 90%;
@@ -9,7 +10,7 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   text-align: center;
   padding: 30px 25px;
-  margin: 40px auto;
+  margin: auto;
 }
 
 .verificar-container h2 {

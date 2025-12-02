@@ -344,29 +344,11 @@ document.addEventListener("DOMContentLoaded", () => {
             e.target.value = maskCEP(e.target.value);
         });
     });
-
-    /* ============================
-    SENHAS VISÍVEIS 
-    // Pega TODOS os campos de senha que usam o mesmo ID
-    const inputsSenha = document.querySelectorAll("#passwordInput");
-    const iconesOlho = document.querySelectorAll("#eyeClosed");
-
-    iconesOlho.forEach((icone, index) => {
-        const input = inputsSenha[index];
-
-        icone.addEventListener("click", () => {
-            if (input.type === "password") {
-                input.type = "text"; // 👉 mostra a senha
-                icone.src = "/static/src/eyeOpen.png"; // olho ABERTO
-            } else {
-                input.type = "password"; // 👉 esconde novamente
-                icone.src = "/static/src/eyeClosed.png"; // olho FECHADO
-            }
-        });
-    });
-    ============================ */
 });
 
+/* ============================
+    SENHAS VISÍVEIS 
+    ============================ */
 document.querySelectorAll(".passwordInput").forEach(container => {
     const input = container.querySelector("input");
     const eye = container.querySelector(".eyeToggle");

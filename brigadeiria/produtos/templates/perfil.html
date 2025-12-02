@@ -1,7 +1,7 @@
 {% extends "blank.html" %}
 {% load static %}
 
-{% block title %}Perfil | Sayuri's Brigaderia{% endblock %}
+{% block title %}PERFIL | Sayuri's Brigaderia{% endblock %}
 
 {% block head %}
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet">
@@ -145,8 +145,8 @@
         <div class="modal-box">
             <h3>Deseja realmente sair?</h3>
             <div class="modal-actions">
-                <a href="{% url 'sair' %}" id="confirmLogout" class="btn-confirm">Sim, sair</a>
-                <button id="cancelLogout" class="btn-cancel">Não, continuar</button>
+                <a href="{% url 'sair' %}" id="confirmLogout" class="btnConfirm">Sim, sair</a>
+                <button id="cancelLogout" class="btnCancel">Não, continuar</button>
             </div>
         </div>
     </div>
@@ -158,9 +158,9 @@
             <div class="modal-actions">
                 <form action="{% url 'excluir_conta' %}" method="POST">
                     {% csrf_token %}
-                    <button type="submit" id="confirmDelete" class="btn-confirm">Sim, excluir</button>
+                    <button type="submit" id="confirmDelete" class="btnConfirm">Sim, excluir</button>
                 </form>
-                <button id="cancelDelete" class="btn-cancel">Não, continuar</button>
+                <button id="cancelDelete" class="btnCancel">Não, continuar</button>
             </div>
         </div>
     </div>
