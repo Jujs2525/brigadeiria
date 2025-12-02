@@ -9,13 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet" />
 
+  <!-- CSS -->
   <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
   <link rel="stylesheet" href="{% static 'CSS/produto_detalhe.css' %}">
   <link rel="stylesheet" href="{% static 'CSS/search.css' %}">
-  <link href="https://fonts.googleapis.com/css2?family=Voces&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'CSS/alerta.css' %}">
   <link rel="icon" href="{% static 'src/TCC.png' %}" type="image/png">
 </head>
 <body>
+
+  <!-- ALERTAS -->
   <div id="global-alerts" class="msg-container"></div>
 
   <!-- CABEÇALHO -->
@@ -76,8 +79,7 @@
     </div>
   </main>
 
-
-    <!-- RODAPÉ -->
+  <!-- RODAPÉ -->
   <footer class="main-footer">
     <div class="container footer-grid">
       <div class="footer-logo-esquerda">
@@ -91,7 +93,7 @@
         <a href="tel:+5515981453091">
           <img src="{% static 'src/chamada-telefonica.png' %}" alt="telefone" class="icones">
         </a>
-        <a href="https://www.google.com/maps/place/Horto+Florestal+Villagio/@-23.4388829,-47.4939461,17z/data=!4m10!1m2!2m1!1shorto+florestal+villagio!3m6!1s0x94c5f5a1b90c2bf3:0x82d29e5ce04c50a!8m2!3d-23.4388157!4d-47.4913903!15sChhob3J0byBmbG9yZXN0YWwgdmlsbGFnaW-SARNjb25kb21pbml1bV9jb21wbGV44AEA!16s%2Fg%2F11k3w806rl?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">
+        <a href="https://www.google.com/maps/place/Horto+Florestal+Villagio/@-23.4388829,-47.4939461,17z" target="_blank" rel="noopener">
           <img src="{% static 'src/localizacao.png' %}" alt="endereço" class="icones">
         </a>
         <a href="https://www.instagram.com/sayuri_brigadeiros?igsh=MWh4Zjc0Ynp6NTA2eg==" target="_blank" rel="noopener">
@@ -105,11 +107,20 @@
     </div>
   </footer>
 
+  <!-- 👇 BLOCO DO PRODUTO (AQUI, ANTES DOS ARQUIVOS .JS) -->
+  <script>
+    window.PRODUTO = {
+      nome: "{{ produto.nome|escapejs }}",
+      descricao: "{{ produto.descricao|escapejs }}",
+      categoria: "{{ produto.categoria|default:''|escapejs }}",
+      preco: "{{ produto.preco|default:'1.50' }}"
+    };
+    console.log("DEBUG → window.PRODUTO:", window.PRODUTO);
   </script>
 
+  <!-- JS -->
   <script src="{% static 'JS/search.js' %}" defer></script>
   <script src="{% static 'JS/produto_detalhe.js' %}" defer></script>
-  <script src="https://unpkg.com/scrollreveal"></script>
   <script src="https://unpkg.com/scrollreveal"></script>
   <script src="{% static 'JS/alerta.js' %}"></script>
 

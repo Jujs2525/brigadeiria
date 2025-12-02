@@ -1,8 +1,8 @@
 window.showAlert = function (message, type = "success") {
     const container = document.getElementById("global-alerts");
+    if (!container) return;
 
-    // 🔥 Remove alertas antigos antes de exibir o novo
-    container.innerHTML = "";
+    container.innerHTML = ""; // remove alertas antigos
 
     const alert = document.createElement("div");
     alert.classList.add("msg", type);
@@ -10,7 +10,6 @@ window.showAlert = function (message, type = "success") {
 
     container.appendChild(alert);
 
-    // Remove depois de 2.5s com fade
     setTimeout(() => {
         alert.classList.add("hide");
         alert.addEventListener("transitionend", () => alert.remove());

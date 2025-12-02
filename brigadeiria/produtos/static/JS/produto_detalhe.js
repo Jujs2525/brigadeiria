@@ -1,8 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const P = window.PRODUTO || { nome: "", descricao: "", categoria: "" };
+  // Garante que o PRODUTO veio do template
+  if (!window.PRODUTO) {
+    console.error("window.PRODUTO não está definido");
+    return;
+  }
 
-  const nomeProduto = (P.nome || "").toLowerCase();
-  const precoUnitario = P.preco || 1.50; // Atribui o preço diretamente (se necessário)
+  const P = window.PRODUTO;
+
+  // Preço em número, mesmo que venha com vírgula
+  const precoUnitario = parseFloat(String(P.preco).replace(",", ".")) || 1.50;
   const minimo = 25;
   const passo = 1;
   let quantidade = minimo;
@@ -63,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     atualizarTotal();
   });
 
-  inputQtd.addEventListener("keypress", e => {
+  inputQtd.addEventListener("keypress", (e) => {
     if (e.key === "Enter") inputQtd.blur();
   });
 
@@ -84,21 +90,29 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   btnAdd.addEventListener("click", () => {
-    const valor = parseInt(inputQtd.value);
+    const valor = parseInt(inputQtd.value) || minimo;
     const subtotal = valor * precoUnitario;
+
     const produto = {
-      name: P.nome,
-      category: P.categoria, // A categoria é diretamente atribuída ao produto
+      name: String(P.nome || "Produto"),
+      category: String(P.categoria || ""),
       unit_price: precoUnitario,
       quantity: valor,
       subtotal
     };
+
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     cart.push(produto);
     localStorage.setItem("cart", JSON.stringify(cart));
 
-    // Exibe a mensagem de confirmação com o alerta visual
-    showAlert(`${valor} unidades de ${produto.name} adicionadas — R$ ${subtotal.toFixed(2).replace(".", ",")}`, "success");
+    // Mensagem bonita com nome do produto
+    showAlert(
+      `${valor} unidades de ${produto.name} adicionadas — R$ ${subtotal
+        .toFixed(2)
+        .replace(".", ",")}`,
+      "success"
+    );
   });
+
   atualizarTotal();
 });
