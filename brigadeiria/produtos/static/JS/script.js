@@ -122,10 +122,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       const url = `https://wa.me/5515981453091?text=${encodeURIComponent(msg)}`;
       window.open(url, "_blank");
 
-      showAlert("Pedido enviado! Obrigado 💛", "success");
-
+      // LIMPA TUDO
       localStorage.removeItem("cart");
       await limparCarrinhoServidor();
+
+      // EXIBE ALERTA ANTES DE RECARREGAR
+      showAlert("Pedido enviado! Obrigado 💛", "success");
+
+      // SOMENTE DEPOIS RECARREGA
+      setTimeout(() => {
+        location.reload();
+      }, 12000);
     };
   }
 
